@@ -1,5 +1,6 @@
 package frc.robot;
 
+import frc.robot.commands.ToggleArm;
 import harkerrobolib.wrappers.XboxGamepad;
 
 public class OI {
@@ -9,8 +10,8 @@ public class OI {
     private static final int DRIVER_PORT = 0;
     private static final int OPERATOR_PORT = 1;
 
-    private XboxGamepad driverGamepad;
-    private XboxGamepad operatorGamepad;
+    private static XboxGamepad driverGamepad;
+    private static XboxGamepad operatorGamepad;
 
     private static OI instance;
 
@@ -27,10 +28,17 @@ public class OI {
         return operatorGamepad;
     }
 
+    public static void initBindings() {
+        driverGamepad.getButtonA().whenPressed(new ToggleArm());
+    }
+
     public static OI getInstance() {
         if (instance == null) {
            instance = new OI();
         }
+
+        initBindings();
+
         return instance;
     }
 }

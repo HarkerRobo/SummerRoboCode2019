@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 
 /**
@@ -20,6 +21,8 @@ import frc.robot.subsystems.Drivetrain;
  */
 public class Robot extends TimedRobot {
   private Drivetrain dt;
+  private Arm arm;
+
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
@@ -28,6 +31,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     dt = Drivetrain.getInstance();
     dt.talonInit();
+
+    arm = Arm.getInstance();
+
+    OI.getInstance();
   }
 
   /**
