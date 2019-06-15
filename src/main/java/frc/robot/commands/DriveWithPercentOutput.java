@@ -3,7 +3,9 @@ package frc.robot.commands;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
+import harkerrobolib.util.MathUtil;
 
 /**
  * Moves the Drivetrain using the PercentOutput ControlMode
@@ -14,23 +16,21 @@ import frc.robot.subsystems.Drivetrain;
  * @since 6/14/19
  */
 public class DriveWithPercentOutput extends Command {
-    private double leftOutput;
-    private double rightOutput;
+    private static final double SPEED_MULTIPLIER = 0.2;
 
-    public DriveWithPercentOutput(double leftOutput, double rightOutput) {
+    public DriveWithPercentOutput() {
         requires(Drivetrain.getInstance());
-
-        this.leftOutput = leftOutput;
-        this.rightOutput = rightOutput;
     }
 
     public void execute() {
-        Drivetrain.getInstance().getLeftMaster().set(ControlMode.PercentOutput, leftOutput);
-        Drivetrain.getInstance().getRightFollower().set(ControlMode.PercentOutput, rightOutput);
+        double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
+        double turn = 0;//MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
+        Drivetrain.getInstance().getLeftMaster().set(ControlMode.PercentOutput, speed + turn);
+        Drivetrain.getInstance().getRightFollower().set(ControlMode.PercentOutput, speed - turn);
     }    
     
     public void end() {
-        Drivetrain.getInstance().setBoth(ControlMode.DISABLED, 0);
+        Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
     }
 
     public boolean isFinished() {
