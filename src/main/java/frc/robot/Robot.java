@@ -78,6 +78,12 @@ public class Robot extends TimedRobot {
     Scheduler.getInstance().run();
   }
 
+  @Override
+  public void teleopInit() {
+      dt.getLeftMaster().setSelectedSensorPosition(0);
+      dt.getRightMaster().setSelectedSensorPosition(0);
+  }
+
   /**
    * This function is called periodically during operator control.
    */

@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import frc.robot.RobotMap;
+import frc.robot.commands.DriveToPosition;
 import frc.robot.commands.DriveWithPercentOutput;
 import frc.robot.commands.DriveWithVelocity;
 import harkerrobolib.subsystems.HSDrivetrain;
@@ -40,12 +41,12 @@ public class Drivetrain extends HSDrivetrain {
    private static final double VELOCITY_RAMP_RATE = 0.2;
 
    private static final int POSITION_SLOT = 1;
-   private static final double POSITION_LEFT_kP = 0.1;
+   private static final double POSITION_LEFT_kP = 0.2;
    private static final double POSITION_LEFT_kI = 0;
-   private static final double POSITION_LEFT_kD = 0;
-   private static final double POSITION_RIGHT_kP = 0.1;
+   private static final double POSITION_LEFT_kD = 10;
+   private static final double POSITION_RIGHT_kP = 0.2;
    private static final double POSITION_RIGHT_kI = 0;
-   private static final double POSITION_RIGHT_kD = 0;
+   private static final double POSITION_RIGHT_kD = 10;
    private static final double POSITION_RAMP_RATE = 0.2;
 
    private Drivetrain() {
@@ -61,7 +62,7 @@ public class Drivetrain extends HSDrivetrain {
    }
 
    public void initDefaultCommand() {
-      setDefaultCommand(new DriveWithVelocity());
+      setDefaultCommand(new DriveToPosition(2));
    }
 
    public void setupVelocityPID() {
