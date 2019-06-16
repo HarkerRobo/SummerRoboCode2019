@@ -7,10 +7,13 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import harkerrobolib.util.Conversions;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -29,12 +32,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    dt = Drivetrain.getInstance();
-    dt.talonInit();
+      dt = Drivetrain.getInstance();
+      dt.talonInit();
 
-    arm = Arm.getInstance();
+      arm = Arm.getInstance();
 
-    OI.getInstance();
+      OI.getInstance();
+
+      Conversions.setWheelDiameter(Drivetrain.WHEEL_DIAMETER);
   }
 
   /**
@@ -88,6 +93,9 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
-  
 
+  @Override
+  public void disabledInit() {
+      Drivetrain.getInstance().setNeutralMode(NeutralMode.Coast);
+  }
 }

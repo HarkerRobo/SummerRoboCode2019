@@ -22,18 +22,26 @@ public class DriveWithPercentOutput extends Command {
         requires(Drivetrain.getInstance());
     }
 
+    @Override
     public void execute() {
         double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
-        double turn = 0;//MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
+        double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
         Drivetrain.getInstance().getLeftMaster().set(ControlMode.PercentOutput, speed + turn);
         Drivetrain.getInstance().getRightFollower().set(ControlMode.PercentOutput, speed - turn);
     }    
+
+    @Override
+    public boolean isFinished() {
+        return false;
+    }
     
+    @Override
     public void end() {
         Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
     }
 
-    public boolean isFinished() {
-        return false;
+    @Override
+    protected void interrupted() {
+        end();
     }
 }

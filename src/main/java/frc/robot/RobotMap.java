@@ -9,6 +9,9 @@ package frc.robot;
  * @since 6/14/19
  */
 public class RobotMap {
+    public static final int PRIMARY_PID_INDEX = 0;
+    public static final int SECONDARY_PID_INDEX = 1;
+
     public static class CAN_IDS {
         public static final int DT_LEFT_MASTER, DT_RIGHT_MASTER, DT_LEFT_FOLLOWER, DT_RIGHT_FOLLOWER;
         public static final int EL_MASTER, EL_VICTOR_LEFT_FRONT, EL_VICTOR_LEFT_BACK, EL_TALON_FOLLOWER;
