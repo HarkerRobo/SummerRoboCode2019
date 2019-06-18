@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.HatchExtender;
+import frc.robot.subsystems.HatchFlower;
 import harkerrobolib.util.Conversions;
 
 /**
@@ -25,6 +27,8 @@ import harkerrobolib.util.Conversions;
 public class Robot extends TimedRobot {
   private Drivetrain dt;
   private Arm arm;
+  private HatchExtender extender;
+  private HatchFlower flower;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -36,6 +40,8 @@ public class Robot extends TimedRobot {
       dt.talonInit();
 
       arm = Arm.getInstance();
+      extender = HatchExtender.getInstance();
+      flower = HatchFlower.getInstance();
 
       OI.getInstance();
 
