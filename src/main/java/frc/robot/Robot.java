@@ -15,6 +15,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
+import frc.robot.subsystems.WristRollers;
 import harkerrobolib.util.Conversions;
 
 /**
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
   private Arm arm;
   private HatchExtender extender;
   private HatchFlower flower;
+  private WristRollers rollers;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -42,6 +44,8 @@ public class Robot extends TimedRobot {
       arm = Arm.getInstance();
       extender = HatchExtender.getInstance();
       flower = HatchFlower.getInstance();
+
+      rollers = rollers.getInstance();
 
       OI.getInstance();
 

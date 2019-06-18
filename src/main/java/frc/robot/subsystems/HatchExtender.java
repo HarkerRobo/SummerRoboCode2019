@@ -10,7 +10,7 @@ public class HatchExtender extends Subsystem {
 
     private DoubleSolenoid solenoid;
 
-    public HatchExtender() {
+    private HatchExtender() {
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.EXTENDER_FORWARD_CHANNEL, RobotMap.CAN_IDS.EXTENDER_REVERSE_CHANNEL);
     }
 

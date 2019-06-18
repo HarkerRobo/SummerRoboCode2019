@@ -46,7 +46,7 @@ public class RobotMap {
             CLIMBER_TALON = 0;
             CLIMBER_VICTOR = 4;
 
-            ROLLERS_TALON = 0;
+            ROLLERS_TALON = 1;
             
             ARM_FORWARD_CHANNEL = 4;
             ARM_REVERSE_CHANNEL = 0;
