@@ -1,6 +1,8 @@
 package frc.robot;
 
 import frc.robot.commands.ToggleArm;
+import frc.robot.commands.ToggleExtender;
+import frc.robot.commands.ToggleFlower;
 import harkerrobolib.wrappers.XboxGamepad;
 
 public class OI {
@@ -30,6 +32,8 @@ public class OI {
 
     public static void initBindings() {
         driverGamepad.getButtonA().whenPressed(new ToggleArm());
+        driverGamepad.getButtonB().whenPressed(new ToggleFlower());
+        driverGamepad.getButtonX().whenPressed(new ToggleExtender());
     }
 
     public static OI getInstance() {

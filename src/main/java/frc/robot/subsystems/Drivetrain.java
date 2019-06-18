@@ -5,9 +5,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import frc.robot.RobotMap;
-import frc.robot.commands.DriveToPosition;
-import frc.robot.commands.DriveWithPercentOutput;
-import frc.robot.commands.DriveWithVelocity;
+import frc.robot.commands.drivetrain.DriveWithVelocity;
 import harkerrobolib.subsystems.HSDrivetrain;
 import harkerrobolib.wrappers.HSTalon;
 
@@ -24,6 +22,8 @@ public class Drivetrain extends HSDrivetrain {
 
    public static final int WHEEL_DIAMETER = 4;
 
+   private static final int COMPENSATION_VOLTAGE = 10;
+
    private static final boolean LEFT_MASTER_INVERTED = true;
    private static final boolean LEFT_VICTOR_INVERTED = true;
    private static final boolean RIGHT_MASTER_INVERTED = false;
@@ -32,7 +32,7 @@ public class Drivetrain extends HSDrivetrain {
    private static final int VELOCITY_SLOT = 0;
    private static final double VELOCITY_LEFT_kF = 0.23;
    private static final double VELOCITY_LEFT_kP = 0.75;
-   private static final double VELOCITY_LEFT_kI = 0;
+   private static final double VELOCITY_LEFT_kI = 0.001;
    private static final double VELOCITY_LEFT_kD = 0;
    private static final double VELOCITY_RIGHT_kF = 0.275;
    private static final double VELOCITY_RIGHT_kP = 0.75;
@@ -41,12 +41,13 @@ public class Drivetrain extends HSDrivetrain {
    private static final double VELOCITY_RAMP_RATE = 0.2;
 
    private static final int POSITION_SLOT = 1;
-   private static final double POSITION_LEFT_kP = 0.2;
-   private static final double POSITION_LEFT_kI = 0;
-   private static final double POSITION_LEFT_kD = 10;
-   private static final double POSITION_RIGHT_kP = 0.2;
+   private static final double POSITION_LEFT_kP = 0.3;
+   private static final double POSITION_LEFT_kI = 0.001;
+   private static final double POSITION_LEFT_kD = 60;
+   private static final double POSITION_RIGHT_kP = 0.3;
    private static final double POSITION_RIGHT_kI = 0;
-   private static final double POSITION_RIGHT_kD = 10;
+   private static final double POSITION_RIGHT_kD = 60;
+   private static final int POSITION_IZONE = 300;
    private static final double POSITION_RAMP_RATE = 0.2;
 
    private Drivetrain() {
@@ -59,10 +60,12 @@ public class Drivetrain extends HSDrivetrain {
       invertTalons(LEFT_MASTER_INVERTED, RIGHT_MASTER_INVERTED, LEFT_VICTOR_INVERTED, RIGHT_VICTOR_INVERTED);
       setNeutralMode(NeutralMode.Brake);
       configBothFeedbackSensors(FeedbackDevice.CTRE_MagEncoder_Relative, RobotMap.PRIMARY_PID_INDEX);
+      
+      setupVoltageComp();
    }
 
    public void initDefaultCommand() {
-      setDefaultCommand(new DriveToPosition(2));
+      setDefaultCommand(new DriveWithVelocity());
    }
 
    public void setupVelocityPID() {
@@ -87,16 +90,26 @@ public class Drivetrain extends HSDrivetrain {
       getLeftMaster().config_kP(POSITION_SLOT, POSITION_LEFT_kP);
       getLeftMaster().config_kI(POSITION_SLOT, POSITION_LEFT_kI);
       getLeftMaster().config_kD(POSITION_SLOT, POSITION_LEFT_kD);
+      getLeftMaster().config_IntegralZone(POSITION_SLOT, POSITION_IZONE);
 
       getRightMaster().config_kP(POSITION_SLOT, POSITION_RIGHT_kP);
       getRightMaster().config_kI(POSITION_SLOT, POSITION_RIGHT_kI);
       getRightMaster().config_kD(POSITION_SLOT, POSITION_RIGHT_kD);
-      
+      getRightMaster().config_IntegralZone(POSITION_SLOT, POSITION_IZONE);
+
       getLeftMaster().selectProfileSlot(POSITION_SLOT, RobotMap.PRIMARY_PID_INDEX);
       getRightMaster().selectProfileSlot(POSITION_SLOT, RobotMap.PRIMARY_PID_INDEX);
    
       getLeftMaster().configClosedloopRamp(POSITION_RAMP_RATE);
       getRightMaster().configClosedloopRamp(POSITION_RAMP_RATE);
+   }
+
+   public void setupVoltageComp() {
+      getLeftMaster().configVoltageCompSaturation(COMPENSATION_VOLTAGE);
+      getLeftMaster().enableVoltageCompensation(true);
+
+      getRightMaster().configVoltageCompSaturation(COMPENSATION_VOLTAGE);
+      getRightMaster().enableVoltageCompensation(true);
    }
    
    public static Drivetrain getInstance() {
