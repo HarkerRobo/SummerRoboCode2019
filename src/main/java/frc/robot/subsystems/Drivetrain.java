@@ -29,6 +29,10 @@ public class Drivetrain extends HSDrivetrain {
    private static final boolean RIGHT_MASTER_INVERTED = false;
    private static final boolean RIGHT_VICTOR_INVERTED = false;
 
+   public static final double kS = 0.05;
+   public static final double kF = 0;//1 / Drivetrain.MAX_FORWARD_VELOCITY;
+   public static final double kA = 0;
+
    private static final int VELOCITY_SLOT = 0;
    private static final double VELOCITY_LEFT_kF = 0.23;
    private static final double VELOCITY_LEFT_kP = 0.75;
@@ -49,6 +53,19 @@ public class Drivetrain extends HSDrivetrain {
    private static final double POSITION_RIGHT_kD = 60;
    private static final int POSITION_IZONE = 300;
    private static final double POSITION_RAMP_RATE = 0.2;
+
+   public static final int MOTION_PROF_SLOT = 2;
+   private static final double MOTION_PROF_LEFT_kP = 0;//0.3;
+   private static final double MOTION_PROF_LEFT_kI = 0;
+   private static final double MOTION_PROF_LEFT_kD = 0;//60;
+   private static final double MOTION_PROF_RIGHT_kP = 0;//0.3;
+   private static final double MOTION_PROF_RIGHT_kI = 0;
+   private static final double MOTION_PROF_RIGHT_kD = 0;//60;
+   private static final double MOTION_PROF_RAMP_RATE = 0.2;
+   private static final int MOTION_PROF_IZONE = 0;
+
+   public static final double MAX_FORWARD_VELOCITY = 14;
+   public static final double MAX_TURN_VELOCITY = 8;
 
    private Drivetrain() {
       super(new HSTalon(RobotMap.CAN_IDS.DT_LEFT_MASTER), new HSTalon(RobotMap.CAN_IDS.DT_RIGHT_MASTER),
@@ -102,6 +119,27 @@ public class Drivetrain extends HSDrivetrain {
    
       getLeftMaster().configClosedloopRamp(POSITION_RAMP_RATE);
       getRightMaster().configClosedloopRamp(POSITION_RAMP_RATE);
+   }
+
+   public void setupMotionProfilePID() {
+      getLeftMaster().config_kP(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kP);
+      getLeftMaster().config_kI(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kI);
+      getLeftMaster().config_kD(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kD);
+
+      getRightMaster().config_kP(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kP);
+      getRightMaster().config_kI(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kI);
+      getRightMaster().config_kD(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kD);
+
+      getLeftMaster().selectProfileSlot(MOTION_PROF_SLOT, RobotMap.PRIMARY_PID_INDEX);
+      getLeftMaster().selectProfileSlot(MOTION_PROF_SLOT, RobotMap.PRIMARY_PID_INDEX);
+
+      getLeftMaster().config_IntegralZone(MOTION_PROF_SLOT, MOTION_PROF_IZONE);
+      getRightMaster().config_IntegralZone(MOTION_PROF_SLOT, MOTION_PROF_IZONE);
+
+      getLeftMaster().configClosedloopRamp(MOTION_PROF_RAMP_RATE);
+      getRightMaster().configClosedloopRamp(MOTION_PROF_RAMP_RATE);
+
+      applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
    }
 
    public void setupVoltageComp() {

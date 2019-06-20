@@ -1,8 +1,10 @@
 package frc.robot;
 
+import frc.robot.auton.Path;
 import frc.robot.commands.ToggleArm;
 import frc.robot.commands.ToggleExtender;
 import frc.robot.commands.ToggleFlower;
+import frc.robot.commands.drivetrain.DriveWithMotionProfile;
 import harkerrobolib.wrappers.XboxGamepad;
 
 public class OI {
@@ -34,14 +36,14 @@ public class OI {
         driverGamepad.getButtonA().whenPressed(new ToggleArm());
         driverGamepad.getButtonB().whenPressed(new ToggleFlower());
         driverGamepad.getButtonX().whenPressed(new ToggleExtender());
+
+        driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(Path.straightLineLeft, Path.straightLineRight, 0.01));
     }
 
     public static OI getInstance() {
         if (instance == null) {
            instance = new OI();
         }
-
-        initBindings();
 
         return instance;
     }

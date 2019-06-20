@@ -26,11 +26,6 @@ import harkerrobolib.util.Conversions;
  * project.
  */
 public class Robot extends TimedRobot {
-  private Drivetrain dt;
-  private Arm arm;
-  private HatchExtender extender;
-  private HatchFlower flower;
-  private WristRollers rollers;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -38,16 +33,15 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-      dt = Drivetrain.getInstance();
-      dt.talonInit();
+      Drivetrain.getInstance().talonInit();
 
-      arm = Arm.getInstance();
-      extender = HatchExtender.getInstance();
-      flower = HatchFlower.getInstance();
+      Arm.getInstance();
+      HatchExtender.getInstance();
+      HatchFlower.getInstance();
 
-      rollers = rollers.getInstance();
+      WristRollers.getInstance();
 
-      OI.getInstance();
+      OI.getInstance().initBindings();
 
       Conversions.setWheelDiameter(Drivetrain.WHEEL_DIAMETER);
   }
@@ -85,13 +79,12 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousPeriodic() {
-    Scheduler.getInstance().run();
+      Scheduler.getInstance().run();
   }
 
   @Override
   public void teleopInit() {
-      dt.getLeftMaster().setSelectedSensorPosition(0);
-      dt.getRightMaster().setSelectedSensorPosition(0);
+      Drivetrain.getInstance().applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
   }
 
   /**

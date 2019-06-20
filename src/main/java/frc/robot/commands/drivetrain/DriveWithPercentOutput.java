@@ -3,6 +3,7 @@ package frc.robot.commands.drivetrain;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
 import harkerrobolib.util.MathUtil;
@@ -26,6 +27,7 @@ public class DriveWithPercentOutput extends Command {
     public void execute() {
         double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
         double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
+        
         Drivetrain.getInstance().getLeftMaster().set(ControlMode.PercentOutput, speed + turn);
         Drivetrain.getInstance().getRightFollower().set(ControlMode.PercentOutput, speed - turn);
     }    

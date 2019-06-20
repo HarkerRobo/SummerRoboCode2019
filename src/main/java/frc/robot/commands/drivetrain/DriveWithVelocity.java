@@ -30,12 +30,13 @@ public class DriveWithVelocity extends Command
 
     @Override
     protected void execute() {
-        double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND) * MAX_FORWARD_VELOCITY * SPEED_MULTIPLIER;
-        double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
+        double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_FORWARD_VELOCITY * SPEED_MULTIPLIER;
+        double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
 
         speed = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, speed, SpeedUnit.ENCODER_UNITS);
         turn = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, turn, SpeedUnit.ENCODER_UNITS);
 
+        SmartDashboard.putNumber("joystick", MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND));
         SmartDashboard.putNumber("PID Left Error", Drivetrain.getInstance().getLeftMaster().getClosedLoopError());
         SmartDashboard.putNumber("PID Right Error", Drivetrain.getInstance().getRightMaster().getClosedLoopError());
         Drivetrain.getInstance().getLeftMaster().set(ControlMode.Velocity, speed + turn);
