@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import frc.robot.RobotMap;
 import frc.robot.commands.drivetrain.DriveWithVelocity;
 import harkerrobolib.subsystems.HSDrivetrain;
+import harkerrobolib.util.Conversions;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
@@ -77,8 +78,9 @@ public class Drivetrain extends HSDrivetrain {
       invertTalons(LEFT_MASTER_INVERTED, RIGHT_MASTER_INVERTED, LEFT_VICTOR_INVERTED, RIGHT_VICTOR_INVERTED);
       setNeutralMode(NeutralMode.Brake);
       configBothFeedbackSensors(FeedbackDevice.CTRE_MagEncoder_Relative, RobotMap.PRIMARY_PID_INDEX);
-      
       setupVoltageComp();
+
+      Conversions.setWheelDiameter(Drivetrain.WHEEL_DIAMETER);
    }
 
    public void initDefaultCommand() {
