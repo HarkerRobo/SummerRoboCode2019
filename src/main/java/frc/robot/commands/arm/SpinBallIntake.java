@@ -7,6 +7,13 @@ import frc.robot.subsystems.Arm;
 import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
 
+/**
+ * Spins the BallIntake (Arm Rollers) using input from the Driver Gamepad's Triggers
+ * 
+ * @author Jatin Kohli
+ * 
+ * @since 6/17/19
+ */
 public class SpinBallIntake extends IndefiniteCommand {
 
     private static final double SPEED_MULTIPLIER = 0.5;

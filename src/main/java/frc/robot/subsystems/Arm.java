@@ -7,6 +7,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.arm.SpinBallIntake;
 
+/**
+ * The Arm subsystem, which includes both the Rollers and the Solenoid
+ * 
+ * @author Jatin Kohli
+ * 
+ * @since 6/14/19
+ */
 public class Arm extends Subsystem{
 
     private static Arm instance;

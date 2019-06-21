@@ -7,6 +7,13 @@ import frc.robot.subsystems.WristRollers;
 import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
 
+/**
+ * Spins the Wrist Rollers using input from the Driver Gamepad's Triggers
+ * 
+ * @author Jatin Kohli
+ * 
+ * @since 6/17/19
+ */
 public class SpinWristRollers extends IndefiniteCommand {
     
     private static final double SPEED_MULTIPLIER = 0.5;

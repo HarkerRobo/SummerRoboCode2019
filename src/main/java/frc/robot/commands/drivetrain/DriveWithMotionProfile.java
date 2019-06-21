@@ -16,7 +16,7 @@ import harkerrobolib.util.Conversions.PositionUnit;
  * @author Jatin Kohli
  * @author Chirag Kaushik
  * 
- * @since June 19, 2019
+ * @since 6/19/19
  */
 public class DriveWithMotionProfile extends IndefiniteCommand {
 

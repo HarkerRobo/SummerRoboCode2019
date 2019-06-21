@@ -11,6 +11,11 @@ import harkerrobolib.util.Conversions.SpeedUnit;
 
 /**
  * Moves the Drivetrain using Velocity PID
+ * 
+ * @author Jatin Kohli
+ * @author Chirag Kaushik
+ * 
+ * @since 6/15/19
  */
 public class DriveWithVelocity extends IndefiniteCommand
 {

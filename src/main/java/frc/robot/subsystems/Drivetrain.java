@@ -11,11 +11,12 @@ import harkerrobolib.util.Conversions;
 import harkerrobolib.wrappers.HSTalon;
 
 /**
- * Represents the drivetrain on the robot.
+ * The drivetrain subsystem, including our two master Talons with encoders and two follower Victors
  * 
  * @author Finn Frankis
  * @author Jatin Kohli
  * @author Chirag Kaushik
+ * 
  * @since 6/14/19
  */
 public class Drivetrain extends HSDrivetrain {

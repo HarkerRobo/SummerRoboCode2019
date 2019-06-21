@@ -7,6 +7,12 @@ import frc.robot.commands.flower.ToggleFlower;
 import frc.robot.commands.drivetrain.DriveWithMotionProfile;
 import harkerrobolib.wrappers.XboxGamepad;
 
+/**
+ * @author Jatin Kohli
+ * @author Chirag Kaushik
+ * 
+ * @since 6/14/19
+ */
 public class OI {
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
     public static final double XBOX_TRIGGER_DEADBAND = 0.1;

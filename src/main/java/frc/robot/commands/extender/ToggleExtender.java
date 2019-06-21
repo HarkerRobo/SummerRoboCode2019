@@ -5,6 +5,13 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.HatchExtender;
 import harkerrobolib.util.Pneumatics;
 
+/**
+ * Toggles the state of the Hatch Extender between Forward and Reverse
+ * 
+ * @author Jatin Kohli
+ * 
+ * @since 6/17/19
+ */
 public class ToggleExtender extends InstantCommand {
    
    public ToggleExtender() {

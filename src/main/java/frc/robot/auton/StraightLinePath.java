@@ -1,9 +1,9 @@
 package frc.robot.auton;
 
 /**
- * Stores motion profile trajectories
+ * Stores the Left and Right side Motion Profile Trajectories for driving in a straight line 5ft
  * 
- * @since June 19, 2019
+ * @since 6/19/19
  */
 public class StraightLinePath {
     public static double[][] leftTrajectory = new double[][] {

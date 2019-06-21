@@ -5,6 +5,13 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.Arm;
 import harkerrobolib.util.Pneumatics;
 
+/**
+ * Toggles the state of the Arm Solenoid between Forward and Reverse
+ * 
+ * @author Jatin Kohli
+ * 
+ * @since 6/17/19
+ */
 public class ToggleArm extends InstantCommand {
    
    public ToggleArm() {

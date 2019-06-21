@@ -4,6 +4,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
+/**
+ * The Hatch Extender Subsystem, which includes the extender solenoid
+ * 
+ * @author Jatin Kohli
+ * 
+ * @since 6/14/19
+ */
 public class HatchExtender extends Subsystem {
 
     private static HatchExtender instance;

@@ -6,6 +6,13 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.wristrollers.SpinWristRollers;
 
+/**
+ * The Wrist Rollers Subsystem, which includes rollers on the wrist
+ * 
+ * @author Jatin Kohli
+ * 
+ * @since 6/14/19
+ */
 public class WristRollers extends Subsystem {
     
     private static WristRollers instance;

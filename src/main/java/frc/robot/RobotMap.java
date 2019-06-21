@@ -1,11 +1,12 @@
 package frc.robot;
 
 /**
- * Stores constants including CAN IDs and solenoid indices.
+ * Stores constants including CAN IDs and Solenoid Indices.
  * 
  * @author Finn Frankis
  * @author Jatin Kohli
  * @author Chirag Kaushik
+ * 
  * @since 6/14/19
  */
 public class RobotMap {

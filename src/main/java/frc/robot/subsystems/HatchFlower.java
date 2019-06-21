@@ -4,6 +4,13 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
+/**
+ * The Hatch Flower Subsystem, which includes the flower solenoid
+ * 
+ * @author Jatin Kohli
+ * 
+ * @since 6/14/19
+ */
 public class HatchFlower extends Subsystem {
 
     private static HatchFlower instance;

@@ -3,16 +3,18 @@ package frc.robot.commands.drivetrain;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Drivetrain;
 import harkerrobolib.util.Conversions;
-import harkerrobolib.util.MathUtil;
 import harkerrobolib.util.Conversions.PositionUnit;
 
 /**
  * Moves the Drivetrain using Position PID
+ * 
+ * @author Jatin Kohli
+ * @author Chirag Kaushik
+ * 
+ * @since 6/15/19
  */
 public class DriveToPosition extends Command
 {
