@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Drivetrain;
 import harkerrobolib.util.Conversions;
 import harkerrobolib.util.MathUtil;
@@ -15,6 +16,8 @@ import harkerrobolib.util.Conversions.PositionUnit;
  */
 public class DriveToPosition extends Command
 {
+    private static final int ALLOWABLE_ERROR = 100;
+
     private double distance;
 
     public DriveToPosition(double feet) {
@@ -25,20 +28,13 @@ public class DriveToPosition extends Command
 
     protected void initialize() {
         Drivetrain.getInstance().setupPositionPID();
-    }
 
-    @Override
-    protected void execute() {
-        double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND);
-        SmartDashboard.putNumber("PID Left Error", Drivetrain.getInstance().getLeftMaster().getClosedLoopError());
-        SmartDashboard.putNumber("PID Right Error", Drivetrain.getInstance().getRightMaster().getClosedLoopError());
-        Drivetrain.getInstance().getLeftMaster().set(ControlMode.Position, distance * speed);
-        Drivetrain.getInstance().getRightMaster().set(ControlMode.Position, distance * speed);
+        Drivetrain.getInstance().applyToMasters((talon) -> talon.set(ControlMode.Position, distance));
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return Drivetrain.getInstance().isClosedLoopErrorWithin(RobotMap.PRIMARY_PID_INDEX, ALLOWABLE_ERROR);
     }
     
     @Override

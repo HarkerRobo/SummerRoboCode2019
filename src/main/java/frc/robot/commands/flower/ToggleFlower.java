@@ -3,6 +3,7 @@ package frc.robot.commands.flower;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.HatchFlower;
+import harkerrobolib.util.Pneumatics;
 
 public class ToggleFlower extends InstantCommand {
    
@@ -13,10 +14,6 @@ public class ToggleFlower extends InstantCommand {
     @Override
     public void initialize() {
         Value value = HatchFlower.getInstance().getSolenoid().get();
-
-        if (value == Value.kForward)
-            HatchFlower.getInstance().getSolenoid().set(Value.kReverse);
-        else
-            HatchFlower.getInstance().getSolenoid().set(Value.kForward);
+        HatchFlower.getInstance().getSolenoid().set(Pneumatics.switchSolenoidValue(value));
     }
 }

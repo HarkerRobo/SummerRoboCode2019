@@ -3,6 +3,7 @@ package frc.robot.commands.arm;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.Arm;
+import harkerrobolib.util.Pneumatics;
 
 public class ToggleArm extends InstantCommand {
    
@@ -12,12 +13,7 @@ public class ToggleArm extends InstantCommand {
    
     @Override
     public void initialize() {
-        System.out.println("ToggleArm Initialized");
         Value value = Arm.getInstance().getSolenoid().get();
-
-        if (value == Value.kForward)
-            Arm.getInstance().getSolenoid().set(Value.kReverse);
-        else
-            Arm.getInstance().getSolenoid().set(Value.kForward);
+        Arm.getInstance().getSolenoid().set(Pneumatics.switchSolenoidValue(value));
     }
 }

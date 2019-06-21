@@ -3,6 +3,7 @@ package frc.robot.commands.extender;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import frc.robot.subsystems.HatchExtender;
+import harkerrobolib.util.Pneumatics;
 
 public class ToggleExtender extends InstantCommand {
    
@@ -13,10 +14,6 @@ public class ToggleExtender extends InstantCommand {
     @Override
     public void initialize() {
         Value value = HatchExtender.getInstance().getSolenoid().get();
-
-        if (value == Value.kForward)
-            HatchExtender.getInstance().getSolenoid().set(Value.kReverse);
-        else
-            HatchExtender.getInstance().getSolenoid().set(Value.kForward);
+        HatchExtender.getInstance().getSolenoid().set(Pneumatics.switchSolenoidValue(value));
     }
 }

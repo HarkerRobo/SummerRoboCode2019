@@ -36,7 +36,7 @@ public class Drivetrain extends HSDrivetrain {
     public static final double kA = 0;
 
     //Velocity PID Constants
-    private static final int VELOCITY_SLOT = 0;
+    public static final int VELOCITY_SLOT = 0;
     private static final double VELOCITY_LEFT_kF = 0.23;
     private static final double VELOCITY_LEFT_kP = 0.75;
     private static final double VELOCITY_LEFT_kI = 0.001;
@@ -48,7 +48,7 @@ public class Drivetrain extends HSDrivetrain {
     private static final double VELOCITY_RAMP_RATE = 0.2;
 
     //Position PID Constants
-    private static final int POSITION_SLOT = 1;
+    public static final int POSITION_SLOT = 1;
     private static final double POSITION_LEFT_kP = 0.3;
     private static final double POSITION_LEFT_kI = 0.001;
     private static final double POSITION_LEFT_kD = 60;
@@ -134,6 +134,8 @@ public class Drivetrain extends HSDrivetrain {
         getRightMaster().config_kD(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kD);
 
         applyToMasters((talon) -> talon.selectProfileSlot(MOTION_PROF_SLOT, RobotMap.PRIMARY_PID_INDEX));
+
+        applyToMasters((talon) -> talon.configClosedloopRamp(MOTION_PROF_RAMP_RATE));
 
         applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
     }
