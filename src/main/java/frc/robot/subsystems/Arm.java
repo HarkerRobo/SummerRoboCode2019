@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -20,17 +19,17 @@ public class Arm extends Subsystem{
         rollers = new VictorSPX(RobotMap.CAN_IDS.BALL_INTAKE_MASTER_VICTOR);
     }
 
+    @Override
+    protected void initDefaultCommand() {
+        setDefaultCommand(new SpinBallIntake());
+    }
+
     public DoubleSolenoid getSolenoid() {
         return solenoid;
     }
 
     public VictorSPX getRollers() {
         return rollers;
-    }
-
-    @Override
-    protected void initDefaultCommand() {
-        setDefaultCommand(new SpinBallIntake());
     }
 
     public static Arm getInstance()

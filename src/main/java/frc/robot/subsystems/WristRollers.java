@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.SpinWristRollers;
 
-public class WristRollers extends Subsystem{
+public class WristRollers extends Subsystem {
     
     private static WristRollers instance;
     

@@ -1,6 +1,6 @@
 package frc.robot;
 
-import frc.robot.auton.Path;
+import frc.robot.auton.StraightLinePath;
 import frc.robot.commands.ToggleArm;
 import frc.robot.commands.ToggleExtender;
 import frc.robot.commands.ToggleFlower;
@@ -24,6 +24,13 @@ public class OI {
         operatorGamepad = new XboxGamepad(OPERATOR_PORT);
     }
 
+    public void initBindings() {
+        driverGamepad.getButtonA().whenPressed(new ToggleArm());
+        driverGamepad.getButtonB().whenPressed(new ToggleFlower());
+        driverGamepad.getButtonX().whenPressed(new ToggleExtender());
+        driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.leftTrajectory, StraightLinePath.rightTrajectory, 0.01));
+    }
+
     public XboxGamepad getDriverGamepad() {
         return driverGamepad;
     }
@@ -32,19 +39,10 @@ public class OI {
         return operatorGamepad;
     }
 
-    public void initBindings() {
-        driverGamepad.getButtonA().whenPressed(new ToggleArm());
-        driverGamepad.getButtonB().whenPressed(new ToggleFlower());
-        driverGamepad.getButtonX().whenPressed(new ToggleExtender());
-
-        driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(Path.straightLineLeft, Path.straightLineRight, 0.01));
-    }
-
     public static OI getInstance() {
         if (instance == null) {
            instance = new OI();
         }
-
         return instance;
     }
 }

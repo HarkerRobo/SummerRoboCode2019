@@ -5,8 +5,8 @@ package frc.robot.auton;
  * 
  * @since June 19, 2019
  */
-public class Path {
-    public static double[][] straightLineLeft = new double[][] {
+public class StraightLinePath {
+    public static double[][] leftTrajectory = new double[][] {
         {0,0,0,0},
         {0.0003,0.0297,2.9167,0},
         {0.0011,0.0763,4.5833,0},
@@ -209,7 +209,7 @@ public class Path {
         {4.9997,0.073,-5.1033,0}
     };
 
-    public static double[][] straightLineRight = new double[][] {
+    public static double[][] rightTrajectory = new double[][] {
         {0,0,0,0},
         {0.0003,0.0297,2.9167,0},
         {0.0011,0.0763,4.5833,0},
