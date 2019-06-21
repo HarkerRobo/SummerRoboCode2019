@@ -1,9 +1,9 @@
 package frc.robot;
 
 import frc.robot.auton.StraightLinePath;
-import frc.robot.commands.ToggleArm;
-import frc.robot.commands.ToggleExtender;
-import frc.robot.commands.ToggleFlower;
+import frc.robot.commands.arm.ToggleArm;
+import frc.robot.commands.extender.ToggleExtender;
+import frc.robot.commands.flower.ToggleFlower;
 import frc.robot.commands.drivetrain.DriveWithMotionProfile;
 import harkerrobolib.wrappers.XboxGamepad;
 

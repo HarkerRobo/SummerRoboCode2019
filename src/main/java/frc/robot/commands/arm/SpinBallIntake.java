@@ -1,17 +1,18 @@
-package frc.robot.commands;
+package frc.robot.commands.arm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.subsystems.WristRollers;
+import frc.robot.subsystems.Arm;
 
-public class SpinWristRollers extends Command {
-    
+public class SpinBallIntake extends Command {
+
     private static final double SPEED_MULTIPLIER = 0.5;
 
-    public SpinWristRollers() {
-        requires(WristRollers.getInstance());
+    public SpinBallIntake() {
+        requires(Arm.getInstance());
     }
 
     @Override
@@ -21,7 +22,9 @@ public class SpinWristRollers extends Command {
 
         double output = Math.abs(leftTrigger) > rightTrigger ? leftTrigger : rightTrigger;
 
-        WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, output * SPEED_MULTIPLIER);
+        Arm.getInstance().getRollers().set(ControlMode.PercentOutput, SPEED_MULTIPLIER * output);
+
+        SmartDashboard.putNumber("Arm Roller", Arm.getInstance().getRollers().getMotorOutputPercent());
     }
 
     @Override
