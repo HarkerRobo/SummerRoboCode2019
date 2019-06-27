@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import frc.robot.RobotMap;
@@ -31,9 +32,13 @@ public class Drivetrain extends HSDrivetrain {
     private static final boolean RIGHT_MASTER_INVERTED = false;
     private static final boolean RIGHT_VICTOR_INVERTED = false;
 
+    public static final double FREE_VELOCITY = 18;
+
     //Arbitrary Feed Forward Constants
-    public static final double kS = 0.05;
-    public static final double kF = 0;//1 / Drivetrain.MAX_FORWARD_VELOCITY;
+    public static final double leftkS = 0.1;
+    public static final double rightkS = 0.09;
+    public static final double leftkF = 1/(0.8 * 10/12 * FREE_VELOCITY);
+    public static final double rightkF = 1/(0.71 * 10/12 * FREE_VELOCITY);
     public static final double kA = 0;
 
     //Velocity PID Constants
@@ -46,7 +51,7 @@ public class Drivetrain extends HSDrivetrain {
     private static final double VELOCITY_RIGHT_kP = 0.75;
     private static final double VELOCITY_RIGHT_kI = 0;
     private static final double VELOCITY_RIGHT_kD = 0;
-    private static final double VELOCITY_RAMP_RATE = 0.2;
+    public static final double VELOCITY_RAMP_RATE = 0.2;
 
     //Position PID Constants
     public static final int POSITION_SLOT = 1;
@@ -57,7 +62,7 @@ public class Drivetrain extends HSDrivetrain {
     private static final double POSITION_RIGHT_kI = 0;
     private static final double POSITION_RIGHT_kD = 60;
     private static final int POSITION_IZONE = 300;
-    private static final double POSITION_RAMP_RATE = 0.2;
+    public static final double POSITION_RAMP_RATE = 0.2;
 
     //Motion Profiling Constants
     public static final int MOTION_PROF_SLOT = 2;
@@ -67,7 +72,9 @@ public class Drivetrain extends HSDrivetrain {
     private static final double MOTION_PROF_RIGHT_kP = 0;//0.3;
     private static final double MOTION_PROF_RIGHT_kI = 0;
     private static final double MOTION_PROF_RIGHT_kD = 0;//60;
-    private static final double MOTION_PROF_RAMP_RATE = 0.2;//0;
+    public static final double MOTION_PROF_RAMP_RATE = 0;
+
+    private static final int MOTION_FRAME_PERIOD = 10;
 
     public static final double MAX_FORWARD_VELOCITY = 14;
     public static final double MAX_TURN_VELOCITY = 8;
@@ -75,6 +82,8 @@ public class Drivetrain extends HSDrivetrain {
     private Drivetrain() {
         super(new HSTalon(RobotMap.CAN_IDS.DT_LEFT_MASTER), new HSTalon(RobotMap.CAN_IDS.DT_RIGHT_MASTER),
                 new VictorSPX(RobotMap.CAN_IDS.DT_LEFT_FOLLOWER), new VictorSPX(RobotMap.CAN_IDS.DT_RIGHT_FOLLOWER));
+
+         talonInit();
     }
 
     public void talonInit() {
@@ -83,6 +92,11 @@ public class Drivetrain extends HSDrivetrain {
         setNeutralMode(NeutralMode.Brake);
         configBothFeedbackSensors(FeedbackDevice.CTRE_MagEncoder_Relative, RobotMap.PRIMARY_PID_INDEX);
         configVoltageComp();
+        applyToMasters((talon) -> talon.setStatusFramePeriod(StatusFrameEnhanced.Status_13_Base_PIDF0, MOTION_FRAME_PERIOD));
+
+        setupVelocityPID();
+        setupPositionPID();
+        setupMotionProfilePID();
 
         Conversions.setWheelDiameter(WHEEL_DIAMETER);
     }
@@ -101,10 +115,6 @@ public class Drivetrain extends HSDrivetrain {
         getRightMaster().config_kP(VELOCITY_SLOT, VELOCITY_RIGHT_kP);
         getRightMaster().config_kI(VELOCITY_SLOT, VELOCITY_RIGHT_kI);
         getRightMaster().config_kD(VELOCITY_SLOT, VELOCITY_RIGHT_kD);
-        
-        applyToMasters((talon) -> talon.selectProfileSlot(VELOCITY_SLOT, RobotMap.PRIMARY_PID_INDEX));
-
-        applyToMasters((talon) -> talon.configClosedloopRamp(VELOCITY_RAMP_RATE));
     }
 
     public void setupPositionPID() {
@@ -117,12 +127,6 @@ public class Drivetrain extends HSDrivetrain {
         getRightMaster().config_kD(POSITION_SLOT, POSITION_RIGHT_kD);
 
         applyToMasters((talon) -> talon.config_IntegralZone(POSITION_SLOT, POSITION_IZONE));
-
-        applyToMasters((talon) -> talon.selectProfileSlot(POSITION_SLOT, RobotMap.PRIMARY_PID_INDEX));
-    
-        applyToMasters((talon) -> talon.configClosedloopRamp(POSITION_RAMP_RATE));
-
-        applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
     }
 
     public void setupMotionProfilePID() {
@@ -133,12 +137,6 @@ public class Drivetrain extends HSDrivetrain {
         getRightMaster().config_kP(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kP);
         getRightMaster().config_kI(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kI);
         getRightMaster().config_kD(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kD);
-
-        applyToMasters((talon) -> talon.selectProfileSlot(MOTION_PROF_SLOT, RobotMap.PRIMARY_PID_INDEX));
-
-        applyToMasters((talon) -> talon.configClosedloopRamp(MOTION_PROF_RAMP_RATE));
-
-        applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
     }
 
     public void configVoltageComp() {

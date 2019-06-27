@@ -20,8 +20,8 @@ public class RobotMap {
         public static final int DT_RIGHT_FOLLOWER = 1;
         
         public static final int EL_MASTER = 2; 
-        public static final int EL_VICTOR_LEFT_FRONT = 3; 
-        public static final int EL_VICTOR_LEFT_BACK = 5; 
+        public static final int EL_VICTOR_LEFT = 3; 
+        public static final int EL_VICTOR_RIGHT = 5; 
         public static final int EL_TALON_FOLLOWER = 3;
 
         public static final int WRIST_MASTER = 5; 

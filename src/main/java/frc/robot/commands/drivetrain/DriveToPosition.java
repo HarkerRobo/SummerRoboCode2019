@@ -29,7 +29,9 @@ public class DriveToPosition extends Command
     }
 
     protected void initialize() {
-        Drivetrain.getInstance().setupPositionPID();
+        Drivetrain.getInstance().applyToMasters((talon) -> talon.selectProfileSlot(Drivetrain.POSITION_SLOT, RobotMap.PRIMARY_PID_INDEX));
+        Drivetrain.getInstance().applyToMasters((talon) -> talon.configClosedloopRamp(Drivetrain.POSITION_RAMP_RATE));
+        Drivetrain.getInstance().applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
 
         Drivetrain.getInstance().applyToMasters((talon) -> talon.set(ControlMode.Position, distance));
     }

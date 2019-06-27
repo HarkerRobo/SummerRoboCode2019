@@ -34,7 +34,7 @@ public class OI {
         driverGamepad.getButtonA().whenPressed(new ToggleArm());
         driverGamepad.getButtonB().whenPressed(new ToggleFlower());
         driverGamepad.getButtonX().whenPressed(new ToggleExtender());
-        driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.leftTrajectory, StraightLinePath.rightTrajectory, 0.01));
+        //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.leftTrajectory, StraightLinePath.rightTrajectory, 0.01));
     }
 
     public XboxGamepad getDriverGamepad() {

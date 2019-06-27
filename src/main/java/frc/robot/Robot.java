@@ -11,10 +11,13 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
+import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristRollers;
 
 /**
@@ -38,7 +41,9 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         //Initialize Subsystems
-        Drivetrain.getInstance().talonInit();
+        Drivetrain.getInstance();
+        Elevator.getInstance();
+        Wrist.getInstance();
         Arm.getInstance();
         HatchExtender.getInstance();
         HatchFlower.getInstance();
