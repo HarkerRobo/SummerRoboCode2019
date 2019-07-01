@@ -14,7 +14,7 @@ public class Elevator extends Subsystem {
     private static Elevator instance;
 
     public static final double GRAVITY_FF = 0.09;
-
+    public static final int ALLOWABLE_ERROR = 0;
     private HSTalon master;
     private HSTalon talonFollower;
     private VictorSPX victorLeft;
