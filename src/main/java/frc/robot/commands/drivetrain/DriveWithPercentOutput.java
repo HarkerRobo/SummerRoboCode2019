@@ -30,14 +30,9 @@ public class DriveWithPercentOutput extends IndefiniteCommand {
         
         Drivetrain.getInstance().arcadeDrivePercentOutput(speed, turn);
     }
-    
-    @Override
-    public void end() {
-        Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
-    }
 
     @Override
     protected void interrupted() {
-        end();
+        Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
     }
 }

@@ -44,14 +44,9 @@ public class DriveWithVelocity extends IndefiniteCommand {
         Drivetrain.getInstance().getLeftMaster().set(ControlMode.Velocity, speed + turn);
         Drivetrain.getInstance().getRightMaster().set(ControlMode.Velocity, speed - turn);
     }
-    
-    @Override
-    public void end() {
-        Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
-    }
 
     @Override
     protected void interrupted() {
-        end();
+        Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
     }
 }

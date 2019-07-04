@@ -5,6 +5,8 @@ import frc.robot.commands.arm.ToggleArm;
 import frc.robot.commands.extender.ToggleExtender;
 import frc.robot.commands.flower.ToggleFlower;
 import frc.robot.commands.drivetrain.DriveWithMotionProfile;
+import frc.robot.commands.elevator.MoveElevatorMotionMagic;
+import frc.robot.commands.elevator.ZeroElevator;
 import harkerrobolib.wrappers.XboxGamepad;
 
 /**
@@ -28,12 +30,15 @@ public class OI {
     private OI() {
         driverGamepad = new XboxGamepad(DRIVER_PORT);
         operatorGamepad = new XboxGamepad(OPERATOR_PORT);
+
+        initBindings();
     }
 
     public void initBindings() {
-        driverGamepad.getButtonA().whenPressed(new ToggleArm());
-        driverGamepad.getButtonB().whenPressed(new ToggleFlower());
+        driverGamepad.getButtonA().whenPressed(new ZeroElevator());
+        driverGamepad.getButtonB().whenPressed(new MoveElevatorMotionMagic(15000, 3));
         driverGamepad.getButtonX().whenPressed(new ToggleExtender());
+        driverGamepad.getButtonY().whenPressed(new MoveElevatorMotionMagic(2000, 3));
         //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.leftTrajectory, StraightLinePath.rightTrajectory, 0.01));
     }
 

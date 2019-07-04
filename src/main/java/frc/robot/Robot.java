@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
         WristRollers.getInstance();
 
         //Initialize OI and button bindings
-        OI.getInstance().initBindings();
+        OI.getInstance();
     }
 
     /**
@@ -63,6 +63,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putString("Elevator Command", Elevator.getInstance().getCurrentCommandName());
+        SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
     }
 
     /**
