@@ -86,7 +86,7 @@ public class Drivetrain extends HSDrivetrain {
          talonInit();
     }
 
-    public void talonInit() {
+    private void talonInit() {
         resetMasters();
         invertTalons(LEFT_MASTER_INVERTED, RIGHT_MASTER_INVERTED, LEFT_VICTOR_INVERTED, RIGHT_VICTOR_INVERTED);
         setNeutralMode(NeutralMode.Brake);
@@ -105,7 +105,7 @@ public class Drivetrain extends HSDrivetrain {
         setDefaultCommand(new DriveWithVelocity());
     }
 
-    public void setupVelocityPID() {
+    private void setupVelocityPID() {
         getLeftMaster().config_kF(VELOCITY_SLOT, VELOCITY_LEFT_kF);
         getLeftMaster().config_kP(VELOCITY_SLOT, VELOCITY_LEFT_kP);
         getLeftMaster().config_kI(VELOCITY_SLOT, VELOCITY_LEFT_kI);
@@ -117,7 +117,7 @@ public class Drivetrain extends HSDrivetrain {
         getRightMaster().config_kD(VELOCITY_SLOT, VELOCITY_RIGHT_kD);
     }
 
-    public void setupPositionPID() {
+    private void setupPositionPID() {
         getLeftMaster().config_kP(POSITION_SLOT, POSITION_LEFT_kP);
         getLeftMaster().config_kI(POSITION_SLOT, POSITION_LEFT_kI);
         getLeftMaster().config_kD(POSITION_SLOT, POSITION_LEFT_kD);
@@ -129,7 +129,7 @@ public class Drivetrain extends HSDrivetrain {
         applyToMasters((talon) -> talon.config_IntegralZone(POSITION_SLOT, POSITION_IZONE));
     }
 
-    public void setupMotionProfilePID() {
+    private void setupMotionProfilePID() {
         getLeftMaster().config_kP(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kP);
         getLeftMaster().config_kI(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kI);
         getLeftMaster().config_kD(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kD);
@@ -139,7 +139,7 @@ public class Drivetrain extends HSDrivetrain {
         getRightMaster().config_kD(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kD);
     }
 
-    public void configVoltageComp() {
+    private void configVoltageComp() {
         applyToMasters((talon) -> talon.configVoltageCompSaturation(COMPENSATION_VOLTAGE));
         applyToMasters((talon) -> talon.enableVoltageCompensation(true));
     }

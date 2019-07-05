@@ -19,6 +19,7 @@ public class Elevator extends Subsystem {
     public static final int ALLOWABLE_ERROR = 200;
     private static final int LOWER_SOFT_LIMIT = 500;
     private static final int UPPER_SOFT_LIMIT = 20000;
+    private static final double COMPENSATION_VOLTAGE = 10;
 
     private static final boolean SENSOR_PHASE = true;
     private static final boolean MASTER_INVERTED = true;
@@ -58,6 +59,7 @@ public class Elevator extends Subsystem {
         followMasters();
         invert();
         configSoftLimits();
+        configVoltageComp();
         master.setNeutralMode(NeutralMode.Brake);
         master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
         master.setSensorPhase(SENSOR_PHASE);
@@ -83,6 +85,11 @@ public class Elevator extends Subsystem {
         master.configReverseSoftLimitThreshold(LOWER_SOFT_LIMIT);
         master.configForwardSoftLimitEnable(true);
         master.configReverseSoftLimitEnable(true);
+    }
+
+    private void configVoltageComp() {
+        master.configVoltageCompSaturation(COMPENSATION_VOLTAGE);
+        master.enableVoltageCompensation(true);
     }
 
     private void setupMotionMagic() {
