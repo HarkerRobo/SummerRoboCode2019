@@ -55,7 +55,7 @@ public class Elevator extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new MoveElevatorPercentOutput());
+        //setDefaultCommand(new MoveElevatorPercentOutput());
     }
 
     public void talonInit() {
