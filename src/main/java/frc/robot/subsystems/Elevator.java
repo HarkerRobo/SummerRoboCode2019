@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import frc.robot.commands.elevator.MoveElevatorPercentOutput;
@@ -13,13 +14,17 @@ public class Elevator extends Subsystem {
 
     private static Elevator instance;
 
-    public static final double kS = 0.1;
+    public static final double kS = 0.05;
+    public static final double kA = 0.05;
 
-    public static final double GRAVITY_FF = 0.09;
+    public static final double GRAVITY_FF = 0.11;
     public static final int ALLOWABLE_ERROR = 200;
-    private static final int LOWER_SOFT_LIMIT = 500;
-    private static final int UPPER_SOFT_LIMIT = 20000;
+    public static final int LOWER_SOFT_LIMIT = 500;
+    public static final int UPPER_SOFT_LIMIT = 20000;
     private static final double COMPENSATION_VOLTAGE = 10;
+
+    public static final int SAFE_UPPER_LIMIT = 19000;
+    public static final int SAFE_LOWER_LIMIT = 1000;
 
     private static final boolean SENSOR_PHASE = true;
     private static final boolean MASTER_INVERTED = true;
@@ -28,12 +33,12 @@ public class Elevator extends Subsystem {
     private static final boolean FOLLOWER_TALON_INVERTED = true;
 
     public static final int MOTION_MAGIC_SLOT = 0;
-    private static final double MOTION_MAGIC_KF = 0.21;
-    private static final double MOTION_MAGIC_KP = 0;
-    private static final double MOTION_MAGIC_KI = 0;
-    private static final double MOTION_MAGIC_KD = 0;
-    private static final int CRUISE_VELOCITY = 2000; //Encoder Units per 100ms
-    private static final int MAX_ACCELERATION = 4000; //Encoder Units per 100ms per s
+    public static final double MOTION_MAGIC_KF = 0.21;
+    public static final double MOTION_MAGIC_KP = 1;
+    public static final double MOTION_MAGIC_KI = 0;
+    public static final double MOTION_MAGIC_KD = 10;
+    public static final int CRUISE_VELOCITY = 2000; //Encoder Units per 100ms
+    public static final int MAX_ACCELERATION = 4000; //Encoder Units per 100ms per s
 
     private HSTalon master;
     private HSTalon talonFollower;
@@ -100,6 +105,7 @@ public class Elevator extends Subsystem {
 
         master.configMotionCruiseVelocity(CRUISE_VELOCITY);
         master.configMotionAcceleration(MAX_ACCELERATION);
+        master.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10);
     }
 
     public HSTalon getMaster() {

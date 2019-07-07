@@ -18,18 +18,35 @@ import harkerrobolib.util.MathUtil;
  */
 public class MoveElevatorPercentOutput extends IndefiniteCommand {
 
-    private static final double SPEED_MULTIPLIER = 0.4; //Remember to change CURRENT_SPIKE_MAGNITUDE in ZeroElevator
+    private static final double SPEED_MULTIPLIER = 0.3;
+    private static final double LAG_COMPENSATION = 0.5;
+    private int lastSetpoint;
 
     public MoveElevatorPercentOutput() {
         requires(Elevator.getInstance());
     }
+    
+    @Override
+    protected void initialize() {
+        lastSetpoint = Elevator.getInstance().getMaster().getSelectedSensorPosition();
+    }
 
-   @Override
+    @Override
     protected void execute() {
         double output = SPEED_MULTIPLIER * MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightY(), OI.XBOX_JOYSTICK_DEADBAND);
-        
-        SmartDashboard.putNumber("Current", Elevator.getInstance().getMaster().getOutputCurrent());
-        Elevator.getInstance().getMaster().set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF);
+        SmartDashboard.putNumber("El Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
+
+        if (Math.abs(output) > 0) {
+            Elevator.getInstance().getMaster().set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Elevator.kS);
+            lastSetpoint = Elevator.getInstance().getMaster().getSelectedSensorPosition() + (int)(Elevator.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
+        }
+        else {
+            if (lastSetpoint > Elevator.UPPER_SOFT_LIMIT)
+                lastSetpoint = Elevator.SAFE_UPPER_LIMIT;
+            // else if (lastSetpoint < Elevator.LOWER_SOFT_LIMIT)
+            //     lastSetpoint = Elevator.SAFE_LOWER_LIMIT;
+            Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, lastSetpoint, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Elevator.kS);
+        }
     }
 
     @Override

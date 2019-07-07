@@ -20,25 +20,41 @@ import frc.robot.subsystems.Elevator;
 public class MoveElevatorMotionMagic extends TimedCommand {
 
     private int setpoint;
+    private double kF, kP, kI, kD;
+    private double prevVel;
 
     public MoveElevatorMotionMagic(int setpoint, double timeout) {
         super(timeout);
         this.setpoint = setpoint;
+        prevVel = 0;
         requires(Elevator.getInstance());
     }
     
     @Override
     protected void initialize() {
+        kF = SmartDashboard.getNumber("kF", Elevator.MOTION_MAGIC_KF);
+        kP = SmartDashboard.getNumber("kP", Elevator.MOTION_MAGIC_KP);
+        kI = SmartDashboard.getNumber("kI", Elevator.MOTION_MAGIC_KI);
+        kD = SmartDashboard.getNumber("kD", Elevator.MOTION_MAGIC_KD);
+        
+        Elevator.getInstance().getMaster().config_kF(Elevator.MOTION_MAGIC_SLOT, kF);
+        Elevator.getInstance().getMaster().config_kP(Elevator.MOTION_MAGIC_SLOT, kP);
+        Elevator.getInstance().getMaster().config_kI(Elevator.MOTION_MAGIC_SLOT, kI);
+        Elevator.getInstance().getMaster().config_kD(Elevator.MOTION_MAGIC_SLOT, kD);
+
         Elevator.getInstance().getMaster().selectProfileSlot(Elevator.MOTION_MAGIC_SLOT, RobotMap.PRIMARY_PID_INDEX);
     }
 
     @Override
     protected void execute() {
+        double vel = Elevator.getInstance().getMaster().getActiveTrajectoryVelocity();
+        double accelSign = Math.signum(vel - prevVel);
         Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, 
-                                                DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Elevator.kS * Math.signum(Elevator.getInstance().getMaster().getClosedLoopError()));
-
-        SmartDashboard.putNumber("Error", Elevator.getInstance().getMaster().getClosedLoopError(RobotMap.PRIMARY_PID_INDEX));
-        SmartDashboard.putNumber("Output", Elevator.getInstance().getMaster().getMotorOutputPercent());
+                                                DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + 
+                                                                                 Elevator.kS * Math.signum(Elevator.getInstance().getMaster().getClosedLoopError()) + 
+                                                                                 Elevator.kA * accelSign);
+        SmartDashboard.putNumber("Acceleration", accelSign);
+        prevVel = vel;
     }
 
     @Override
@@ -48,7 +64,8 @@ public class MoveElevatorMotionMagic extends TimedCommand {
 
     @Override
     protected void end() {
-        Elevator.getInstance().getMaster().set(ControlMode.Disabled, 0, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF);
+        Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, 
+                                                DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF);
     }
 
     @Override

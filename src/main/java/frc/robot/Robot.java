@@ -51,6 +51,11 @@ public class Robot extends TimedRobot {
 
         //Initialize OI and button bindings
         OI.getInstance();
+
+        SmartDashboard.putNumber("kF", Elevator.MOTION_MAGIC_KF);
+        SmartDashboard.putNumber("kP", Elevator.MOTION_MAGIC_KP);
+        SmartDashboard.putNumber("kI", Elevator.MOTION_MAGIC_KI);
+        SmartDashboard.putNumber("kD", Elevator.MOTION_MAGIC_KD);
     }
 
     /**
@@ -64,7 +69,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         SmartDashboard.putString("Elevator Command", Elevator.getInstance().getCurrentCommandName());
-        SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
+        SmartDashboard.putNumber("Error", Elevator.getInstance().getMaster().getClosedLoopError(RobotMap.PRIMARY_PID_INDEX));
     }
 
     /**

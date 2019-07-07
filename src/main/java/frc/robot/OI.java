@@ -37,7 +37,6 @@ public class OI {
     public void initBindings() {
         driverGamepad.getButtonA().whenPressed(new ZeroElevator());
         driverGamepad.getButtonB().whenPressed(new MoveElevatorMotionMagic(15000, 3));
-        driverGamepad.getButtonX().whenPressed(new ToggleExtender());
         driverGamepad.getButtonY().whenPressed(new MoveElevatorMotionMagic(2000, 3));
         //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.leftTrajectory, StraightLinePath.rightTrajectory, 0.01));
     }
