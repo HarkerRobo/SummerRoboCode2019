@@ -7,6 +7,11 @@ import frc.robot.subsystems.Wrist;
 import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
 
+/**
+ * Moves the Wrist Manually using the Driver's Right Joystick
+ * 
+ * @since 6/26/19
+ */
 public class MoveWristManual extends IndefiniteCommand {
 
     public MoveWristManual() {

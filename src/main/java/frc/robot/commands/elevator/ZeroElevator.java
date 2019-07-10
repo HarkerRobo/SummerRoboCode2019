@@ -9,6 +9,14 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Elevator;
 
+/**
+ * Moves the Elevator to the bottom at a safe speed and then zeros the master's encoder
+ * 
+ * @author Jatin Kohli
+ * @author Angela Jia
+ * 
+ * @since 7/6/19
+ */
 public class ZeroElevator extends TimedCommand {
     
     private static final double DOWN_PERCENT_OUTPUT = -0.15;
