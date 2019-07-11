@@ -2,6 +2,7 @@ package frc.robot.commands.wrist;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.Wrist;
 import harkerrobolib.commands.IndefiniteCommand;
@@ -14,15 +15,18 @@ import harkerrobolib.util.MathUtil;
  */
 public class MoveWristManual extends IndefiniteCommand {
 
+    private double SPEED_MULTIPLIER = 0.3;
+
     public MoveWristManual() {
         requires(Wrist.getInstance());
     }
 
     @Override
     protected void execute() {
-        double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightY(), OI.XBOX_JOYSTICK_DEADBAND);
-
-        Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, speed);
+        double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.XBOX_JOYSTICK_DEADBAND);
+        SmartDashboard.putNumber("wrist pos", Wrist.getInstance().getMaster().getSelectedSensorPosition());
+        SmartDashboard.putNumber("wrist degrees", Wrist.getInstance().convertTicksToDegrees());
+        Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*speed);
     }
 
     @Override

@@ -9,6 +9,15 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import harkerrobolib.wrappers.HSTalon;
 
+/**
+ * The Elevator Subsystem, which includes one Master Talon, one follower Talon, and two follower Victors
+ * 
+ * @author Jatin Kohli
+ * @author Angela Jia
+ * @author Chirag Kaushik
+ * 
+ * @since 6/26/19
+ */
 public class Elevator extends Subsystem {
 
     private static Elevator instance;

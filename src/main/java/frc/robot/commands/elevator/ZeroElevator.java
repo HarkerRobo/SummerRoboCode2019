@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Elevator;
@@ -19,6 +18,7 @@ import frc.robot.subsystems.Elevator;
  */
 public class ZeroElevator extends TimedCommand {
     
+    private static final double TIMEOUT = 3.0;
     private static final double DOWN_PERCENT_OUTPUT = -0.15;
     private static final double CURRENT_SPIKE_DIFF = 0.4;
     private static final double INVALID_TIME = 0.06;
