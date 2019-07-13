@@ -1,12 +1,6 @@
 package frc.robot;
 
-import frc.robot.auton.StraightLinePath;
-import frc.robot.commands.arm.ToggleArm;
-import frc.robot.commands.extender.ToggleExtender;
-import frc.robot.commands.flower.ToggleFlower;
 import frc.robot.commands.wrist.ZeroWrist;
-import frc.robot.commands.drivetrain.DriveWithMotionProfile;
-import frc.robot.commands.elevator.MoveElevatorMotionMagic;
 import frc.robot.commands.elevator.ZeroElevator;
 import harkerrobolib.wrappers.XboxGamepad;
 
@@ -37,8 +31,6 @@ public class OI {
 
     public void initBindings() {
         driverGamepad.getButtonA().whenPressed(new ZeroElevator());
-        driverGamepad.getButtonB().whenPressed(new MoveElevatorMotionMagic(15000, 3));
-        driverGamepad.getButtonY().whenPressed(new MoveElevatorMotionMagic(2000, 3));
         driverGamepad.getButtonX().whenPressed(new ZeroWrist());
         //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.leftTrajectory, StraightLinePath.rightTrajectory, 0.01));
     }

@@ -1,6 +1,7 @@
 package frc.robot.commands.wrist;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -24,18 +25,11 @@ public class MoveWristManual extends IndefiniteCommand {
     @Override
     protected void execute() {
         double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.XBOX_JOYSTICK_DEADBAND);
-        SmartDashboard.putNumber("wrist pos", Wrist.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("wrist degrees", Wrist.getInstance().convertTicksToDegrees());
-        Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*speed);
-    }
-
-    @Override
-    protected void end() {
-        Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
+        Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*speed, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
     }
 
     @Override
     protected void interrupted() {
-        end();
+        Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
     }
 }

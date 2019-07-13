@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
@@ -35,6 +36,18 @@ public class Wrist extends Subsystem {
     public static final int HORIZONTAL_FRONT = 0;
     public static final int HORIZONTAL_BACK = 2035;
 
+    public static final double HORIZONTAL_FORWARD_GRAV_FF = 0; //Gravity FF required to keep the wrist level at 0 degrees
+    public static final double kS = 0;
+    public static final double kA = 0;
+
+    public static final int MOTION_MAGIC_SLOT = 0;
+    public static final double MOTION_MAGIC_KF = 0;
+    public static final double MOTION_MAGIC_KP = 0;
+    public static final double MOTION_MAGIC_KI = 0;
+    public static final double MOTION_MAGIC_KD = 0;
+    public static final int CRUISE_VELOCITY = 0; //Encoder Units per 100ms
+    public static final int MAX_ACCELERATION = 0; //Encoder Units per 100ms per s
+
     private Wrist() {
         master = new TalonSRX(RobotMap.CAN_IDS.WRIST_MASTER);
         follower = new VictorSPX(RobotMap.CAN_IDS.WRIST_FOLLOWER);
@@ -50,6 +63,7 @@ public class Wrist extends Subsystem {
         master.setSensorPhase(SENSOR_PHASE);
 
         configVoltageComp();
+        setupMotionMagic();
     }
 
     @Override
@@ -57,13 +71,28 @@ public class Wrist extends Subsystem {
         setDefaultCommand(new MoveWristManual());
     }
 
+    private void setupMotionMagic() {
+        master.config_kF(MOTION_MAGIC_SLOT, MOTION_MAGIC_KF);
+        master.config_kP(MOTION_MAGIC_SLOT, MOTION_MAGIC_KP);
+        master.config_kI(MOTION_MAGIC_SLOT, MOTION_MAGIC_KI);
+        master.config_kD(MOTION_MAGIC_SLOT, MOTION_MAGIC_KD);
+
+        master.configMotionCruiseVelocity(CRUISE_VELOCITY);
+        master.configMotionAcceleration(MAX_ACCELERATION);
+        master.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10);
+    }
+
     private void configVoltageComp() {
         master.configVoltageCompSaturation(COMPENSATION_VOLTAGE);
         master.enableVoltageCompensation(true);
     }
 
-    public double convertTicksToDegrees() {
+    public double convertCurrentTicksToDegrees() {
         return MathUtil.map(getMaster().getSelectedSensorPosition(), HORIZONTAL_FRONT, HORIZONTAL_BACK, 0, 180);
+    }
+
+    public double calculateGravFF() {
+        return HORIZONTAL_FORWARD_GRAV_FF * Math.cos(Math.toRadians(convertCurrentTicksToDegrees()));
     }
 
     public TalonSRX getMaster() {
