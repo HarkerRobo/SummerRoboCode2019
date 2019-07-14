@@ -25,7 +25,7 @@ public class MoveWristManual extends IndefiniteCommand {
     @Override
     protected void execute() {
         double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.XBOX_JOYSTICK_DEADBAND);
-        Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*speed, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
+        Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*speed, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(speed));
     }
 
     @Override

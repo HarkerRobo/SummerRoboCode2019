@@ -53,7 +53,8 @@ public class MoveElevatorMotionMagic extends TimedCommand {
                                                 DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + 
                                                                                  Elevator.kS * Math.signum(Elevator.getInstance().getMaster().getClosedLoopError()) + 
                                                                                  Elevator.kA * accelSign);
-        SmartDashboard.putNumber("Acceleration", accelSign);
+        SmartDashboard.putNumber("Error", Elevator.getInstance().getMaster().getClosedLoopError());
+        SmartDashboard.putNumber("Total Error", setpoint - Elevator.getInstance().getMaster().getSelectedSensorPosition());
         prevVel = vel;
     }
 

@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.wrist.MoveWristManual;
 import harkerrobolib.util.MathUtil;
@@ -36,17 +37,17 @@ public class Wrist extends Subsystem {
     public static final int HORIZONTAL_FRONT = 0;
     public static final int HORIZONTAL_BACK = 2035;
 
-    public static final double HORIZONTAL_FORWARD_GRAV_FF = 0; //Gravity FF required to keep the wrist level at 0 degrees
-    public static final double kS = 0;
-    public static final double kA = 0;
+    public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.07; //Gravity FF required to keep the wrist level at 0 degrees
+    public static final double kS = 0.03;
+    public static final double kA = 0.00036;
 
     public static final int MOTION_MAGIC_SLOT = 0;
-    public static final double MOTION_MAGIC_KF = 0;
-    public static final double MOTION_MAGIC_KP = 0;
-    public static final double MOTION_MAGIC_KI = 0;
-    public static final double MOTION_MAGIC_KD = 0;
-    public static final int CRUISE_VELOCITY = 0; //Encoder Units per 100ms
-    public static final int MAX_ACCELERATION = 0; //Encoder Units per 100ms per s
+    public static final double MOTION_MAGIC_KF = 2; //1.3
+    public static final double MOTION_MAGIC_KP = 0.8; //0.3
+    public static final double MOTION_MAGIC_KI = 0;//0.0001
+    public static final double MOTION_MAGIC_KD = 30; //20
+    public static final int CRUISE_VELOCITY = 420; //Encoder Units per 100ms
+    public static final int MAX_ACCELERATION = 640; //Encoder Units per 100ms per s
 
     private Wrist() {
         master = new TalonSRX(RobotMap.CAN_IDS.WRIST_MASTER);
@@ -57,6 +58,7 @@ public class Wrist extends Subsystem {
     private void talonInit() {
         master.configFactoryDefault();
         master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        master.setSelectedSensorPosition(FRONTMOST_POSITION);
         follower.follow(master);
         master.setInverted(TALON_INVERTED);
         follower.setInverted(VICTOR_INVERTED);

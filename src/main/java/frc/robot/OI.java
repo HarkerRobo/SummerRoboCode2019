@@ -1,6 +1,9 @@
 package frc.robot;
 
+import frc.robot.commands.wrist.MoveWristMotionMagic;
 import frc.robot.commands.wrist.ZeroWrist;
+import frc.robot.subsystems.Wrist;
+import frc.robot.commands.elevator.MoveElevatorMotionMagic;
 import frc.robot.commands.elevator.ZeroElevator;
 import harkerrobolib.wrappers.XboxGamepad;
 
@@ -32,6 +35,9 @@ public class OI {
     public void initBindings() {
         driverGamepad.getButtonA().whenPressed(new ZeroElevator());
         driverGamepad.getButtonX().whenPressed(new ZeroWrist());
+        driverGamepad.getButtonY().whenPressed(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
+        driverGamepad.getButtonB().whenPressed(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT));
+        driverGamepad.getDownDPadButton().whenPressed(new MoveElevatorMotionMagic(15000, 3));
         //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.leftTrajectory, StraightLinePath.rightTrajectory, 0.01));
     }
 
