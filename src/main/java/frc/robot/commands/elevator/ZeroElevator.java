@@ -60,11 +60,12 @@ public class ZeroElevator extends TimedCommand {
         Elevator.getInstance().getMaster().setSelectedSensorPosition(0);
         Elevator.getInstance().getMaster().configForwardSoftLimitEnable(true);
         Elevator.getInstance().getMaster().configReverseSoftLimitEnable(true);
-        System.out.println("Zero Command Ended");
     }
 
     @Override
     protected void interrupted() {
-        end();
+        Elevator.getInstance().getMaster().set(ControlMode.Disabled, 0, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF);
+        Elevator.getInstance().getMaster().configForwardSoftLimitEnable(true);
+        Elevator.getInstance().getMaster().configReverseSoftLimitEnable(true);
     }
 }
