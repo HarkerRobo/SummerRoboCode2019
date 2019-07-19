@@ -16,20 +16,39 @@ import harkerrobolib.util.MathUtil;
  */
 public class MoveWristManual extends IndefiniteCommand {
 
+    private static final double LAG_COMPENSATION = 0.7;
     private double SPEED_MULTIPLIER = 0.3;
+    double lastSetpoint;
 
     public MoveWristManual() {
         requires(Wrist.getInstance());
     }
 
     @Override
+    protected void initialize() {
+        lastSetpoint = Wrist.getInstance().getMaster().getSelectedSensorPosition();
+    }
+
+    @Override
     protected void execute() {
-        double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.XBOX_JOYSTICK_DEADBAND);
-        Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*speed, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(speed));
+        double output = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.XBOX_JOYSTICK_DEADBAND);
+        
+        if (Math.abs(output) > 0) {
+            Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*output, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(output));
+           lastSetpoint = Wrist.getInstance().getMaster().getSelectedSensorPosition() + (int)(Wrist.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
+        }
+        else {
+           if (lastSetpoint > Wrist.BACKMOST_POSITION)
+               lastSetpoint = Wrist.HORIZONTAL_BACK;
+           else if (lastSetpoint < Wrist.FRONTMOST_POSITION)
+               lastSetpoint = Wrist.HORIZONTAL_FRONT;
+           Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, lastSetpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Math.signum(output) * Wrist.kS);
+        }
     }
 
     @Override
     protected void interrupted() {
+        System.out.println("MoveWristManual Interrupted");
         Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
     }
 }

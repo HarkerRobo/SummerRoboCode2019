@@ -30,6 +30,7 @@ import frc.robot.subsystems.WristRollers;
  * 
  * @author Jatin Kohli
  * @author Chirag Kaushik
+ * @author Angela Jia
  * 
  * @since 6/14/19
  */
@@ -64,7 +65,6 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
     }
 
     /**

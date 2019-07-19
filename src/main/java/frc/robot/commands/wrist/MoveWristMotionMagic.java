@@ -3,16 +3,27 @@ package frc.robot.commands.wrist;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Wrist;
 
+/**
+ * Moves the Wrist Using the Motion Magic ControlMode
+ * 
+ * @author Jatin Kohli
+ * @author Angela Jia
+ * 
+ * @since 7/13/19
+ */
 public class MoveWristMotionMagic extends TimedCommand {
 
     private static final double TIMEOUT = 3.0;
+    private static final double INVALID_TIME = 0.06;
     private double setpoint;
     private double prevVel;
+    private double startTime;
 
     public MoveWristMotionMagic(double setpoint) {
         super(TIMEOUT);
@@ -28,6 +39,7 @@ public class MoveWristMotionMagic extends TimedCommand {
     @Override
     protected void initialize() {
         Wrist.getInstance().getMaster().selectProfileSlot(Wrist.MOTION_MAGIC_SLOT, RobotMap.PRIMARY_PID_INDEX);
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -36,26 +48,24 @@ public class MoveWristMotionMagic extends TimedCommand {
         double accelSign = Math.signum(vel - prevVel);
         double totalErrorSign = Math.signum(setpoint - Wrist.getInstance().getMaster().getSelectedSensorPosition());
         Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * totalErrorSign + Wrist.kA * accelSign * Wrist.MAX_ACCELERATION);
-        SmartDashboard.putNumber("Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("Error", Wrist.getInstance().getMaster().getClosedLoopError());
-        SmartDashboard.putNumber("Total Error", setpoint - Wrist.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("Output", Wrist.getInstance().getMaster().getMotorOutputPercent());
-        SmartDashboard.putNumber("accelSign", accelSign);
         prevVel = vel;
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return (Timer.getFPGATimestamp() - startTime > INVALID_TIME) &&
+                (isTimedOut() || Math.abs(setpoint - Wrist.getInstance().getMaster().getSelectedSensorPosition()) <= Wrist.ALLOWABLE_ERROR);
     }
 
     @Override
     protected void end() {
-        Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
+        System.out.println("MoveWristMotionMagic Ended");
+        Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
     }
 
     @Override
     protected void interrupted() {
-        end();
+        System.out.println("MoveWristMotionMagic Interrupted");
+        Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
     }
 }

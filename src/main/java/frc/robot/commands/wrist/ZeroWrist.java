@@ -22,18 +22,8 @@ public class ZeroWrist extends TimedCommand {
     }
 
     @Override
-    protected void initialize() {
-
-    }
-
-    @Override
     protected void execute() {
         Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED);
-    }
-
-    @Override
-    protected boolean isFinished() {
-        return isTimedOut();
     }
 
     @Override
