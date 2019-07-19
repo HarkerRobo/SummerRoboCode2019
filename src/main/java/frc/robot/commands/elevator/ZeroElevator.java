@@ -51,7 +51,7 @@ public class ZeroElevator extends TimedCommand {
 
     @Override
     protected boolean isFinished() {
-        return isSpike;
+        return isSpike || isTimedOut();
     }
 
     @Override

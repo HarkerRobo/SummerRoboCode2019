@@ -3,9 +3,8 @@ package frc.robot.commands.elevator;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.TimedCommand;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Elevator;
 
@@ -19,12 +18,15 @@ import frc.robot.subsystems.Elevator;
  */
 public class MoveElevatorMotionMagic extends TimedCommand {
 
+    private static final double TIMEOUT = 3.0;
+    private static final double INVALID_TIME = 0.06;
     private int setpoint;
     private double kF, kP, kI, kD;
     private double prevVel;
+    private double startTime;
 
-    public MoveElevatorMotionMagic(int setpoint, double timeout) {
-        super(timeout);
+    public MoveElevatorMotionMagic(int setpoint) {
+        super(TIMEOUT);
         this.setpoint = setpoint;
         prevVel = 0;
         requires(Elevator.getInstance());
@@ -32,17 +34,8 @@ public class MoveElevatorMotionMagic extends TimedCommand {
     
     @Override
     protected void initialize() {
-        kF = SmartDashboard.getNumber("kF", Elevator.MOTION_MAGIC_KF);
-        kP = SmartDashboard.getNumber("kP", Elevator.MOTION_MAGIC_KP);
-        kI = SmartDashboard.getNumber("kI", Elevator.MOTION_MAGIC_KI);
-        kD = SmartDashboard.getNumber("kD", Elevator.MOTION_MAGIC_KD);
-        
-        Elevator.getInstance().getMaster().config_kF(Elevator.MOTION_MAGIC_SLOT, kF);
-        Elevator.getInstance().getMaster().config_kP(Elevator.MOTION_MAGIC_SLOT, kP);
-        Elevator.getInstance().getMaster().config_kI(Elevator.MOTION_MAGIC_SLOT, kI);
-        Elevator.getInstance().getMaster().config_kD(Elevator.MOTION_MAGIC_SLOT, kD);
-
         Elevator.getInstance().getMaster().selectProfileSlot(Elevator.MOTION_MAGIC_SLOT, RobotMap.PRIMARY_PID_INDEX);
+        startTime = Timer.getFPGATimestamp();
     }
 
     @Override
@@ -53,24 +46,26 @@ public class MoveElevatorMotionMagic extends TimedCommand {
                                                 DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + 
                                                                                  Elevator.kS * Math.signum(Elevator.getInstance().getMaster().getClosedLoopError()) + 
                                                                                  Elevator.kA * accelSign);
-        SmartDashboard.putNumber("Error", Elevator.getInstance().getMaster().getClosedLoopError());
-        SmartDashboard.putNumber("Total Error", setpoint - Elevator.getInstance().getMaster().getSelectedSensorPosition());
         prevVel = vel;
     }
 
     @Override
     protected boolean isFinished() {
-        return isTimedOut() || Math.abs(Elevator.getInstance().getMaster().getSelectedSensorPosition() - setpoint) <= Elevator.ALLOWABLE_ERROR;
+        return Timer.getFPGATimestamp() - startTime > INVALID_TIME &&
+                (isTimedOut() || Math.abs(Elevator.getInstance().getMaster().getSelectedSensorPosition() - setpoint) <= Elevator.ALLOWABLE_ERROR);
     }
 
     @Override
     protected void end() {
         Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, 
                                                 DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF);
+        System.out.println("Elevator Motion Magic Ended");    
     }
 
     @Override
     protected void interrupted() {
-        end();
+        Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, 
+                                                DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF);
+        System.out.println("Elevator Motion Magic Interrupted");   
     }
 }

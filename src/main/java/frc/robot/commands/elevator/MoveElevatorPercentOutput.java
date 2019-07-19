@@ -34,17 +34,16 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
     @Override
     protected void execute() {
         double output = SPEED_MULTIPLIER * MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightY(), OI.XBOX_JOYSTICK_DEADBAND);
-        SmartDashboard.putNumber("El Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
-
+        
         if (Math.abs(output) > 0) {
-            Elevator.getInstance().getMaster().set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Elevator.kS);
+            Elevator.getInstance().getMaster().set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Math.signum(output) * Elevator.kS);
             lastSetpoint = Elevator.getInstance().getMaster().getSelectedSensorPosition() + (int)(Elevator.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
         }
         else {
             if (lastSetpoint > Elevator.UPPER_SOFT_LIMIT)
                 lastSetpoint = Elevator.SAFE_UPPER_LIMIT;
-            // else if (lastSetpoint < Elevator.LOWER_SOFT_LIMIT)
-            //     lastSetpoint = Elevator.SAFE_LOWER_LIMIT;
+            else if (lastSetpoint < 0)
+                lastSetpoint = 0;
             Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, lastSetpoint, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Elevator.kS);
         }
     }
