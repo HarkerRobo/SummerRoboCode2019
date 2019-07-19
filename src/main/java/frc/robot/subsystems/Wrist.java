@@ -43,11 +43,13 @@ public class Wrist extends Subsystem {
 
     public static final int MOTION_MAGIC_SLOT = 0;
     public static final double MOTION_MAGIC_KF = 2; //1.3
-    public static final double MOTION_MAGIC_KP = 0.8; //0.3
-    public static final double MOTION_MAGIC_KI = 0;//0.0001
+    public static final double MOTION_MAGIC_KP = 1; //0.3
+    public static final double MOTION_MAGIC_KI = 0.001;
     public static final double MOTION_MAGIC_KD = 30; //20
     public static final int CRUISE_VELOCITY = 420; //Encoder Units per 100ms
     public static final int MAX_ACCELERATION = 640; //Encoder Units per 100ms per s
+
+    public static final int ALLOWABLE_ERROR = 50;
 
     private Wrist() {
         master = new TalonSRX(RobotMap.CAN_IDS.WRIST_MASTER);
@@ -81,7 +83,7 @@ public class Wrist extends Subsystem {
 
         master.configMotionCruiseVelocity(CRUISE_VELOCITY);
         master.configMotionAcceleration(MAX_ACCELERATION);
-        master.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10);
+        master.setStatusFramePeriod(StatusFrame.Status_10_Targets, 10);
     }
 
     private void configVoltageComp() {

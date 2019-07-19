@@ -46,8 +46,8 @@ public class Elevator extends Subsystem {
     public static final double MOTION_MAGIC_KP = 1;
     public static final double MOTION_MAGIC_KI = 0;
     public static final double MOTION_MAGIC_KD = 10;
-    public static final int CRUISE_VELOCITY = 2000; //Encoder Units per 100ms
-    public static final int MAX_ACCELERATION = 4000; //Encoder Units per 100ms per s
+    public static final int CRUISE_VELOCITY = 3000; //Encoder Units per 100ms
+    public static final int MAX_ACCELERATION = 6000; //Encoder Units per 100ms per s
 
     private HSTalon master;
     private HSTalon talonFollower;
@@ -114,7 +114,7 @@ public class Elevator extends Subsystem {
 
         master.configMotionCruiseVelocity(CRUISE_VELOCITY);
         master.configMotionAcceleration(MAX_ACCELERATION);
-        master.setStatusFramePeriod(StatusFrame.Status_10_MotionMagic, 10);
+        master.setStatusFramePeriod(StatusFrame.Status_10_Targets, 10);
     }
 
     public HSTalon getMaster() {

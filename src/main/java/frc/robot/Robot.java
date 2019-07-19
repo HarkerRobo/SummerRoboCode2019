@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -101,6 +102,8 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
+        SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
+        SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
     }
 
     @Override
@@ -117,6 +120,9 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         Drivetrain.getInstance().setNeutralMode(NeutralMode.Coast);
+        Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
+        Elevator.getInstance().getMaster().set(ControlMode.Disabled, 0);
+        Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
     }
 
     @Override
