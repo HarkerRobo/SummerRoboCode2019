@@ -53,6 +53,10 @@ public class Robot extends TimedRobot {
 
         //Initialize OI and button bindings
         OI.getInstance();
+        
+        SmartDashboard.delete("limelight_PipelineName");
+        SmartDashboard.delete("limelight_Interface");
+        SmartDashboard.delete("limelight_Stream");
     }
 
     /**

@@ -5,6 +5,7 @@ import frc.robot.commands.wrist.ZeroWrist;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Wrist;
 import frc.robot.commands.MoveElevatorAndWrist;
+import frc.robot.commands.arm.ToggleArm;
 import frc.robot.commands.elevator.MoveElevatorMotionMagic;
 import frc.robot.commands.elevator.ZeroElevator;
 import harkerrobolib.wrappers.XboxGamepad;
@@ -35,13 +36,21 @@ public class OI {
     }
 
     public void initBindings() {
+        //MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(7320, Wrist.HORIZONTAL_BACK);
+        
+        //MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
+        //MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 120);
+        
+        //MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
+        //MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
+        //MoveElevatorAndWrist backRocketFirstHatch = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
+        //MoveElevatorAndWrist backRocketSecondHatch = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
+        //MoveElevatorAndWrist frontRocketSecondCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
+        //MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
+
         driverGamepad.getButtonA().whenPressed(new ZeroElevator());
         driverGamepad.getButtonX().whenPressed(new ZeroWrist());
-        
-        // driverGamepad.getUpDPadButton().whenPressed(new MoveElevatorAndWrist(10000, Wrist.HORIZONTAL_FRONT));
-        // driverGamepad.getLeftDPadButton().whenPressed(new MoveElevatorAndWrist(Elevator.PASSTHROUGH_HEIGHT, Wrist.HORIZONTAL_FRONT));
-        // driverGamepad.getDownDPadButton().whenPressed(new MoveElevatorAndWrist(10000, Wrist.HORIZONTAL_BACK));
-        // driverGamepad.getRightDPadButton().whenPressed(new MoveElevatorAndWrist(Elevator.PASSTHROUGH_HEIGHT, Wrist.HORIZONTAL_BACK));
+        driverGamepad.getButtonB().whenPressed(new ToggleArm());
     }
 
     public XboxGamepad getDriverGamepad() {

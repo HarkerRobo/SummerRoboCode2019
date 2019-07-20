@@ -64,13 +64,11 @@ public class MoveElevatorMotionMagic extends TimedCommand {
     protected void end() {
         Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, 
                                                 DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF);
-        System.out.println("Elevator Motion Magic Ended");    
     }
 
     @Override
     protected void interrupted() {
         Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, 
                                                 DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF);
-        System.out.println("Elevator Motion Magic Interrupted");   
     }
 }

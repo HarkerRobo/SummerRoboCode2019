@@ -65,13 +65,11 @@ public class MoveWristMotionMagic extends TimedCommand {
 
     @Override
     protected void end() {
-        System.out.println("MoveWristMotionMagic Ended");
         Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
     }
 
     @Override
     protected void interrupted() {
-        System.out.println("MoveWristMotionMagic Interrupted");
         Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
     }
 }

@@ -47,7 +47,6 @@ public class MoveElevatorAndWrist extends Command {
         group.addSequential(new MoveWristMotionMagic(wristSetpoint, WRIST_ALLOWABLE_ERROR));
         group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint, ELEVATOR_ALLOWABLE_ERROR));
         group.start();
-        System.out.println("MoveElevatorAndWrist Initialized");
     }
 
 	@Override
@@ -57,13 +56,11 @@ public class MoveElevatorAndWrist extends Command {
 
     @Override
     protected void interrupted() {
-        System.out.println("MoveElevatorAndWrist Interrupted");
         group.cancel();
     }
 
     @Override
     protected void end() {
-        System.out.println("MoveElevatorAndWrist Ended");
         group.cancel();
     }
 }

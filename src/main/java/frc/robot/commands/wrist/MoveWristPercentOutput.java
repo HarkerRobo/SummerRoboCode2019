@@ -51,7 +51,6 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
 
     @Override
     protected void interrupted() {
-        System.out.println("MoveWristManual Interrupted");
         Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
     }
 }
