@@ -24,8 +24,13 @@ public class MoveWristMotionMagic extends TimedCommand {
     private double setpoint;
     private double prevVel;
     private double startTime;
+    private double allowableError;
 
     public MoveWristMotionMagic(double setpoint) {
+        this(setpoint, Wrist.ALLOWABLE_ERROR);
+    }
+
+    public MoveWristMotionMagic(double setpoint, double allowableError) {
         super(TIMEOUT);
         requires(Wrist.getInstance());
         if (setpoint > Wrist.BACKMOST_POSITION || setpoint < Wrist.FRONTMOST_POSITION) {
@@ -33,6 +38,7 @@ public class MoveWristMotionMagic extends TimedCommand {
             cancel();
         }
         this.setpoint = setpoint;
+        this.allowableError = allowableError;
         prevVel = 0;
     }
 
@@ -54,7 +60,7 @@ public class MoveWristMotionMagic extends TimedCommand {
     @Override
     protected boolean isFinished() {
         return (Timer.getFPGATimestamp() - startTime > INVALID_TIME) &&
-                (isTimedOut() || Math.abs(setpoint - Wrist.getInstance().getMaster().getSelectedSensorPosition()) <= Wrist.ALLOWABLE_ERROR);
+                (isTimedOut() || Math.abs(setpoint - Wrist.getInstance().getMaster().getSelectedSensorPosition()) <= allowableError);
     }
 
     @Override

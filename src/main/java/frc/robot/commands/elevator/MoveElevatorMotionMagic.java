@@ -21,15 +21,20 @@ public class MoveElevatorMotionMagic extends TimedCommand {
     private static final double TIMEOUT = 3.0;
     private static final double INVALID_TIME = 0.06;
     private int setpoint;
-    private double kF, kP, kI, kD;
     private double prevVel;
     private double startTime;
+    private double allowableError;
 
     public MoveElevatorMotionMagic(int setpoint) {
+        this(setpoint, Elevator.ALLOWABLE_ERROR);
+    }
+
+    public MoveElevatorMotionMagic(int setpoint, int allowableError) {
         super(TIMEOUT);
+        requires(Elevator.getInstance());
         this.setpoint = setpoint;
         prevVel = 0;
-        requires(Elevator.getInstance());
+        this.allowableError = allowableError;
     }
     
     @Override
@@ -52,7 +57,7 @@ public class MoveElevatorMotionMagic extends TimedCommand {
     @Override
     protected boolean isFinished() {
         return Timer.getFPGATimestamp() - startTime > INVALID_TIME &&
-                (isTimedOut() || Math.abs(Elevator.getInstance().getMaster().getSelectedSensorPosition() - setpoint) <= Elevator.ALLOWABLE_ERROR);
+                (isTimedOut() || Math.abs(Elevator.getInstance().getMaster().getSelectedSensorPosition() - setpoint) <= allowableError);
     }
 
     @Override

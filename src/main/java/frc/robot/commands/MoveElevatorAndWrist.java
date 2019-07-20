@@ -16,6 +16,8 @@ import frc.robot.subsystems.Wrist;
  */
 public class MoveElevatorAndWrist extends Command {
 
+    private static final int ELEVATOR_ALLOWABLE_ERROR = 1000;
+    private static final int WRIST_ALLOWABLE_ERROR = 240;
     private int elevatorSetpoint;
     private int wristSetpoint;
     private CommandGroup group;
@@ -27,24 +29,23 @@ public class MoveElevatorAndWrist extends Command {
     public MoveElevatorAndWrist(int elevatorSetpoint, int wristSetpoint) {
         this.elevatorSetpoint = elevatorSetpoint;
         this.wristSetpoint = wristSetpoint;
-        group = new CommandGroup();
         //group.setRunWhenDisabled(false);
     }
 
     @Override
     protected void initialize() {
+        group = new CommandGroup();
         int currentWristPos = Wrist.getInstance().getMaster().getSelectedSensorPosition();
         if (currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint <= Wrist.MIDDLE_POSITION) { //Passthrough back to front
-            group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
-            group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT));
+            group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK, WRIST_ALLOWABLE_ERROR));
+            group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
         }
         else if (currentWristPos <= Wrist.MIDDLE_POSITION && wristSetpoint >= Wrist.MIDDLE_POSITION) { //Pasthrough front to back
-            group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT));
-            group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT));
+            group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT, WRIST_ALLOWABLE_ERROR));
+            group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
         }
-
-        group.addSequential(new MoveWristMotionMagic(wristSetpoint));
-        group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint));
+        group.addSequential(new MoveWristMotionMagic(wristSetpoint, WRIST_ALLOWABLE_ERROR));
+        group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint, ELEVATOR_ALLOWABLE_ERROR));
         group.start();
         System.out.println("MoveElevatorAndWrist Initialized");
     }

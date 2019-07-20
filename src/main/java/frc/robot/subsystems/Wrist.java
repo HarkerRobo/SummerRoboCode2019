@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.wrist.MoveWristManual;
+import frc.robot.commands.wrist.MoveWristPercentOutput;
 import harkerrobolib.util.MathUtil;
 
 /**
@@ -34,7 +34,7 @@ public class Wrist extends Subsystem {
 
     public static final int FRONTMOST_POSITION = -197;
     public static final int BACKMOST_POSITION = 2095;
-    public static final int MIDDLE_POSITION = 1015;
+    public static final int MIDDLE_POSITION = 1050;
     public static final int HORIZONTAL_FRONT = 0;
     public static final int HORIZONTAL_BACK = 2035;
 
@@ -73,7 +73,7 @@ public class Wrist extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new MoveWristManual());
+        setDefaultCommand(new MoveWristPercentOutput());
     }
 
     private void setupMotionMagic() {

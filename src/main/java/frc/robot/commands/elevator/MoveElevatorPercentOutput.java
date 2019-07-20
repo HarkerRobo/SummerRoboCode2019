@@ -3,6 +3,7 @@ package frc.robot.commands.elevator;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.subsystems.Elevator;
@@ -21,6 +22,7 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
     private static final double SPEED_MULTIPLIER = 0.3;
     private static final double LAG_COMPENSATION = 0.5;
     private int lastSetpoint;
+    private boolean shouldHold;
 
     public MoveElevatorPercentOutput() {
         requires(Elevator.getInstance());
@@ -29,6 +31,7 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
     @Override
     protected void initialize() {
         lastSetpoint = Elevator.getInstance().getMaster().getSelectedSensorPosition();
+        shouldHold = false;
     }
 
     @Override
@@ -38,8 +41,9 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
         if (Math.abs(output) > 0) {
             Elevator.getInstance().getMaster().set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Math.signum(output) * Elevator.kS);
             lastSetpoint = Elevator.getInstance().getMaster().getSelectedSensorPosition() + (int)(Elevator.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
+            shouldHold = true;
         }
-        else {
+        else if (shouldHold) {
             if (lastSetpoint > Elevator.UPPER_SOFT_LIMIT)
                 lastSetpoint = Elevator.SAFE_UPPER_LIMIT;
             else if (lastSetpoint < 0)

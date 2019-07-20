@@ -37,8 +37,11 @@ public class OI {
     public void initBindings() {
         driverGamepad.getButtonA().whenPressed(new ZeroElevator());
         driverGamepad.getButtonX().whenPressed(new ZeroWrist());
-        //driverGamepad.getButtonY().whenPressed(new MoveElevatorAndWrist(10000, 0));
-        driverGamepad.getButtonY().whenPressed(new MoveElevatorAndWrist(10000, 200));
+        
+        // driverGamepad.getUpDPadButton().whenPressed(new MoveElevatorAndWrist(10000, Wrist.HORIZONTAL_FRONT));
+        // driverGamepad.getLeftDPadButton().whenPressed(new MoveElevatorAndWrist(Elevator.PASSTHROUGH_HEIGHT, Wrist.HORIZONTAL_FRONT));
+        // driverGamepad.getDownDPadButton().whenPressed(new MoveElevatorAndWrist(10000, Wrist.HORIZONTAL_BACK));
+        // driverGamepad.getRightDPadButton().whenPressed(new MoveElevatorAndWrist(Elevator.PASSTHROUGH_HEIGHT, Wrist.HORIZONTAL_BACK));
     }
 
     public XboxGamepad getDriverGamepad() {
