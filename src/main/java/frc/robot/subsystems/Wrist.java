@@ -34,6 +34,7 @@ public class Wrist extends Subsystem {
 
     public static final int FRONTMOST_POSITION = -197;
     public static final int BACKMOST_POSITION = 2095;
+    public static final int MIDDLE_POSITION = 1015;
     public static final int HORIZONTAL_FRONT = 0;
     public static final int HORIZONTAL_BACK = 2035;
 
@@ -91,12 +92,12 @@ public class Wrist extends Subsystem {
         master.enableVoltageCompensation(true);
     }
 
-    public double convertCurrentTicksToDegrees() {
+    public double getCurrentDegreeAngle() {
         return MathUtil.map(getMaster().getSelectedSensorPosition(), HORIZONTAL_FRONT, HORIZONTAL_BACK, 0, 180);
     }
 
     public double calculateGravFF() {
-        return HORIZONTAL_FORWARD_GRAV_FF * Math.cos(Math.toRadians(convertCurrentTicksToDegrees()));
+        return HORIZONTAL_FORWARD_GRAV_FF * Math.cos(Math.toRadians(getCurrentDegreeAngle()));
     }
 
     public TalonSRX getMaster() {

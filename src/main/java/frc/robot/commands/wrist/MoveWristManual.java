@@ -35,20 +35,20 @@ public class MoveWristManual extends IndefiniteCommand {
         
         if (Math.abs(output) > 0) {
             Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*output, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(output));
-           lastSetpoint = Wrist.getInstance().getMaster().getSelectedSensorPosition() + (int)(Wrist.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
+            lastSetpoint = Wrist.getInstance().getMaster().getSelectedSensorPosition() + (int)(Wrist.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
         }
         else {
-           if (lastSetpoint > Wrist.BACKMOST_POSITION)
-               lastSetpoint = Wrist.HORIZONTAL_BACK;
-           else if (lastSetpoint < Wrist.FRONTMOST_POSITION)
-               lastSetpoint = Wrist.HORIZONTAL_FRONT;
-           Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, lastSetpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Math.signum(output) * Wrist.kS);
+            if (lastSetpoint > Wrist.BACKMOST_POSITION)
+                lastSetpoint = Wrist.HORIZONTAL_BACK;
+            else if (lastSetpoint < Wrist.FRONTMOST_POSITION)
+                lastSetpoint = Wrist.HORIZONTAL_FRONT;
+            Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, lastSetpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Math.signum(output) * Wrist.kS);
         }
     }
 
     @Override
     protected void interrupted() {
         System.out.println("MoveWristManual Interrupted");
-        Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
+        Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
     }
 }

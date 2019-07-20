@@ -28,11 +28,21 @@ public class MoveElevatorAndWrist extends Command {
         this.elevatorSetpoint = elevatorSetpoint;
         this.wristSetpoint = wristSetpoint;
         group = new CommandGroup();
-        group.setRunWhenDisabled(false);
+        //group.setRunWhenDisabled(false);
     }
 
     @Override
     protected void initialize() {
+        int currentWristPos = Wrist.getInstance().getMaster().getSelectedSensorPosition();
+        if (currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint <= Wrist.MIDDLE_POSITION) { //Passthrough back to front
+            group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
+            group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT));
+        }
+        else if (currentWristPos <= Wrist.MIDDLE_POSITION && wristSetpoint >= Wrist.MIDDLE_POSITION) { //Pasthrough front to back
+            group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT));
+            group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT));
+        }
+
         group.addSequential(new MoveWristMotionMagic(wristSetpoint));
         group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint));
         group.start();
