@@ -37,8 +37,8 @@ public class Drivetrain extends HSDrivetrain {
     //Arbitrary Feed Forward Constants
     public static final double leftkS = 0.1;
     public static final double rightkS = 0.09;
-    public static final double leftkF = 1/(0.8 * 10/12 * FREE_VELOCITY);
-    public static final double rightkF = 1/(0.71 * 10/12 * FREE_VELOCITY);
+    public static final double leftkF = 1/(1 * COMPENSATION_VOLTAGE/12 * FREE_VELOCITY);
+    public static final double rightkF = 1/(1 * COMPENSATION_VOLTAGE/12 * FREE_VELOCITY);
     public static final double kA = 0;
 
     //Velocity PID Constants
@@ -55,13 +55,13 @@ public class Drivetrain extends HSDrivetrain {
 
     //Position PID Constants
     public static final int POSITION_SLOT = 1;
-    private static final double POSITION_LEFT_kP = 0.3;
-    private static final double POSITION_LEFT_kI = 0.001;
-    private static final double POSITION_LEFT_kD = 60;
-    private static final double POSITION_RIGHT_kP = 0.3;
+    private static final double POSITION_LEFT_kP = 0;//0.3;
+    private static final double POSITION_LEFT_kI = 0;//0.001;
+    private static final double POSITION_LEFT_kD = 0;//60;
+    private static final double POSITION_RIGHT_kP = 0;//0.3;
     private static final double POSITION_RIGHT_kI = 0;
-    private static final double POSITION_RIGHT_kD = 60;
-    private static final int POSITION_IZONE = 300;
+    private static final double POSITION_RIGHT_kD = 0;//60;
+    private static final int POSITION_IZONE = 0;//300;
     public static final double POSITION_RAMP_RATE = 0.2;
 
     //Motion Profiling Constants

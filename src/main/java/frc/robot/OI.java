@@ -4,8 +4,10 @@ import frc.robot.commands.wrist.MoveWristMotionMagic;
 import frc.robot.commands.wrist.ZeroWrist;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Wrist;
+import frc.robot.auton.StraightLinePath;
 import frc.robot.commands.MoveElevatorAndWrist;
 import frc.robot.commands.arm.ToggleArm;
+import frc.robot.commands.drivetrain.DriveWithMotionProfileOld;
 import frc.robot.commands.elevator.MoveElevatorMotionMagic;
 import frc.robot.commands.elevator.ZeroElevator;
 import harkerrobolib.wrappers.XboxGamepad;
@@ -36,10 +38,10 @@ public class OI {
     }
 
     public void initBindings() {
-        //MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(7320, Wrist.HORIZONTAL_BACK);
+        MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(7320, Wrist.HORIZONTAL_BACK);
         
         //MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
-        //MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 120);
+        MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 120);
         
         //MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
         //MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
@@ -51,6 +53,10 @@ public class OI {
         driverGamepad.getButtonA().whenPressed(new ZeroElevator());
         driverGamepad.getButtonX().whenPressed(new ZeroWrist());
         driverGamepad.getButtonB().whenPressed(new ToggleArm());
+
+        //driverGamepad.getUpDPadButton().whenPressed(frontShipAndLoading);
+        //driverGamepad.getDownDPadButton().whenPressed(backHatch);
+        driverGamepad.getRightDPadButton().whenPressed(new DriveWithMotionProfileOld(StraightLinePath.pathLeft, StraightLinePath.pathRight, 0.01));
     }
 
     public XboxGamepad getDriverGamepad() {
