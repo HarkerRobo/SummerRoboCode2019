@@ -47,15 +47,11 @@ public class DriveWithMotionProfile extends Command {
             TrajectoryPoint point = new TrajectoryPoint();
             point.position = Conversions.convert(PositionUnit.FEET, path[i][0], PositionUnit.ENCODER_UNITS);
             point.velocity = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, path[i][1], SpeedUnit.ENCODER_UNITS);
-            System.out.println("A: " + Drivetrain.kA * path[i][2]);
-            point.arbFeedFwd = Drivetrain.kA * path[i][2] + (isLeft ? Drivetrain.leftkS * Math.signum(point.velocity) : Drivetrain.rightkS * Math.signum(point.velocity));
-            // point.timeDur = timeDur;
-            if(i == 0) {
+            point.arbFeedFwd = path[i][2] * Drivetrain.kA + Math.signum(point.velocity) * (isLeft ? Drivetrain.leftkS : Drivetrain.rightkS);
+            if(i == 0) 
                 point.zeroPos = true;
-            }
-            else if(i == path.length-1) {
+            else if(i == path.length-1)
                 point.isLastPoint = true;
-            }
             point.profileSlotSelect0 = Drivetrain.MOTION_PROF_SLOT;
             stream.Write(point);
         }
@@ -72,6 +68,10 @@ public class DriveWithMotionProfile extends Command {
     protected void execute() {
         SmartDashboard.putNumber("Left Error", Drivetrain.getInstance().getLeftMaster().getClosedLoopError());
         SmartDashboard.putNumber("Right Error", Drivetrain.getInstance().getRightMaster().getClosedLoopError());
+        SmartDashboard.putNumber("Left Profile Velocity", Drivetrain.getInstance().getLeftMaster().getActiveTrajectoryVelocity());
+        SmartDashboard.putNumber("Right Profile Velocity", Drivetrain.getInstance().getRightMaster().getActiveTrajectoryVelocity());
+        SmartDashboard.putNumber("Left Output", Drivetrain.getInstance().getLeftMaster().getMotorOutputPercent());
+        SmartDashboard.putNumber("Right Output", Drivetrain.getInstance().getLeftMaster().getMotorOutputPercent());
     }
 
     @Override

@@ -63,11 +63,11 @@ public class Drivetrain extends HSDrivetrain {
 
     //Motion Profiling Constants
     public static final int MOTION_PROF_SLOT = 2;
-    private static final double MOTION_PROF_LEFT_kF = 0.23;
+    private static final double MOTION_PROF_LEFT_kF = 0.17;
     private static final double MOTION_PROF_LEFT_kP = 0;//0.3;
     private static final double MOTION_PROF_LEFT_kI = 0;
     private static final double MOTION_PROF_LEFT_kD = 0;//60;
-    private static final double MOTION_PROF_RIGHT_kF = 0.275;
+    private static final double MOTION_PROF_RIGHT_kF = 0.2;
     private static final double MOTION_PROF_RIGHT_kP = 0;//0.3;
     private static final double MOTION_PROF_RIGHT_kI = 0;
     private static final double MOTION_PROF_RIGHT_kD = 0;//60;
@@ -77,7 +77,7 @@ public class Drivetrain extends HSDrivetrain {
     //Arbitrary Feed Forward Constants
     public static final double leftkS = 0.1;
     public static final double rightkS = 0.09;
-    public static final double kA = 0.1/MOTION_PROF_ACCELERATION;
+    public static final double kA = 0.3/MOTION_PROF_ACCELERATION;
 
     private static final int MOTION_FRAME_PERIOD = 10;
 
