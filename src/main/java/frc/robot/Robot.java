@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
         //Initialize Subsystems
         Drivetrain.getInstance();
+        System.out.println("Drivetrain Instantiated");
         Elevator.getInstance();
         Wrist.getInstance();
         Arm.getInstance();
@@ -53,10 +54,6 @@ public class Robot extends TimedRobot {
 
         //Initialize OI and button bindings
         OI.getInstance();
-        
-        SmartDashboard.delete("limelight_PipelineName");
-        SmartDashboard.delete("limelight_Interface");
-        SmartDashboard.delete("limelight_Stream");
     }
 
     /**
@@ -69,6 +66,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
+        SmartDashboard.putString("Drivetrain Command", Drivetrain.getInstance().getCurrentCommandName());
     }
 
     /**

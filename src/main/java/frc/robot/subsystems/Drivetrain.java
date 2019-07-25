@@ -2,10 +2,13 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
+import frc.robot.commands.drivetrain.DriveWithPercentOutput;
 import frc.robot.commands.drivetrain.DriveWithVelocity;
 import harkerrobolib.subsystems.HSDrivetrain;
 import harkerrobolib.util.Conversions;
@@ -17,6 +20,7 @@ import harkerrobolib.wrappers.HSTalon;
  * @author Finn Frankis
  * @author Jatin Kohli
  * @author Chirag Kaushik
+ * @author Angela Jia
  * 
  * @since 6/14/19
  */
@@ -33,13 +37,6 @@ public class Drivetrain extends HSDrivetrain {
     private static final boolean RIGHT_VICTOR_INVERTED = false;
 
     public static final double FREE_VELOCITY = 18;
-
-    //Arbitrary Feed Forward Constants
-    public static final double leftkS = 0.1;
-    public static final double rightkS = 0.09;
-    public static final double leftkF = 1/(1 * COMPENSATION_VOLTAGE/12 * FREE_VELOCITY);
-    public static final double rightkF = 1/(1 * COMPENSATION_VOLTAGE/12 * FREE_VELOCITY);
-    public static final double kA = 0;
 
     //Velocity PID Constants
     public static final int VELOCITY_SLOT = 0;
@@ -66,13 +63,21 @@ public class Drivetrain extends HSDrivetrain {
 
     //Motion Profiling Constants
     public static final int MOTION_PROF_SLOT = 2;
+    private static final double MOTION_PROF_LEFT_kF = 0.23;
     private static final double MOTION_PROF_LEFT_kP = 0;//0.3;
     private static final double MOTION_PROF_LEFT_kI = 0;
     private static final double MOTION_PROF_LEFT_kD = 0;//60;
+    private static final double MOTION_PROF_RIGHT_kF = 0.275;
     private static final double MOTION_PROF_RIGHT_kP = 0;//0.3;
     private static final double MOTION_PROF_RIGHT_kI = 0;
     private static final double MOTION_PROF_RIGHT_kD = 0;//60;
     public static final double MOTION_PROF_RAMP_RATE = 0;
+    private static final double MOTION_PROF_ACCELERATION = 5;
+
+    //Arbitrary Feed Forward Constants
+    public static final double leftkS = 0.1;
+    public static final double rightkS = 0.09;
+    public static final double kA = 0.1/MOTION_PROF_ACCELERATION;
 
     private static final int MOTION_FRAME_PERIOD = 10;
 
@@ -130,13 +135,17 @@ public class Drivetrain extends HSDrivetrain {
     }
 
     private void setupMotionProfilePID() {
+        getLeftMaster().config_kF(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kF);
         getLeftMaster().config_kP(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kP);
         getLeftMaster().config_kI(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kI);
         getLeftMaster().config_kD(MOTION_PROF_SLOT, MOTION_PROF_LEFT_kD);
 
+        getRightMaster().config_kF(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kF);
         getRightMaster().config_kP(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kP);
         getRightMaster().config_kI(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kI);
         getRightMaster().config_kD(MOTION_PROF_SLOT, MOTION_PROF_RIGHT_kD);
+
+        applyToMasters((talon) -> talon.setStatusFramePeriod(StatusFrame.Status_9_MotProfBuffer, MOTION_FRAME_PERIOD));
     }
 
     private void configVoltageComp() {

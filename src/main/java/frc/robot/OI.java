@@ -7,7 +7,7 @@ import frc.robot.subsystems.Wrist;
 import frc.robot.auton.StraightLinePath;
 import frc.robot.commands.MoveElevatorAndWrist;
 import frc.robot.commands.arm.ToggleArm;
-import frc.robot.commands.drivetrain.DriveWithMotionProfileOld;
+import frc.robot.commands.drivetrain.DriveWithMotionProfile;
 import frc.robot.commands.elevator.MoveElevatorMotionMagic;
 import frc.robot.commands.elevator.ZeroElevator;
 import harkerrobolib.wrappers.XboxGamepad;
@@ -56,7 +56,8 @@ public class OI {
 
         //driverGamepad.getUpDPadButton().whenPressed(frontShipAndLoading);
         //driverGamepad.getDownDPadButton().whenPressed(backHatch);
-        driverGamepad.getRightDPadButton().whenPressed(new DriveWithMotionProfileOld(StraightLinePath.pathLeft, StraightLinePath.pathRight, 0.01));
+
+        driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.pathLeft, StraightLinePath.pathRight, 10));
     }
 
     public XboxGamepad getDriverGamepad() {

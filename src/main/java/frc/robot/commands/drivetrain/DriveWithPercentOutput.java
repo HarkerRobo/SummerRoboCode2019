@@ -1,6 +1,7 @@
 package frc.robot.commands.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 
 import frc.robot.OI;
 import frc.robot.subsystems.Drivetrain;
@@ -24,11 +25,18 @@ public class DriveWithPercentOutput extends IndefiniteCommand {
     }
 
     @Override
+    protected void initialize() {
+        System.out.println("DriveWithPercentOutput Initialized");
+    }
+
+    @Override
     public void execute() {
         double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
         double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
         
-        Drivetrain.getInstance().arcadeDrivePercentOutput(speed, turn);
+        //Drivetrain.getInstance().arcadeDrivePercentOutput(speed, turn);
+        Drivetrain.getInstance().getLeftMaster().set(ControlMode.PercentOutput, speed - turn);
+        Drivetrain.getInstance().getRightMaster().set(ControlMode.PercentOutput, speed + turn);
     }
 
     @Override

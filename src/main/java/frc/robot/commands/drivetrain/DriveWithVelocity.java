@@ -26,9 +26,11 @@ public class DriveWithVelocity extends IndefiniteCommand {
         requires(Drivetrain.getInstance());
     }
 
+    @Override
     protected void initialize() {
         Drivetrain.getInstance().applyToMasters((talon) -> talon.selectProfileSlot(Drivetrain.VELOCITY_SLOT, RobotMap.PRIMARY_PID_INDEX));
         Drivetrain.getInstance().applyToMasters((talon) -> talon.configClosedloopRamp(Drivetrain.VELOCITY_RAMP_RATE));
+        System.out.println("DriveWithVelocity Initialized");
     }
 
     @Override
@@ -37,6 +39,9 @@ public class DriveWithVelocity extends IndefiniteCommand {
                 OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_FORWARD_VELOCITY * SPEED_MULTIPLIER;
         double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(),
                 OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
+
+        SmartDashboard.putNumber("Speed", speed);
+        SmartDashboard.putNumber("Turn", turn);
 
         speed = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, speed, SpeedUnit.ENCODER_UNITS);
         turn = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, turn, SpeedUnit.ENCODER_UNITS);
