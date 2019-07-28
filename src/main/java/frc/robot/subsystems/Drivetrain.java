@@ -14,15 +14,15 @@ import harkerrobolib.subsystems.HSDrivetrain;
 import harkerrobolib.util.Conversions;
 import harkerrobolib.wrappers.HSTalon;
 
-/**
- * The drivetrain subsystem, including our two master Talons with encoders and two follower Victors
+/** 
+ * The drivetrain subsystem, including our two master Talons with encoders and two follower Victors 
  * 
- * @author Finn Frankis
- * @author Jatin Kohli
- * @author Chirag Kaushik
- * @author Angela Jia
- * 
- * @since 6/14/19
+ * @author Finn Frankis 
+ * @author Jatin Kohli 
+ * @author Chirag Kaushik 
+ * @author Angela Jia 
+ *  
+ * @since 6/14/19 
  */
 public class Drivetrain extends HSDrivetrain {
     private static Drivetrain instance;
@@ -38,46 +38,48 @@ public class Drivetrain extends HSDrivetrain {
 
     public static final double FREE_VELOCITY = 18;
 
+    //Arbitrary Feed Forward Constants
+    public static final double leftkS = 0.09;
+    public static final double rightkS = 0.08;
+    public static final double leftkF = 0.22;
+    public static final double rightkF = 0.24;
+    public static final double leftkA = 0.027;
+    public static final double rightkA = 0.027;
+
     //Velocity PID Constants
     public static final int VELOCITY_SLOT = 0;
-    private static final double VELOCITY_LEFT_kF = 0.23;
+    private static final double VELOCITY_LEFT_kF = leftkF;
     private static final double VELOCITY_LEFT_kP = 0.75;
-    private static final double VELOCITY_LEFT_kI = 0.001;
-    private static final double VELOCITY_LEFT_kD = 0;
-    private static final double VELOCITY_RIGHT_kF = 0.275;
+    private static final double VELOCITY_LEFT_kI = 0;
+    private static final double VELOCITY_LEFT_kD = 8;
+    private static final double VELOCITY_RIGHT_kF = rightkF;
     private static final double VELOCITY_RIGHT_kP = 0.75;
     private static final double VELOCITY_RIGHT_kI = 0;
-    private static final double VELOCITY_RIGHT_kD = 0;
+    private static final double VELOCITY_RIGHT_kD = 8;
     public static final double VELOCITY_RAMP_RATE = 0.2;
 
     //Position PID Constants
     public static final int POSITION_SLOT = 1;
-    private static final double POSITION_LEFT_kP = 0;//0.3;
+    private static final double POSITION_LEFT_kP = 0.3;
     private static final double POSITION_LEFT_kI = 0;//0.001;
-    private static final double POSITION_LEFT_kD = 0;//60;
-    private static final double POSITION_RIGHT_kP = 0;//0.3;
+    private static final double POSITION_LEFT_kD = 60;
+    private static final double POSITION_RIGHT_kP = 0.3;
     private static final double POSITION_RIGHT_kI = 0;
-    private static final double POSITION_RIGHT_kD = 0;//60;
-    private static final int POSITION_IZONE = 0;//300;
+    private static final double POSITION_RIGHT_kD = 60;
+    private static final int POSITION_IZONE = 300;
     public static final double POSITION_RAMP_RATE = 0.2;
 
     //Motion Profiling Constants
     public static final int MOTION_PROF_SLOT = 2;
-    private static final double MOTION_PROF_LEFT_kF = 0.17;
-    private static final double MOTION_PROF_LEFT_kP = 0;//0.3;
+    private static final double MOTION_PROF_LEFT_kF = leftkF;
+    private static final double MOTION_PROF_LEFT_kP = 1;
     private static final double MOTION_PROF_LEFT_kI = 0;
-    private static final double MOTION_PROF_LEFT_kD = 0;//60;
-    private static final double MOTION_PROF_RIGHT_kF = 0.2;
-    private static final double MOTION_PROF_RIGHT_kP = 0;//0.3;
+    private static final double MOTION_PROF_LEFT_kD = 0;
+    private static final double MOTION_PROF_RIGHT_kF = rightkF;
+    private static final double MOTION_PROF_RIGHT_kP = 1;
     private static final double MOTION_PROF_RIGHT_kI = 0;
-    private static final double MOTION_PROF_RIGHT_kD = 0;//60;
+    private static final double MOTION_PROF_RIGHT_kD = 0;
     public static final double MOTION_PROF_RAMP_RATE = 0;
-    private static final double MOTION_PROF_ACCELERATION = 5;
-
-    //Arbitrary Feed Forward Constants
-    public static final double leftkS = 0.1;
-    public static final double rightkS = 0.09;
-    public static final double kA = 0.3/MOTION_PROF_ACCELERATION;
 
     private static final int MOTION_FRAME_PERIOD = 10;
 
@@ -104,6 +106,7 @@ public class Drivetrain extends HSDrivetrain {
         setupMotionProfilePID();
 
         Conversions.setWheelDiameter(WHEEL_DIAMETER);
+        applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
     }
 
     public void initDefaultCommand() {

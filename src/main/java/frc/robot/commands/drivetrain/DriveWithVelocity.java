@@ -1,6 +1,8 @@
 package frc.robot.commands.drivetrain;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
@@ -21,6 +23,7 @@ import harkerrobolib.util.Conversions.SpeedUnit;
  */
 public class DriveWithVelocity extends IndefiniteCommand {
     private static final double SPEED_MULTIPLIER = 0.2;
+    private boolean hasJoystickInput;
 
     public DriveWithVelocity() {
         requires(Drivetrain.getInstance());
@@ -30,7 +33,9 @@ public class DriveWithVelocity extends IndefiniteCommand {
     protected void initialize() {
         Drivetrain.getInstance().applyToMasters((talon) -> talon.selectProfileSlot(Drivetrain.VELOCITY_SLOT, RobotMap.PRIMARY_PID_INDEX));
         Drivetrain.getInstance().applyToMasters((talon) -> talon.configClosedloopRamp(Drivetrain.VELOCITY_RAMP_RATE));
-        System.out.println("DriveWithVelocity Initialized");
+        Drivetrain.getInstance().applyToMasters((talon) -> talon.setNeutralMode(NeutralMode.Brake));
+
+        hasJoystickInput = false;
     }
 
     @Override
@@ -40,14 +45,15 @@ public class DriveWithVelocity extends IndefiniteCommand {
         double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(),
                 OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
 
-        SmartDashboard.putNumber("Speed", speed);
-        SmartDashboard.putNumber("Turn", turn);
-
         speed = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, speed, SpeedUnit.ENCODER_UNITS);
         turn = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, turn, SpeedUnit.ENCODER_UNITS);
 
-        Drivetrain.getInstance().getLeftMaster().set(ControlMode.Velocity, speed + turn);
-        Drivetrain.getInstance().getRightMaster().set(ControlMode.Velocity, speed - turn);
+        if (speed != 0 || turn != 0)
+            hasJoystickInput = true;
+        if(hasJoystickInput) {
+            Drivetrain.getInstance().getLeftMaster().set(ControlMode.Velocity, speed + turn, DemandType.ArbitraryFeedForward, Math.signum(speed + turn)*Drivetrain.leftkS);
+            Drivetrain.getInstance().getRightMaster().set(ControlMode.Velocity, speed - turn, DemandType.ArbitraryFeedForward, Math.signum(speed - turn)*Drivetrain.rightkS);
+        }
     }
 
     @Override

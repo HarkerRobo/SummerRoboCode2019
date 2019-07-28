@@ -25,7 +25,9 @@ public class DriveWithMotionProfile extends Command {
     private static final int MIN_BUFFERED_PTS = 4;
     private BufferedTrajectoryPointStream leftStream;
     private BufferedTrajectoryPointStream rightStream;
-    private int timeDur;
+    private double leftLastSetpoint;
+    private double rightLastSetpoint;
+    private double timeTaken;
 
     /**
      * @param leftPath The 2D Array of doubles representing the left side path (p,v,a,h)
@@ -34,12 +36,12 @@ public class DriveWithMotionProfile extends Command {
      */
     public DriveWithMotionProfile(double[][] leftPath, double[][] rightPath, int timeDur) {
         requires(Drivetrain.getInstance());
-        this.timeDur = timeDur;
         leftStream = new BufferedTrajectoryPointStream();
         rightStream = new BufferedTrajectoryPointStream();
         setupTrajectoryStream(leftStream, leftPath, true);
         setupTrajectoryStream(rightStream, rightPath, false);
         Drivetrain.getInstance().applyToMasters((talon) -> talon.configMotionProfileTrajectoryPeriod(timeDur));
+        timeTaken = leftPath.length * timeDur;
     }
 
     private void setupTrajectoryStream(BufferedTrajectoryPointStream stream, double [][] path, boolean isLeft) {
@@ -47,12 +49,18 @@ public class DriveWithMotionProfile extends Command {
             TrajectoryPoint point = new TrajectoryPoint();
             point.position = Conversions.convert(PositionUnit.FEET, path[i][0], PositionUnit.ENCODER_UNITS);
             point.velocity = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, path[i][1], SpeedUnit.ENCODER_UNITS);
-            point.arbFeedFwd = path[i][2] * Drivetrain.kA + Math.signum(point.velocity) * (isLeft ? Drivetrain.leftkS : Drivetrain.rightkS);
+            point.arbFeedFwd = path[i][2]*(isLeft ? Drivetrain.leftkA : Drivetrain.rightkA) + Math.signum(point.velocity) * (isLeft ? Drivetrain.leftkS : Drivetrain.rightkS);
             if(i == 0) 
                 point.zeroPos = true;
-            else if(i == path.length-1)
+            else if(i == path.length-1) {
                 point.isLastPoint = true;
+                if (isLeft)
+                    leftLastSetpoint = point.position;
+                else
+                    rightLastSetpoint = point.position;
+            }
             point.profileSlotSelect0 = Drivetrain.MOTION_PROF_SLOT;
+            point.timeDur = 0;
             stream.Write(point);
         }
     }
@@ -66,12 +74,9 @@ public class DriveWithMotionProfile extends Command {
 
     @Override
     protected void execute() {
+        SmartDashboard.putNumber("Velocity", Drivetrain.getInstance().getLeftMaster().getActiveTrajectoryVelocity());
         SmartDashboard.putNumber("Left Error", Drivetrain.getInstance().getLeftMaster().getClosedLoopError());
         SmartDashboard.putNumber("Right Error", Drivetrain.getInstance().getRightMaster().getClosedLoopError());
-        SmartDashboard.putNumber("Left Profile Velocity", Drivetrain.getInstance().getLeftMaster().getActiveTrajectoryVelocity());
-        SmartDashboard.putNumber("Right Profile Velocity", Drivetrain.getInstance().getRightMaster().getActiveTrajectoryVelocity());
-        SmartDashboard.putNumber("Left Output", Drivetrain.getInstance().getLeftMaster().getMotorOutputPercent());
-        SmartDashboard.putNumber("Right Output", Drivetrain.getInstance().getLeftMaster().getMotorOutputPercent());
     }
 
     @Override
