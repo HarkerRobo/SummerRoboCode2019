@@ -2,13 +2,16 @@ package frc.robot;
 
 import frc.robot.commands.wrist.MoveWristMotionMagic;
 import frc.robot.commands.wrist.ZeroWrist;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Wrist;
-import frc.robot.auton.StraightLinePath;
+import frc.robot.auton.CurveRightEndStraight;
+import frc.robot.auton.StraightLinePath5Ft;
+import frc.robot.auton.StraightLinePath8Ft;
 import frc.robot.commands.MoveElevatorAndWrist;
+import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.arm.ToggleArm;
 import frc.robot.commands.drivetrain.DriveWithMotionProfile;
-import frc.robot.commands.elevator.MoveElevatorMotionMagic;
 import frc.robot.commands.elevator.ZeroElevator;
 import harkerrobolib.wrappers.XboxGamepad;
 
@@ -38,9 +41,11 @@ public class OI {
     }
 
     public void initBindings() {
+        MoveElevatorAndWrist groundCargo = new MoveElevatorAndWrist(100, -150);
+        
         MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(7320, Wrist.HORIZONTAL_BACK);
         
-        //MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
+        MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
         MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 120);
         
         //MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
@@ -54,10 +59,11 @@ public class OI {
         driverGamepad.getButtonX().whenPressed(new ZeroWrist());
         driverGamepad.getButtonB().whenPressed(new ToggleArm());
 
-        //driverGamepad.getUpDPadButton().whenPressed(frontShipAndLoading);
-        //driverGamepad.getDownDPadButton().whenPressed(backHatch);
-
-        driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(StraightLinePath.pathLeft, StraightLinePath.pathRight, 10));
+        driverGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
+        driverGamepad.getDownDPadButton().whenPressed(groundCargo);
+        driverGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
+        driverGamepad.getButtonY().whenPressed(new SetArm(Arm.IN));
+        //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
     }
 
     public XboxGamepad getDriverGamepad() {

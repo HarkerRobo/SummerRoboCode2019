@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 import frc.robot.commands.arm.SpinBallIntake;
@@ -21,6 +22,8 @@ public class Arm extends Subsystem{
     private DoubleSolenoid solenoid;
     private VictorSPX rollers;
 
+    public static final DoubleSolenoid.Value IN = Value.kReverse;
+    public static final DoubleSolenoid.Value OUT = Value.kForward;
     public Arm() {
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.ARM_FORWARD_CHANNEL, RobotMap.CAN_IDS.ARM_REVERSE_CHANNEL);
         rollers = new VictorSPX(RobotMap.CAN_IDS.BALL_INTAKE_MASTER_VICTOR);

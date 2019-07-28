@@ -67,6 +67,10 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         SmartDashboard.putString("Drivetrain Command", Drivetrain.getInstance().getCurrentCommandName());
+        SmartDashboard.putString("Elevator Command", Elevator.getInstance().getCurrentCommandName());
+        SmartDashboard.putNumber("Current", Elevator.getInstance().getMaster().getOutputCurrent());
+        
+        SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
     }
 
     /**
@@ -94,7 +98,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        Drivetrain.getInstance().applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
     }
 
     /**
@@ -112,15 +115,14 @@ public class Robot extends TimedRobot {
     public void testInit() {
     }
 
-    /**
-     * This function is called periodically during test mode.
-     */
     @Override
     public void testPeriodic() {
     }
 
     @Override
     public void disabledInit() {
+        Drivetrain.getInstance().applyToMasters((talon) -> talon.clearMotionProfileTrajectories());
+        
         Drivetrain.getInstance().setNeutralMode(NeutralMode.Coast);
         Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
         Elevator.getInstance().getMaster().set(ControlMode.Disabled, 0);

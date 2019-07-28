@@ -1,8 +1,10 @@
 package frc.robot.commands.wristrollers;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 
 import frc.robot.OI;
+import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristRollers;
 import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
@@ -29,6 +31,6 @@ public class SpinWristRollers extends IndefiniteCommand {
 
         double output = Math.abs(leftTrigger) > rightTrigger ? leftTrigger : rightTrigger;
 
-        WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, output * SPEED_MULTIPLIER);
+        WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, output * SPEED_MULTIPLIER, DemandType.ArbitraryFeedForward, Wrist.CARGO_FF);
     }
 }
