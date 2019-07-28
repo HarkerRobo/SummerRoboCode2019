@@ -38,17 +38,22 @@ public class Wrist extends Subsystem {
     public static final int HORIZONTAL_FRONT = 0;
     public static final int HORIZONTAL_BACK = 2035;
 
+    public static final double CARGO_FF = -0.1;
     public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.07; //Gravity FF required to keep the wrist level at 0 degrees
     public static final double kS = 0.03;
     public static final double kA = 0.00036;
+    public static final double kF = 2;
 
     public static final int MOTION_MAGIC_SLOT = 0;
-    public static final double MOTION_MAGIC_KF = 2; //1.3
+    public static final double MOTION_MAGIC_KF = kF; //1.3
     public static final double MOTION_MAGIC_KP = 1; //0.3
     public static final double MOTION_MAGIC_KI = 0.001;
     public static final double MOTION_MAGIC_KD = 30; //20
     public static final int CRUISE_VELOCITY = 420; //Encoder Units per 100ms
     public static final int MAX_ACCELERATION = 640; //Encoder Units per 100ms per s
+
+    public static final int VELOCITY_SLOT = 1;
+    public static final double VELOCITY_KF = kF;
 
     public static final int ALLOWABLE_ERROR = 50;
 
@@ -61,7 +66,6 @@ public class Wrist extends Subsystem {
     private void talonInit() {
         master.configFactoryDefault();
         master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
-        master.setSelectedSensorPosition(FRONTMOST_POSITION);
         follower.follow(master);
         master.setInverted(TALON_INVERTED);
         follower.setInverted(VICTOR_INVERTED);
@@ -69,6 +73,8 @@ public class Wrist extends Subsystem {
 
         configVoltageComp();
         setupMotionMagic();
+        setupVelocity();
+        master.setSelectedSensorPosition(FRONTMOST_POSITION);
     }
 
     @Override
@@ -85,6 +91,10 @@ public class Wrist extends Subsystem {
         master.configMotionCruiseVelocity(CRUISE_VELOCITY);
         master.configMotionAcceleration(MAX_ACCELERATION);
         master.setStatusFramePeriod(StatusFrame.Status_10_Targets, 10);
+    }
+
+    private void setupVelocity() {
+        master.config_kF(VELOCITY_SLOT, VELOCITY_KF);
     }
 
     private void configVoltageComp() {

@@ -24,6 +24,7 @@ public class Elevator extends Subsystem {
     private static Elevator instance;
 
     public static final double kS = 0.05;
+    public static final double kF = 0.21;
     public static final double kA = 0.05;
 
     public static final double GRAVITY_FF = 0.11;
@@ -42,12 +43,15 @@ public class Elevator extends Subsystem {
     private static final boolean FOLLOWER_TALON_INVERTED = true;
 
     public static final int MOTION_MAGIC_SLOT = 0;
-    public static final double MOTION_MAGIC_KF = 0.21;
+    public static final double MOTION_MAGIC_KF = kF;
     public static final double MOTION_MAGIC_KP = 1;
     public static final double MOTION_MAGIC_KI = 0;
     public static final double MOTION_MAGIC_KD = 10;
     public static final int CRUISE_VELOCITY = 3000; //Encoder Units per 100ms
     public static final int MAX_ACCELERATION = 6000; //Encoder Units per 100ms per s
+
+    public static final int VELOCITY_SLOT = 1;
+    public static final double VELOCITY_KF = kF;
 
     private HSTalon master;
     private HSTalon talonFollower;
@@ -79,6 +83,7 @@ public class Elevator extends Subsystem {
         master.setSensorPhase(SENSOR_PHASE);
 
         setupMotionMagic();
+        master.setSelectedSensorPosition(0);
     }
 
     private void invert() {
@@ -115,6 +120,10 @@ public class Elevator extends Subsystem {
         master.configMotionCruiseVelocity(CRUISE_VELOCITY);
         master.configMotionAcceleration(MAX_ACCELERATION);
         master.setStatusFramePeriod(StatusFrame.Status_10_Targets, 10);
+    }
+
+    private void setupVelocity() {
+        master.config_kF(VELOCITY_SLOT, VELOCITY_KF);
     }
 
     public HSTalon getMaster() {
