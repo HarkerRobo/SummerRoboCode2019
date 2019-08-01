@@ -24,6 +24,7 @@ public class Arm extends Subsystem{
 
     public static final DoubleSolenoid.Value IN = Value.kReverse;
     public static final DoubleSolenoid.Value OUT = Value.kForward;
+    
     public Arm() {
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.ARM_FORWARD_CHANNEL, RobotMap.CAN_IDS.ARM_REVERSE_CHANNEL);
         rollers = new VictorSPX(RobotMap.CAN_IDS.BALL_INTAKE_MASTER_VICTOR);

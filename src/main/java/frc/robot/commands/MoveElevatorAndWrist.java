@@ -1,14 +1,16 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.elevator.MoveElevatorMotionMagic;
+import frc.robot.commands.extender.SetExtender;
 import frc.robot.commands.wrist.MoveWristMotionMagic;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.Wrist;
 
 /**
@@ -34,12 +36,12 @@ public class MoveElevatorAndWrist extends Command {
     public MoveElevatorAndWrist(int elevatorSetpoint, int wristSetpoint) {
         this.elevatorSetpoint = elevatorSetpoint;
         this.wristSetpoint = wristSetpoint;
-        // group.setRunWhenDisabled(false);
     }
 
     @Override
     protected void initialize() {
         group = new CommandGroup();
+        group.addSequential(new SetExtender(HatchExtender.IN));
         int currentWristPos = Wrist.getInstance().getMaster().getSelectedSensorPosition();
         if (!(currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint >= Wrist.MIDDLE_POSITION)) {
             group.addSequential(new SetArm(Arm.OUT));
@@ -64,7 +66,7 @@ public class MoveElevatorAndWrist extends Command {
 
     @Override
     protected void interrupted() {
-        group.cancel();
+        end();
     }
 
     @Override
