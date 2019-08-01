@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.arm.SpinBallIntake;
+import frc.robot.commands.arm.SpinBallIntakeManual;
 
 /**
  * The Arm subsystem, which includes both the Rollers and the Solenoid
@@ -31,7 +31,7 @@ public class Arm extends Subsystem{
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new SpinBallIntake());
+        setDefaultCommand(new SpinBallIntakeManual());
     }
 
     public DoubleSolenoid getSolenoid() {

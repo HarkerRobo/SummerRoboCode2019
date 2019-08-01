@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.wristrollers.SpinWristRollers;
+import frc.robot.commands.wristrollers.SpinWristRollersManual;
 
 /**
  * The Wrist Rollers Subsystem, which includes rollers on the wrist
@@ -25,7 +25,7 @@ public class WristRollers extends Subsystem {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new SpinWristRollers());
+        setDefaultCommand(new SpinWristRollersManual());
     }
 
     public TalonSRX getRollers() {

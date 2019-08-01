@@ -1,27 +1,25 @@
-package frc.robot.commands.wristrollers;
+package frc.robot.commands.arm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 
 import frc.robot.OI;
-import frc.robot.subsystems.Wrist;
-import frc.robot.subsystems.WristRollers;
+import frc.robot.subsystems.Arm;
 import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
 
 /**
- * Spins the Wrist Rollers using input from the Driver Gamepad's Triggers
+ * Spins the BallIntake (Arm Rollers) using input from the Driver Gamepad's Triggers
  * 
  * @author Jatin Kohli
  * 
  * @since 6/17/19
  */
-public class SpinWristRollers extends IndefiniteCommand {
-    
+public class SpinBallIntakeManual extends IndefiniteCommand {
+
     private static final double SPEED_MULTIPLIER = 0.5;
 
-    public SpinWristRollers() {
-        requires(WristRollers.getInstance());
+    public SpinBallIntakeManual() {
+        requires(Arm.getInstance());
     }
 
     @Override
@@ -31,6 +29,6 @@ public class SpinWristRollers extends IndefiniteCommand {
 
         double output = Math.abs(leftTrigger) > rightTrigger ? leftTrigger : rightTrigger;
 
-        WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, output * SPEED_MULTIPLIER, DemandType.ArbitraryFeedForward, Wrist.CARGO_FF);
+        Arm.getInstance().getRollers().set(ControlMode.PercentOutput, SPEED_MULTIPLIER * output);
     }
 }
