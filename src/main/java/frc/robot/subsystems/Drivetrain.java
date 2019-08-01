@@ -6,9 +6,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.StatusFrameEnhanced;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
-import frc.robot.commands.drivetrain.DriveWithPercentOutput;
 import frc.robot.commands.drivetrain.DriveWithVelocity;
 import harkerrobolib.subsystems.HSDrivetrain;
 import harkerrobolib.util.Conversions;

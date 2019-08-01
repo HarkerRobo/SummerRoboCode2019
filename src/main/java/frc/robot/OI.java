@@ -13,6 +13,8 @@ import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.arm.ToggleArm;
 import frc.robot.commands.drivetrain.DriveWithMotionProfile;
 import frc.robot.commands.elevator.ZeroElevator;
+import frc.robot.commands.extender.ToggleExtender;
+import frc.robot.commands.flower.ToggleFlower;
 import harkerrobolib.wrappers.XboxGamepad;
 
 /**
@@ -22,6 +24,8 @@ import harkerrobolib.wrappers.XboxGamepad;
  * @since 6/14/19
  */
 public class OI {
+    public static final DemoMode mode = DemoMode.SAFE;
+    
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
     public static final double XBOX_TRIGGER_DEADBAND = 0.1;
 
@@ -32,6 +36,17 @@ public class OI {
     private static XboxGamepad operatorGamepad;
 
     private static OI instance;
+
+    public enum DemoMode {
+        /**
+         * Normal Controls and Speeds for Testing or Competitions
+         */
+        NORMAL, 
+        /**
+         * Safe Controls and Speeds for Demos where others will be driving
+         */
+        SAFE
+    }
 
     private OI() {
         driverGamepad = new XboxGamepad(DRIVER_PORT);
@@ -55,15 +70,31 @@ public class OI {
         //MoveElevatorAndWrist frontRocketSecondCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
         //MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
 
-        driverGamepad.getButtonA().whenPressed(new ZeroElevator());
-        driverGamepad.getButtonX().whenPressed(new ZeroWrist());
-        driverGamepad.getButtonB().whenPressed(new ToggleArm());
+        if (mode == DemoMode.NORMAL) {
+            driverGamepad.getButtonA().whenPressed(new ZeroElevator());
+            driverGamepad.getButtonX().whenPressed(new ZeroWrist());
+            driverGamepad.getButtonB().whenPressed(new ToggleArm());
 
-        driverGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
-        driverGamepad.getDownDPadButton().whenPressed(groundCargo);
-        driverGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
-        driverGamepad.getButtonY().whenPressed(new SetArm(Arm.IN));
-        //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
+            driverGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
+            driverGamepad.getDownDPadButton().whenPressed(groundCargo);
+            driverGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
+            driverGamepad.getButtonY().whenPressed(new SetArm(Arm.IN));
+            //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
+        }
+        else {
+            //Operator Controller (For guest) Left Joystick controls Drivetrain (10% speed)
+            //Driver Controller (For Robotics Member) Left Joystick Y Controls Elevator (30% speed), and Driver Right Joystick X Controls Wrist (30% Speed)
+            driverGamepad.getButtonBumperLeft().whenPressed(new ZeroElevator());
+            driverGamepad.getButtonBumperRight().whenPressed(new ZeroWrist());
+            driverGamepad.getButtonX().whenPressed(new ToggleFlower());
+            driverGamepad.getButtonB().whenPressed(new ToggleExtender());
+            driverGamepad.getButtonA().whenPressed(new ToggleArm());
+
+            operatorGamepad.getButtonA().whenPressed(groundCargo);
+            operatorGamepad.getButtonX().whenPressed(frontShipAndLoading);
+            operatorGamepad.getButtonB().whenPressed(backShipAndLoading);
+            operatorGamepad.getButtonY().whenPressed(backHatch);
+        }
     }
 
     public XboxGamepad getDriverGamepad() {

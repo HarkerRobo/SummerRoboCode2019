@@ -42,18 +42,17 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotInit() {
+        //Initialize OI and button bindings
+        OI.getInstance();
+        
         //Initialize Subsystems
         Drivetrain.getInstance();
-        System.out.println("Drivetrain Instantiated");
         Elevator.getInstance();
         Wrist.getInstance();
         Arm.getInstance();
         HatchExtender.getInstance();
         HatchFlower.getInstance();
         WristRollers.getInstance();
-
-        //Initialize OI and button bindings
-        OI.getInstance();
     }
 
     /**
@@ -68,9 +67,9 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         SmartDashboard.putString("Drivetrain Command", Drivetrain.getInstance().getCurrentCommandName());
         SmartDashboard.putString("Elevator Command", Elevator.getInstance().getCurrentCommandName());
-        SmartDashboard.putNumber("Current", Elevator.getInstance().getMaster().getOutputCurrent());
-        
         SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
+        SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
+        SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
     }
 
     /**
@@ -106,9 +105,6 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-
-        SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
     }
 
     @Override

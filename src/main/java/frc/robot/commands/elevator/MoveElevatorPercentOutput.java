@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
+import frc.robot.OI.DemoMode;
 import frc.robot.subsystems.Elevator;
 import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
@@ -36,7 +37,9 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
 
     @Override
     protected void execute() {
-        double output = SPEED_MULTIPLIER * MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightY(), OI.XBOX_JOYSTICK_DEADBAND);
+        double joystickValue = ((OI.mode == DemoMode.NORMAL) ? OI.getInstance().getDriverGamepad().getRightY() : OI.getInstance().getDriverGamepad().getLeftY());
+        
+        double output = SPEED_MULTIPLIER * MathUtil.mapJoystickOutput(joystickValue, OI.XBOX_JOYSTICK_DEADBAND);
         
         if (Math.abs(output) > 0) {
             Elevator.getInstance().getMaster().set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Math.signum(output) * Elevator.kS);
