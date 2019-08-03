@@ -23,12 +23,11 @@ import harkerrobolib.util.Conversions.SpeedUnit;
  * @since 6/15/19
  */
 public class DriveWithVelocity extends IndefiniteCommand {
-    private static double SPEED_MULTIPLIER;
+    private static final double SPEED_MULTIPLIER = 0.2;
     private boolean hasJoystickInput;
 
     public DriveWithVelocity() {
         requires(Drivetrain.getInstance());
-        SPEED_MULTIPLIER = ((OI.mode == DemoMode.NORMAL) ? 0.2 : 0.1);
     }
 
     @Override
@@ -38,6 +37,8 @@ public class DriveWithVelocity extends IndefiniteCommand {
         Drivetrain.getInstance().applyToMasters((talon) -> talon.setNeutralMode(NeutralMode.Brake));
 
         hasJoystickInput = false;
+
+        SmartDashboard.putString("Drivetrain Mode", "Manual");
     }
 
     @Override

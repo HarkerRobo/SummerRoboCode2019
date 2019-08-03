@@ -1,20 +1,17 @@
 package frc.robot;
 
-import frc.robot.commands.wrist.MoveWristMotionMagic;
 import frc.robot.commands.wrist.ZeroWrist;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Wrist;
-import frc.robot.auton.CurveRightEndStraight;
-import frc.robot.auton.StraightLinePath5Ft;
-import frc.robot.auton.StraightLinePath8Ft;
 import frc.robot.commands.MoveElevatorAndWrist;
 import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.arm.ToggleArm;
-import frc.robot.commands.drivetrain.DriveWithMotionProfile;
+import frc.robot.commands.drivetrain.DriveWithLimelight;
 import frc.robot.commands.elevator.ZeroElevator;
 import frc.robot.commands.extender.ToggleExtender;
 import frc.robot.commands.flower.ToggleFlower;
+import harkerrobolib.commands.ConditionalCommand;
 import harkerrobolib.wrappers.XboxGamepad;
 
 /**
@@ -24,7 +21,7 @@ import harkerrobolib.wrappers.XboxGamepad;
  * @since 6/14/19
  */
 public class OI {
-    public static final DemoMode mode = DemoMode.SAFE;
+    public static final DemoMode mode = DemoMode.NORMAL;
     
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
     public static final double XBOX_TRIGGER_DEADBAND = 0.1;
@@ -78,7 +75,6 @@ public class OI {
             driverGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
             driverGamepad.getDownDPadButton().whenPressed(groundCargo);
             driverGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
-            driverGamepad.getButtonY().whenPressed(new SetArm(Arm.IN));
             //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
         }
         else {

@@ -79,6 +79,10 @@ public class Drivetrain extends HSDrivetrain {
     private static final double MOTION_PROF_RIGHT_kD = 0;
     public static final double MOTION_PROF_RAMP_RATE = 0;
 
+    public static final double LIMELIGHT_kP = 0;
+    public static final double LIMELIGHT_kI = 0;
+    public static final double LIMELIGHT_kD = 0;
+
     private static final int MOTION_FRAME_PERIOD = 10;
 
     public static final double MAX_FORWARD_VELOCITY = 14;
