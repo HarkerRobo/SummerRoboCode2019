@@ -23,7 +23,7 @@ import harkerrobolib.util.Conversions.SpeedUnit;
  * @since 6/15/19
  */
 public class DriveWithVelocity extends IndefiniteCommand {
-    private static final double SPEED_MULTIPLIER = 0.2;
+    private static final double SPEED_MULTIPLIER = 0.3;
     private boolean hasJoystickInput;
 
     public DriveWithVelocity() {
