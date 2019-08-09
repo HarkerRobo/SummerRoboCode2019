@@ -51,6 +51,10 @@ public class HSPIDController {
         return outputGetter.getOutput();
     }
 
+    public double getError() {
+        return controller.getError();
+    }
+
     public PIDController getPIDController() {
         return controller;
     }

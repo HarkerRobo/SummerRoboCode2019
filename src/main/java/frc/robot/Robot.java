@@ -20,6 +20,8 @@ import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristRollers;
+import harkerrobolib.auto.ParallelCommandGroup;
+import harkerrobolib.commands.CancelCommand;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -118,6 +120,13 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         Drivetrain.getInstance().applyToMasters((talon) -> talon.clearMotionProfileTrajectories());
+
+        if (Drivetrain.getInstance().getCurrentCommand() != null)
+            new CancelCommand(Drivetrain.getInstance().getCurrentCommand()).start();
+        if (Elevator.getInstance().getCurrentCommand() != null)
+            new CancelCommand(Elevator.getInstance().getCurrentCommand()).start();
+        if (Wrist.getInstance().getCurrentCommand() != null)
+            new CancelCommand(Wrist.getInstance().getCurrentCommand()).start();
         
         Drivetrain.getInstance().setNeutralMode(NeutralMode.Coast);
         Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
@@ -127,5 +136,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
+        if (Drivetrain.getInstance().getCurrentCommand() != null)
+            new CancelCommand(Drivetrain.getInstance().getCurrentCommand()).start();
+        if (Elevator.getInstance().getCurrentCommand() != null)
+            new CancelCommand(Elevator.getInstance().getCurrentCommand()).start();
+        if (Wrist.getInstance().getCurrentCommand() != null)
+            new CancelCommand(Wrist.getInstance().getCurrentCommand()).start();
     }
 }

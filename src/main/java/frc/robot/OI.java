@@ -55,7 +55,7 @@ public class OI {
     public void initBindings() {
         MoveElevatorAndWrist groundCargo = new MoveElevatorAndWrist(100, -150);
         
-        MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(7320, Wrist.HORIZONTAL_BACK);
+        MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(7320, 2000);
         
         MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
         MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 120);
@@ -71,10 +71,14 @@ public class OI {
             driverGamepad.getButtonA().whenPressed(new ZeroElevator());
             driverGamepad.getButtonX().whenPressed(new ZeroWrist());
             driverGamepad.getButtonB().whenPressed(new ToggleArm());
+            driverGamepad.getButtonY().whenPressed(new DriveWithLimelight());
+
+            driverGamepad.getButtonBumperLeft().whenPressed(new ToggleFlower());
 
             driverGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
             driverGamepad.getDownDPadButton().whenPressed(groundCargo);
             driverGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
+            driverGamepad.getLeftDPadButton().whenPressed(backHatch);
             //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
         }
         else {
