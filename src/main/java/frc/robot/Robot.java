@@ -119,14 +119,16 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        Drivetrain.getInstance().applyToMasters((talon) -> talon.clearMotionProfileTrajectories());
-
         if (Drivetrain.getInstance().getCurrentCommand() != null)
             new CancelCommand(Drivetrain.getInstance().getCurrentCommand()).start();
         if (Elevator.getInstance().getCurrentCommand() != null)
             new CancelCommand(Elevator.getInstance().getCurrentCommand()).start();
         if (Wrist.getInstance().getCurrentCommand() != null)
             new CancelCommand(Wrist.getInstance().getCurrentCommand()).start();
+
+        Drivetrain.getInstance().applyToMasters((talon) -> talon.clearMotionProfileTrajectories());
+        Elevator.getInstance().getMaster().clearMotionProfileTrajectories();
+        Wrist.getInstance().getMaster().clearMotionProfileTrajectories();
         
         Drivetrain.getInstance().setNeutralMode(NeutralMode.Coast);
         Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);

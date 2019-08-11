@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.wrist.MoveWristPercentOutput;
 import harkerrobolib.util.MathUtil;
@@ -37,6 +36,7 @@ public class Wrist extends Subsystem {
     public static final int MIDDLE_POSITION = 1050;
     public static final int HORIZONTAL_FRONT = 0;
     public static final int HORIZONTAL_BACK = 2035;
+    public static final int DEFENSE_POSITION = 910;
 
     public static final double CARGO_FF = -0.1;
     public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.07; //Gravity FF required to keep the wrist level at 0 degrees
@@ -56,6 +56,7 @@ public class Wrist extends Subsystem {
     public static final double VELOCITY_KF = kF;
 
     public static final int ALLOWABLE_ERROR = 50;
+    public static final int MIDDLE_VARIANCE = 200;
 
     private Wrist() {
         master = new TalonSRX(RobotMap.CAN_IDS.WRIST_MASTER);

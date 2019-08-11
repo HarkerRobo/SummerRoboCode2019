@@ -21,16 +21,16 @@ public class MoveWristMotionMagic extends TimedCommand {
 
     private static final double TIMEOUT = 3.0;
     private static final double INVALID_TIME = 0.06;
-    private double setpoint;
+    private int setpoint;
     private double prevVel;
     private double startTime;
     private double allowableError;
 
-    public MoveWristMotionMagic(double setpoint) {
+    public MoveWristMotionMagic(int setpoint) {
         this(setpoint, Wrist.ALLOWABLE_ERROR);
     }
 
-    public MoveWristMotionMagic(double setpoint, double allowableError) {
+    public MoveWristMotionMagic(int setpoint, double allowableError) {
         super(TIMEOUT);
         requires(Wrist.getInstance());
         if (setpoint > Wrist.BACKMOST_POSITION || setpoint < Wrist.FRONTMOST_POSITION) {
