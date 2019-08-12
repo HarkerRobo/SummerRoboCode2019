@@ -41,6 +41,9 @@ public class MoveElevatorMotionMagic extends TimedCommand {
     protected void initialize() {
         Elevator.getInstance().getMaster().selectProfileSlot(Elevator.MOTION_MAGIC_SLOT, RobotMap.PRIMARY_PID_INDEX);
         startTime = Timer.getFPGATimestamp();
+
+        Elevator.getInstance().getMaster().configForwardSoftLimitEnable(true);
+        Elevator.getInstance().getMaster().configReverseSoftLimitEnable(true);
     }
 
     @Override

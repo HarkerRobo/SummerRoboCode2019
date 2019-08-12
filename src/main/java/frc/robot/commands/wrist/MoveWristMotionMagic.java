@@ -46,6 +46,9 @@ public class MoveWristMotionMagic extends TimedCommand {
     protected void initialize() {
         Wrist.getInstance().getMaster().selectProfileSlot(Wrist.MOTION_MAGIC_SLOT, RobotMap.PRIMARY_PID_INDEX);
         startTime = Timer.getFPGATimestamp();
+
+        Wrist.getInstance().getMaster().configForwardSoftLimitEnable(true);
+        Wrist.getInstance().getMaster().configReverseSoftLimitEnable(true);
     }
 
     @Override
@@ -55,6 +58,8 @@ public class MoveWristMotionMagic extends TimedCommand {
         double totalErrorSign = Math.signum(setpoint - Wrist.getInstance().getMaster().getSelectedSensorPosition());
         Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * totalErrorSign + Wrist.kA * accelSign * Wrist.MAX_ACCELERATION);
         prevVel = vel;
+
+        SmartDashboard.putNumber("Wrist Error", Wrist.getInstance().getMaster().getClosedLoopError());
     }
 
     @Override
