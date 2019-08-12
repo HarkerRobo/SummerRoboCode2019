@@ -33,6 +33,9 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
     protected void initialize() {
         lastSetpoint = Elevator.getInstance().getMaster().getSelectedSensorPosition();
         shouldHold = false;
+
+        Elevator.getInstance().getMaster().configForwardSoftLimitEnable(false);
+        Elevator.getInstance().getMaster().configReverseSoftLimitEnable(false);
     }
 
     @Override

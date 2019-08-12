@@ -22,7 +22,7 @@ import harkerrobolib.wrappers.XboxGamepad;
  * @since 6/14/19
  */
 public class OI {
-    public static final DemoMode mode = DemoMode.NORMAL;
+    public static final DemoMode mode = DemoMode.SAFE;
     
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
     public static final double XBOX_TRIGGER_DEADBAND = 0.1;
@@ -61,7 +61,8 @@ public class OI {
         MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
         MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 120);
 
-        MoveElevatorAndWrist defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
+        MoveElevatorAndWrist 
+        defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
         
         //MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
         //MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
@@ -76,7 +77,7 @@ public class OI {
             driverGamepad.getButtonA().whenPressed(new ZeroElevator());
             driverGamepad.getButtonX().whenPressed(new ZeroWrist());
             driverGamepad.getButtonB().whenPressed(new ToggleArm());
-            driverGamepad.getButtonY().whenPressed(new DriveWithLimelight());
+            driverGamepad.getButtonY().whileHeld(new DriveWithLimelight());
 
             driverGamepad.getButtonBumperRight().whenPressed(defenseMode);
 
@@ -91,18 +92,20 @@ public class OI {
             //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
         }
         else {
-            //Operator Controller (For guest) Left Joystick controls Drivetrain (10% speed)
+            //Driver Controller (For guest) Left Joystick controls Drivetrain (30% speed)
             //Driver Controller (For Robotics Member) Left Joystick Y Controls Elevator (30% speed), and Driver Right Joystick X Controls Wrist (30% Speed)
             driverGamepad.getButtonBumperLeft().whenPressed(new ZeroElevator());
             driverGamepad.getButtonBumperRight().whenPressed(new ZeroWrist());
-            driverGamepad.getButtonX().whenPressed(new ToggleFlower());
-            driverGamepad.getButtonB().whenPressed(new ToggleExtender());
-            driverGamepad.getButtonA().whenPressed(new ToggleArm());
+            driverGamepad.getButtonY().whileHeld(new DriveWithLimelight());
 
-            operatorGamepad.getButtonA().whenPressed(groundCargo);
-            operatorGamepad.getButtonX().whenPressed(frontShipAndLoading);
-            operatorGamepad.getButtonB().whenPressed(backShipAndLoading);
-            operatorGamepad.getButtonY().whenPressed(backHatch);
+            operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
+            operatorGamepad.getButtonB().whenPressed(new ToggleExtender());
+            operatorGamepad.getButtonA().whenPressed(new ToggleArm());
+            
+            operatorGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
+            operatorGamepad.getDownDPadButton().whenPressed(groundCargo);
+            operatorGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
+            operatorGamepad.getLeftDPadButton().whenPressed(backHatch);
         }
     }
 

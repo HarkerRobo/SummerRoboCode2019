@@ -29,6 +29,9 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
     protected void initialize() {
         lastSetpoint = Wrist.getInstance().getMaster().getSelectedSensorPosition();
         shouldHold = false;
+
+        Wrist.getInstance().getMaster().configForwardSoftLimitEnable(false);
+        Wrist.getInstance().getMaster().configReverseSoftLimitEnable(false);
     }
 
     @Override

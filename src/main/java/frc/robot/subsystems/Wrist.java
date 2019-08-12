@@ -39,15 +39,15 @@ public class Wrist extends Subsystem {
     public static final int DEFENSE_POSITION = 910;
 
     public static final double CARGO_FF = -0.1;
-    public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.07; //Gravity FF required to keep the wrist level at 0 degrees
+    public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.10; //Gravity FF required to keep the wrist level at 0 degrees
     public static final double kS = 0.03;
     public static final double kA = 0.00036;
     public static final double kF = 2;
 
     public static final int MOTION_MAGIC_SLOT = 0;
     public static final double MOTION_MAGIC_KF = kF; //1.3
-    public static final double MOTION_MAGIC_KP = 1; //0.3
-    public static final double MOTION_MAGIC_KI = 0.001;
+    public static final double MOTION_MAGIC_KP = 1.2; //0.3
+    public static final double MOTION_MAGIC_KI = 0.0015;
     public static final double MOTION_MAGIC_KD = 30; //20
     public static final int CRUISE_VELOCITY = 420; //Encoder Units per 100ms
     public static final int MAX_ACCELERATION = 640; //Encoder Units per 100ms per s
@@ -71,7 +71,8 @@ public class Wrist extends Subsystem {
         master.setInverted(TALON_INVERTED);
         follower.setInverted(VICTOR_INVERTED);
         master.setSensorPhase(SENSOR_PHASE);
-
+        master.configForwardSoftLimitThreshold(BACKMOST_POSITION);
+        master.configReverseSoftLimitThreshold(FRONTMOST_POSITION);
         configVoltageComp();
         setupMotionMagic();
         setupVelocity();
