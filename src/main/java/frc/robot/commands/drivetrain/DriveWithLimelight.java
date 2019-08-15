@@ -30,7 +30,7 @@ public class DriveWithLimelight extends IndefiniteCommand{
 
     public DriveWithLimelight() {
         requires(Drivetrain.getInstance());
-        controller = new HSPIDController(Drivetrain.LIMELIGHT_kP, Drivetrain.LIMELIGHT_kI, Drivetrain.LIMELIGHT_kD, 
+        controller = new HSPIDController(Drivetrain.TX_kP, Drivetrain.TX_kI, Drivetrain.TX_kD, 
                 () -> Limelight.getTx(), PIDSourceType.kDisplacement);
     }
 
@@ -71,6 +71,6 @@ public class DriveWithLimelight extends IndefiniteCommand{
     protected void end() {
         controller.reset();
         Drivetrain.getInstance().applyToMasters((talon) -> talon.set(ControlMode.Disabled, 0));
-        Drivetrain.getInstance().applyToMasters((talon) -> talon.setNeutralMode(NeutralMode.Brake));
+        Drivetrain.getInstance().applyToMasters((talon) -> talon.setNeutralMode(NeutralMode.Coast));
     }
 }

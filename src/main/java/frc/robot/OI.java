@@ -4,13 +4,17 @@ import frc.robot.commands.wrist.MoveWristMotionMagic;
 import frc.robot.commands.wrist.ZeroWrist;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.HatchExtender;
+import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
 import frc.robot.commands.MoveElevatorAndWrist;
 import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.arm.ToggleArm;
 import frc.robot.commands.drivetrain.DriveWithLimelight;
 import frc.robot.commands.elevator.ZeroElevator;
+import frc.robot.commands.extender.SetExtender;
 import frc.robot.commands.extender.ToggleExtender;
+import frc.robot.commands.flower.SetFlower;
 import frc.robot.commands.flower.ToggleFlower;
 import harkerrobolib.commands.ConditionalCommand;
 import harkerrobolib.wrappers.XboxGamepad;
@@ -43,7 +47,11 @@ public class OI {
         /**
          * Safe Controls and Speeds for Demos where others will be driving
          */
-        SAFE
+        SAFE,
+
+        GROUPA,
+
+        GROUPB
     }
 
     private OI() {
@@ -91,7 +99,7 @@ public class OI {
 
             //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
         }
-        else {
+        else if (mode == DemoMode.SAFE) {
             //Driver Controller (For guest) Left Joystick controls Drivetrain (30% speed)
             //Driver Controller (For Robotics Member) Left Joystick Y Controls Elevator (30% speed), and Driver Right Joystick X Controls Wrist (30% Speed)
             driverGamepad.getButtonBumperLeft().whenPressed(new ZeroElevator());
@@ -106,6 +114,17 @@ public class OI {
             operatorGamepad.getDownDPadButton().whenPressed(groundCargo);
             operatorGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
             operatorGamepad.getLeftDPadButton().whenPressed(backHatch);
+
+            
+        } 
+        else if (mode == DemoMode.GROUPA) {
+
+            operatorGamepad.getButtonY().whenPressed(new SetFlower(HatchFlower.OPEN));
+            operatorGamepad.getButtonX().whenPressed(new SetFlower(HatchFlower.CLOSED));
+            operatorGamepad.getButtonB().whenPressed(new SetExtender(HatchExtender.OUT));
+            operatorGamepad.getButtonA().whenPressed(new SetExtender(HatchExtender.IN));
+            operatorGamepad.getButtonBumperLeft().whenPressed(new ToggleFlower());
+            operatorGamepad.getButtonBumperRight().whenPressed(new ToggleExtender());
         }
     }
 
