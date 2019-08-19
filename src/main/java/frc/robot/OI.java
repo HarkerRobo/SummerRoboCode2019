@@ -7,15 +7,19 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
+import frc.robot.auton.StraightLinePath5Ft;
 import frc.robot.commands.MoveElevatorAndWrist;
 import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.arm.ToggleArm;
+import frc.robot.commands.drivetrain.AlignWithLimelight;
 import frc.robot.commands.drivetrain.DriveWithLimelight;
+import frc.robot.commands.drivetrain.DriveWithMotionProfile;
 import frc.robot.commands.elevator.ZeroElevator;
 import frc.robot.commands.extender.SetExtender;
 import frc.robot.commands.extender.ToggleExtender;
 import frc.robot.commands.flower.SetFlower;
 import frc.robot.commands.flower.ToggleFlower;
+import harkerrobolib.auto.SequentialCommandGroup;
 import harkerrobolib.commands.ConditionalCommand;
 import harkerrobolib.wrappers.XboxGamepad;
 
@@ -47,11 +51,7 @@ public class OI {
         /**
          * Safe Controls and Speeds for Demos where others will be driving
          */
-        SAFE,
-
-        GROUPA,
-
-        GROUPB
+        SAFE
     }
 
     private OI() {
@@ -69,8 +69,10 @@ public class OI {
         MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
         MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 120);
 
-        MoveElevatorAndWrist 
-        defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
+        MoveElevatorAndWrist defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
+
+        //operatorGamepad.getButtonBumperLeft().whenPressed(new MoveElevatorAndWrist(19000, 1644)); Back Hatch 2?
+        //operatorGamepad.getButtonBumperRight().whenPressed(new MoveElevatorAndWrist(6000, 2000)); Back Cargo 1?
         
         //MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
         //MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
@@ -80,6 +82,14 @@ public class OI {
         //MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
 
         //MoveElevatorAndWrist defenseMode = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
+
+        SequentialCommandGroup testAuton = new SequentialCommandGroup(
+                new SetFlower(HatchFlower.OPEN),
+                /*new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10),*/
+                new AlignWithLimelight(), 
+                backHatch,
+                new SetFlower(HatchFlower.CLOSED)
+        );
 
         if (mode == DemoMode.NORMAL) {
             driverGamepad.getButtonA().whenPressed(new ZeroElevator());
@@ -99,7 +109,7 @@ public class OI {
 
             //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
         }
-        else if (mode == DemoMode.SAFE) {
+        else  {
             //Driver Controller (For guest) Left Joystick controls Drivetrain (30% speed)
             //Driver Controller (For Robotics Member) Left Joystick Y Controls Elevator (30% speed), and Driver Right Joystick X Controls Wrist (30% Speed)
             driverGamepad.getButtonBumperLeft().whenPressed(new ZeroElevator());
@@ -115,16 +125,10 @@ public class OI {
             operatorGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
             operatorGamepad.getLeftDPadButton().whenPressed(backHatch);
 
+            //operatorGamepad.getButtonBumperLeft();
+            driverGamepad.getButtonStart().whenPressed(new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10, true));
+            driverGamepad.getButtonSelect().whenPressed(new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10, false));
             
-        } 
-        else if (mode == DemoMode.GROUPA) {
-
-            operatorGamepad.getButtonY().whenPressed(new SetFlower(HatchFlower.OPEN));
-            operatorGamepad.getButtonX().whenPressed(new SetFlower(HatchFlower.CLOSED));
-            operatorGamepad.getButtonB().whenPressed(new SetExtender(HatchExtender.OUT));
-            operatorGamepad.getButtonA().whenPressed(new SetExtender(HatchExtender.IN));
-            operatorGamepad.getButtonBumperLeft().whenPressed(new ToggleFlower());
-            operatorGamepad.getButtonBumperRight().whenPressed(new ToggleExtender());
         }
     }
 

@@ -113,6 +113,7 @@ public class Drivetrain extends HSDrivetrain {
 
         Conversions.setWheelDiameter(WHEEL_DIAMETER);
         applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
+        applyToMasters((talon) -> talon.setSensorPhase(false));
     }
 
     public void initDefaultCommand() {

@@ -14,6 +14,15 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.PIDSourceType;
 
+/**
+ * Aligns the Robot with the target, using the Limelight's tX to turn towards the target
+ * and its thor to get close enough to the target
+ * 
+ * @author Angela Jia
+ * @author Jatin Kohli
+ * 
+ * @since 8/14/19
+ */
 public class AlignWithLimelight extends Command {
     
     private HSPIDController txController;

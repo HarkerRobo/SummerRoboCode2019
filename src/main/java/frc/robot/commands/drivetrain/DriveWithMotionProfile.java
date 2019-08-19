@@ -28,13 +28,15 @@ public class DriveWithMotionProfile extends Command {
     private double leftLastSetpoint;
     private double rightLastSetpoint;
     private double timeTaken;
+    private boolean inverted;
 
     /**
      * @param leftPath The 2D Array of doubles representing the left side path (p,v,a,h)
      * @param rightPath The 2D Array of doubles representing the right side path (p,v,a,h)
      * @param timeDur The time between each segment of the path in milliseconds
+     * @param invert If true, invert sensor phase and all motor controllers only during command; otherwise, remain the same
      */
-    public DriveWithMotionProfile(double[][] leftPath, double[][] rightPath, int timeDur) {
+    public DriveWithMotionProfile(double[][] leftPath, double[][] rightPath, int timeDur, boolean invert) {
         requires(Drivetrain.getInstance());
         leftStream = new BufferedTrajectoryPointStream();
         rightStream = new BufferedTrajectoryPointStream();
@@ -42,6 +44,7 @@ public class DriveWithMotionProfile extends Command {
         setupTrajectoryStream(rightStream, rightPath, false);
         Drivetrain.getInstance().applyToMasters((talon) -> talon.configMotionProfileTrajectoryPeriod(timeDur));
         timeTaken = leftPath.length * timeDur;
+        inverted = invert;
     }
 
     private void setupTrajectoryStream(BufferedTrajectoryPointStream stream, double [][] path, boolean isLeft) {
@@ -67,7 +70,12 @@ public class DriveWithMotionProfile extends Command {
     
     @Override
     protected void initialize() {
+        System.out.println("mp initialize");
         Drivetrain.getInstance().applyToMasters((talon) -> talon.selectProfileSlot(Drivetrain.MOTION_PROF_SLOT, RobotMap.PRIMARY_PID_INDEX));
+        if(inverted) {
+            Drivetrain.getInstance().applyToAll((talon) -> talon.setInverted(!talon.getInverted()));
+            //Drivetrain.getInstance().applyToMasters((talon) -> talon.setSensorPhase(true));
+        }
         Drivetrain.getInstance().getLeftMaster().startMotionProfile(leftStream, MIN_BUFFERED_PTS, ControlMode.MotionProfile);
         Drivetrain.getInstance().getRightMaster().startMotionProfile(rightStream, MIN_BUFFERED_PTS, ControlMode.MotionProfile);
     }
@@ -86,10 +94,16 @@ public class DriveWithMotionProfile extends Command {
 
     @Override
     protected void end() {
+        System.out.println("mp end");
+        if(inverted) {
+            Drivetrain.getInstance().applyToAll((talon) -> talon.setInverted(!talon.getInverted()));
+            Drivetrain.getInstance().applyToMasters((talon) -> talon.setSensorPhase(false));
+        }
     }
 
     @Override
     protected void interrupted() {
+        System.out.println("mp interrupted");
         end();
     }
 }
