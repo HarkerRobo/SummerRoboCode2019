@@ -72,10 +72,6 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
         SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
         SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("left dt pos", Drivetrain.getInstance().getLeftMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("right dt pos", Drivetrain.getInstance().getRightMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("dt Left Error", Drivetrain.getInstance().getLeftMaster().getClosedLoopError());
-        SmartDashboard.putNumber("dt Right Error", Drivetrain.getInstance().getRightMaster().getClosedLoopError());
     }
 
     /**

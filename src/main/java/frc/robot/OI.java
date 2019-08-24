@@ -7,6 +7,8 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
+import frc.robot.auton.CurveRightEndStraight;
+import frc.robot.auton.SmoothCurveRightEndStraight;
 import frc.robot.auton.StraightLinePath5Ft;
 import frc.robot.commands.MoveElevatorAndWrist;
 import frc.robot.commands.arm.SetArm;
@@ -67,7 +69,7 @@ public class OI {
         MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(7320, 2000);
         
         MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
-        MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 120);
+        MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
 
         MoveElevatorAndWrist defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
 
@@ -126,9 +128,11 @@ public class OI {
             operatorGamepad.getLeftDPadButton().whenPressed(backHatch);
 
             //operatorGamepad.getButtonBumperLeft();
-            driverGamepad.getButtonStart().whenPressed(new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10, true));
-            driverGamepad.getButtonSelect().whenPressed(new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10, false));
-            
+            //driverGamepad.getLeftDPadButton().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
+            //driverGamepad.getUpDPadButton().whenPressed(new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10));
+            //driverGamepad.getButtonStart().whenPressed(new DriveWithMotionProfile(SmoothCurveRightEndStraight.SmoothCurveRightEndStraightLeft, SmoothCurveRightEndStraight.SmoothCurveRightEndStraightRight, 10));
+            //driverGamepad.getButtonSelect().whenPressed(new DriveWithMotionProfile(SmoothCurveRightEndStraight.SmoothCurveRightEndStraightLeftReversed, SmoothCurveRightEndStraight.SmoothCurveRightEndStraightRightReversed, 10));
+
         }
     }
 

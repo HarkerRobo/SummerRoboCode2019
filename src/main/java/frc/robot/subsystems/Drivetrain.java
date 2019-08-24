@@ -70,14 +70,14 @@ public class Drivetrain extends HSDrivetrain {
     //Motion Profiling Constants
     public static final int MOTION_PROF_SLOT = 2;
     private static final double MOTION_PROF_LEFT_kF = leftkF;
-    private static final double MOTION_PROF_LEFT_kP = 1;
+    private static final double MOTION_PROF_LEFT_kP = 1.3;
     private static final double MOTION_PROF_LEFT_kI = 0;
-    private static final double MOTION_PROF_LEFT_kD = 0;
+    private static final double MOTION_PROF_LEFT_kD = 30;//20;
     private static final double MOTION_PROF_RIGHT_kF = rightkF;
     private static final double MOTION_PROF_RIGHT_kP = 1;
     private static final double MOTION_PROF_RIGHT_kI = 0;
-    private static final double MOTION_PROF_RIGHT_kD = 0;
-    public static final double MOTION_PROF_RAMP_RATE = 0;
+    private static final double MOTION_PROF_RIGHT_kD = 10;
+    public static final double MOTION_PROF_RAMP_RATE = 0.1;
 
     public static final double TX_kP = 0.018;//0.014;
     public static final double TX_kI = 0;
