@@ -59,6 +59,10 @@ public class HSPIDController {
         return controller;
     }
 
+    public void setSetpoint(double setpoint) {
+        controller.setSetpoint(setpoint);
+    }
+
     /**
      * Creates a PIDOutput to retrieve the necessary output from the PIDController
      * 

@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -46,11 +47,12 @@ public class Wrist extends Subsystem {
 
     public static final int MOTION_MAGIC_SLOT = 0;
     public static final double MOTION_MAGIC_KF = kF; //1.3
-    public static final double MOTION_MAGIC_KP = 1.2; //0.3
+    public static final double MOTION_MAGIC_KP = 0.9; //1.2
     public static final double MOTION_MAGIC_KI = 0.0015;
-    public static final double MOTION_MAGIC_KD = 30; //20
+    public static final double MOTION_MAGIC_KD = 30;
     public static final int CRUISE_VELOCITY = 420; //Encoder Units per 100ms
     public static final int MAX_ACCELERATION = 640; //Encoder Units per 100ms per s
+    public static final double RAMP_RATE = 0.1;
 
     public static final int VELOCITY_SLOT = 1;
     public static final double VELOCITY_KF = kF;
@@ -77,6 +79,7 @@ public class Wrist extends Subsystem {
         setupMotionMagic();
         setupVelocity();
         master.setSelectedSensorPosition(FRONTMOST_POSITION);
+        master.setNeutralMode(NeutralMode.Coast);
     }
 
     @Override
@@ -93,6 +96,7 @@ public class Wrist extends Subsystem {
         master.configMotionCruiseVelocity(CRUISE_VELOCITY);
         master.configMotionAcceleration(MAX_ACCELERATION);
         master.setStatusFramePeriod(StatusFrame.Status_10_Targets, 10);
+        //master.configClosedloopRamp(RAMP_RATE);
     }
 
     private void setupVelocity() {

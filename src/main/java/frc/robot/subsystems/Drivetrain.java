@@ -79,11 +79,15 @@ public class Drivetrain extends HSDrivetrain {
     private static final double MOTION_PROF_RIGHT_kD = 10;
     public static final double MOTION_PROF_RAMP_RATE = 0.1;
 
+    public static final double TX_SETPOINT = 0;
+    public static final double TX_ALLOWABLE_ERROR = 1;
     public static final double TX_kP = 0.018;//0.014;
     public static final double TX_kI = 0;
     public static final double TX_kD = 0;
 
-    public static final double THOR_kP = 0;
+    public static final double THOR_SETPOINT = 117;
+    public static final double THOR_ALLOWABLE_ERROR = 3;
+    public static final double THOR_kP = 0.0077;
     public static final double THOR_kI = 0;
     public static final double THOR_kD = 0;
 

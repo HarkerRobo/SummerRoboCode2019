@@ -1,6 +1,7 @@
 package frc.robot.commands.drivetrain;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.util.HSPIDController;
@@ -35,6 +36,9 @@ public class AlignWithLimelight extends Command {
                 () -> Limelight.getTx(), PIDSourceType.kDisplacement);
         thorController = new HSPIDController(Drivetrain.THOR_kP, Drivetrain.THOR_kI, Drivetrain.THOR_kD, 
                 () -> Limelight.getThor(), PIDSourceType.kDisplacement);
+
+        txController.setSetpoint(Drivetrain.TX_SETPOINT);
+        thorController.setSetpoint(Drivetrain.THOR_SETPOINT);
     }
 
     @Override
@@ -49,19 +53,24 @@ public class AlignWithLimelight extends Command {
 
     @Override
     protected void execute() {
+        double speed = -thorController.getOutput() * Drivetrain.MAX_FORWARD_VELOCITY;
         double turn = txController.getOutput() * Drivetrain.MAX_TURN_VELOCITY;
-        double speed = thorController.getOutput() * Drivetrain.MAX_FORWARD_VELOCITY;
 
         speed = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, speed, SpeedUnit.ENCODER_UNITS);
         turn = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, turn, SpeedUnit.ENCODER_UNITS);
         
-        Drivetrain.getInstance().getLeftMaster().set(ControlMode.Velocity, speed - turn, DemandType.ArbitraryFeedForward, Math.signum(speed + turn)*Drivetrain.leftkS);
-        Drivetrain.getInstance().getRightMaster().set(ControlMode.Velocity, speed + turn, DemandType.ArbitraryFeedForward, Math.signum(speed - turn)*Drivetrain.rightkS);
+        Drivetrain.getInstance().getLeftMaster().set(ControlMode.Velocity, speed - turn, DemandType.ArbitraryFeedForward, Math.signum(speed - turn)*Drivetrain.leftkS);
+        Drivetrain.getInstance().getRightMaster().set(ControlMode.Velocity, speed + turn, DemandType.ArbitraryFeedForward, Math.signum(speed + turn)*Drivetrain.rightkS);
+    
+        SmartDashboard.putNumber("thor", Limelight.getThor());
+        SmartDashboard.putNumber("tx Error", txController.getError());
+        SmartDashboard.putNumber("thor Error", thorController.getError());
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return Math.abs(txController.getError()) < Drivetrain.TX_ALLOWABLE_ERROR &&
+                Math.abs(thorController.getError()) < Drivetrain.THOR_ALLOWABLE_ERROR;
     }
 
     @Override

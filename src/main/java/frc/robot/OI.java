@@ -85,13 +85,14 @@ public class OI {
 
         //MoveElevatorAndWrist defenseMode = new MoveElevatorAndWrist(elevatorSetpoint, wristSetpoint);
 
-        SequentialCommandGroup testAuton = new SequentialCommandGroup(
-                new SetFlower(HatchFlower.OPEN),
-                /*new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10),*/
-                new AlignWithLimelight(), 
-                backHatch,
-                new SetFlower(HatchFlower.CLOSED)
-        );
+
+        // SequentialCommandGroup testAuton = new SequentialCommandGroup(
+        //         new SetFlower(HatchFlower.OPEN),
+        //         /*new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10),*/
+        //         new AlignWithLimelight(), 
+        //         backHatch,
+        //         new SetFlower(HatchFlower.CLOSED)
+        // );
 
         if (mode == DemoMode.NORMAL) {
             driverGamepad.getButtonA().whenPressed(new ZeroElevator());
@@ -116,7 +117,9 @@ public class OI {
             //Driver Controller (For Robotics Member) Left Joystick Y Controls Elevator (30% speed), and Driver Right Joystick X Controls Wrist (30% Speed)
             driverGamepad.getButtonBumperLeft().whenPressed(new ZeroElevator());
             driverGamepad.getButtonBumperRight().whenPressed(new ZeroWrist());
-            driverGamepad.getButtonY().whileHeld(new DriveWithLimelight());
+            driverGamepad.getButtonY().toggleWhenPressed(new DriveWithLimelight());
+            driverGamepad.getButtonX().whenPressed(new AlignWithLimelight());
+            driverGamepad.getButtonSelect().whenPressed(defenseMode);
 
             operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
             operatorGamepad.getButtonB().whenPressed(new ToggleExtender());

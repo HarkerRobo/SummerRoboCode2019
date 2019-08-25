@@ -20,6 +20,7 @@ import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristRollers;
+import frc.robot.util.Limelight;
 import harkerrobolib.auto.ParallelCommandGroup;
 import harkerrobolib.commands.CancelCommand;
 
@@ -72,6 +73,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
         SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
         SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
+        
+        SmartDashboard.putNumber("thor", Limelight.getThor());
     }
 
     /**

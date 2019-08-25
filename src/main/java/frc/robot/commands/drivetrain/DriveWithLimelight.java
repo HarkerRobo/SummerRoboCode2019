@@ -32,6 +32,7 @@ public class DriveWithLimelight extends IndefiniteCommand{
         requires(Drivetrain.getInstance());
         controller = new HSPIDController(Drivetrain.TX_kP, Drivetrain.TX_kI, Drivetrain.TX_kD, 
                 () -> Limelight.getTx(), PIDSourceType.kDisplacement);
+        controller.setSetpoint(Drivetrain.TX_SETPOINT);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class DriveWithLimelight extends IndefiniteCommand{
 
     @Override
     protected void execute() {
-        double joystickY = ((OI.mode == DemoMode.NORMAL) ? OI.getInstance().getDriverGamepad().getLeftY() : OI.getInstance().getOperatorGamepad().getLeftY());
+        double joystickY = OI.getInstance().getDriverGamepad().getLeftY();
         
         double speed = MathUtil.mapJoystickOutput(joystickY, OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_FORWARD_VELOCITY * SPEED_MULTIPLIER;
         double turn = controller.getOutput() * Drivetrain.MAX_TURN_VELOCITY;
