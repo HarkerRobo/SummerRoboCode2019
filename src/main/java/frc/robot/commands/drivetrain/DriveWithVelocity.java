@@ -24,7 +24,7 @@ import harkerrobolib.util.Conversions.SpeedUnit;
  * @since 6/15/19
  */
 public class DriveWithVelocity extends IndefiniteCommand {
-    private static final double SPEED_MULTIPLIER = 0.2;
+    private static final double SPEED_MULTIPLIER = 0.3;
     private boolean hasJoystickInput;
 
     public DriveWithVelocity() {
@@ -59,6 +59,9 @@ public class DriveWithVelocity extends IndefiniteCommand {
             Drivetrain.getInstance().getLeftMaster().set(ControlMode.Velocity, speed + turn, DemandType.ArbitraryFeedForward, Math.signum(speed + turn)*Drivetrain.leftkS);
             Drivetrain.getInstance().getRightMaster().set(ControlMode.Velocity, speed - turn, DemandType.ArbitraryFeedForward, Math.signum(speed - turn)*Drivetrain.rightkS);
         }
+
+        SmartDashboard.putNumber("Left Error", Drivetrain.getInstance().getLeftMaster().getClosedLoopError());
+        SmartDashboard.putNumber("Right Error", Drivetrain.getInstance().getRightMaster().getClosedLoopError());
     }
 
     @Override

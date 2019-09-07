@@ -8,6 +8,7 @@ import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
 import frc.robot.auton.CurveRightEndStraight;
+import frc.robot.auton.CurveRightTest;
 import frc.robot.auton.SmoothCurveRightEndStraight;
 import frc.robot.auton.StraightLinePath5Ft;
 import frc.robot.commands.MoveElevatorAndWrist;
@@ -33,7 +34,7 @@ import harkerrobolib.wrappers.XboxGamepad;
  */
 public class OI {
     public static final DemoMode mode = DemoMode.SAFE;
-    
+
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
     public static final double XBOX_TRIGGER_DEADBAND = 0.1;
 
@@ -49,7 +50,7 @@ public class OI {
         /**
          * Normal Controls and Speeds for Testing or Competitions
          */
-        NORMAL, 
+        NORMAL,
         /**
          * Safe Controls and Speeds for Demos where others will be driving
          */
@@ -119,7 +120,6 @@ public class OI {
             driverGamepad.getButtonBumperRight().whenPressed(new ZeroWrist());
             driverGamepad.getButtonY().toggleWhenPressed(new DriveWithLimelight());
             driverGamepad.getButtonX().whenPressed(new AlignWithLimelight());
-            driverGamepad.getButtonSelect().whenPressed(defenseMode);
 
             operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
             operatorGamepad.getButtonB().whenPressed(new ToggleExtender());
@@ -132,10 +132,11 @@ public class OI {
 
             //operatorGamepad.getButtonBumperLeft();
             //driverGamepad.getLeftDPadButton().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
-            //driverGamepad.getUpDPadButton().whenPressed(new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10));
+            driverGamepad.getUpDPadButton().whenPressed(new DriveWithMotionProfile(StraightLinePath5Ft.pathLeft, StraightLinePath5Ft.pathRight, 10));
             //driverGamepad.getButtonStart().whenPressed(new DriveWithMotionProfile(SmoothCurveRightEndStraight.SmoothCurveRightEndStraightLeft, SmoothCurveRightEndStraight.SmoothCurveRightEndStraightRight, 10));
             //driverGamepad.getButtonSelect().whenPressed(new DriveWithMotionProfile(SmoothCurveRightEndStraight.SmoothCurveRightEndStraightLeftReversed, SmoothCurveRightEndStraight.SmoothCurveRightEndStraightRightReversed, 10));
-
+            driverGamepad.getDownDPadButton().whenPressed(new DriveWithMotionProfile(CurveRightTest.pathLeft, CurveRightTest.pathRight,10));
+            driverGamepad.getLeftDPadButton().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight,10));
         }
     }
 
