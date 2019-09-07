@@ -21,6 +21,18 @@ import harkerrobolib.util.MathUtil;
  */
 public class Wrist extends Subsystem {
 
+    static {
+        if (RobotMap.SUMMER_BOT) {
+            SENSOR_PHASE = true;
+            TALON_INVERTED = false;
+            VICTOR_INVERTED = false;
+        } else {
+            SENSOR_PHASE = false;
+            TALON_INVERTED = true;
+            VICTOR_INVERTED = true;
+        }
+    }
+
     private static Wrist instance;
 
     private TalonSRX master;
@@ -28,9 +40,9 @@ public class Wrist extends Subsystem {
 
     private static int COMPENSATION_VOLTAGE = 10;
 
-    private static final boolean SENSOR_PHASE = true;
-    private static final boolean TALON_INVERTED = false;
-    private static final boolean VICTOR_INVERTED = false;
+    private static boolean SENSOR_PHASE = true;
+    private static boolean TALON_INVERTED = false;
+    private static boolean VICTOR_INVERTED = false;
 
     public static final int FRONTMOST_POSITION = -197;
     public static final int BACKMOST_POSITION = 2095;

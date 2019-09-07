@@ -28,6 +28,10 @@ public class WristRollers extends Subsystem {
         setDefaultCommand(new SpinWristRollersManual());
     }
 
+    private void talonInit() {
+        
+    }
+
     public TalonSRX getRollers() {
         return rollers;
     }

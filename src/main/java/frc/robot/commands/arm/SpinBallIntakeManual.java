@@ -32,6 +32,7 @@ public class SpinBallIntakeManual extends IndefiniteCommand {
 
         double output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
 
-        Arm.getInstance().getRollers().set(ControlMode.PercentOutput, SPEED_MULTIPLIER * output);
+        //Arm.getInstance().getRollers().set(ControlMode.PercentOutput, SPEED_MULTIPLIER * output);
+        Arm.getInstance().getRollers().set(SPEED_MULTIPLIER * output);
     }
 }

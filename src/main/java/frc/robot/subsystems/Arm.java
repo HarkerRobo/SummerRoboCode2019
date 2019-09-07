@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -20,14 +22,16 @@ public class Arm extends Subsystem{
     private static Arm instance;
 
     private DoubleSolenoid solenoid;
-    private VictorSPX rollers;
+    //private VictorSPX rollers;
+    private CANSparkMax rollers;
 
     public static final DoubleSolenoid.Value IN = Value.kReverse;
     public static final DoubleSolenoid.Value OUT = Value.kForward;
     
     public Arm() {
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.ARM_FORWARD_CHANNEL, RobotMap.CAN_IDS.ARM_REVERSE_CHANNEL);
-        rollers = new VictorSPX(RobotMap.CAN_IDS.BALL_INTAKE_MASTER_VICTOR);
+        //rollers = new VictorSPX(RobotMap.Can_IDS.BALL_INTAKE_VICTOR);
+        rollers = new CANSparkMax(RobotMap.CAN_IDS.BALL_INTAKE_SPARK, MotorType.kBrushless);
     }
 
     @Override
@@ -39,7 +43,11 @@ public class Arm extends Subsystem{
         return solenoid;
     }
 
-    public VictorSPX getRollers() {
+    // public VictorSPX getRollers() {
+    //     return rollers;
+    // }
+
+    public CANSparkMax getRollers() {
         return rollers;
     }
 
