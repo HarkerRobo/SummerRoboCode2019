@@ -3,6 +3,7 @@ package frc.robot.commands.arm;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import frc.robot.OI;
+import frc.robot.RobotMap;
 import frc.robot.OI.DemoMode;
 import frc.robot.subsystems.Arm;
 import harkerrobolib.commands.IndefiniteCommand;
@@ -25,14 +26,22 @@ public class SpinBallIntakeManual extends IndefiniteCommand {
 
     @Override
     protected void execute() {
-        double leftTrigger = ((OI.mode == DemoMode.NORMAL) ? OI.getInstance().getDriverGamepad().getLeftTrigger() : OI.getInstance().getOperatorGamepad().getLeftTrigger());
-        double rightTrigger = ((OI.mode == DemoMode.NORMAL) ? OI.getInstance().getDriverGamepad().getRightTrigger() : OI.getInstance().getOperatorGamepad().getRightTrigger());
+        double leftTrigger = OI.getInstance().getDriverGamepad().getLeftTrigger();
+        double rightTrigger = OI.getInstance().getDriverGamepad().getRightTrigger();
         leftTrigger = MathUtil.mapJoystickOutput(-leftTrigger, OI.XBOX_TRIGGER_DEADBAND);
         rightTrigger = MathUtil.mapJoystickOutput(rightTrigger, OI.XBOX_TRIGGER_DEADBAND);
 
-        double output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
+        boolean a = OI.getInstance().getDriverGamepad().getButtonAState();
+        boolean x = OI.getInstance().getDriverGamepad().getButtonXState();
+        double output;
 
-        //Arm.getInstance().getRollers().set(ControlMode.PercentOutput, SPEED_MULTIPLIER * output);
-        Arm.getInstance().getRollers().set(SPEED_MULTIPLIER * output);
+        if (RobotMap.SUMMER_BOT) {
+            output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
+        } else {
+            output = SPEED_MULTIPLIER * (a ? 1 : (x ? -1 : 0));
+        }
+
+        Arm.getInstance().getRollers().set(ControlMode.PercentOutput, SPEED_MULTIPLIER * output);
+        //Arm.getInstance().getRollers().set(SPEED_MULTIPLIER * output);
     }
 }

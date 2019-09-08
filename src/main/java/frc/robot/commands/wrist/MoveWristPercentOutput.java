@@ -36,7 +36,12 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
 
     @Override
     protected void execute() {
-        double output = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.XBOX_JOYSTICK_DEADBAND);
+        double driverRightX = OI.getInstance().getDriverGamepad().getRightX();
+        double operatorRightX = OI.getInstance().getOperatorGamepad().getRightX();
+
+        double joystickValue = Math.abs(driverRightX) > 0 ? driverRightX : operatorRightX;
+        
+        double output = MathUtil.mapJoystickOutput(joystickValue, OI.XBOX_JOYSTICK_DEADBAND);
         
         if (Math.abs(output) > 0) {
             Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*output, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(output));

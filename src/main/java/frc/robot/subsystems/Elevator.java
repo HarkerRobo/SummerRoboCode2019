@@ -33,7 +33,7 @@ public class Elevator extends Subsystem {
     public static final int UPPER_SOFT_LIMIT = 20000;
     private static final double COMPENSATION_VOLTAGE = 10;
 
-    public static final int SAFE_UPPER_LIMIT = 19000;
+    public static final int SAFE_UPPER_LIMIT = 20000;
     public static final int PASSTHROUGH_HEIGHT = 200;
 
     private static final boolean SENSOR_PHASE = true;

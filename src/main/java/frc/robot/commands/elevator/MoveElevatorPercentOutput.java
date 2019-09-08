@@ -40,7 +40,10 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
 
     @Override
     protected void execute() {
-        double joystickValue = OI.getInstance().getDriverGamepad().getRightY();
+        double driverRightY = OI.getInstance().getDriverGamepad().getRightY();
+        double operatorRightY = OI.getInstance().getOperatorGamepad().getRightY();
+
+        double joystickValue = Math.abs(driverRightY) > 0 ? driverRightY : operatorRightY;
         
         double output = SPEED_MULTIPLIER * MathUtil.mapJoystickOutput(joystickValue, OI.XBOX_JOYSTICK_DEADBAND);
         

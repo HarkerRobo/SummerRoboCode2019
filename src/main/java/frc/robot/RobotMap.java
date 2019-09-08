@@ -13,7 +13,7 @@ public class RobotMap {
     public static final int PRIMARY_PID_INDEX = 0;
     public static final int SECONDARY_PID_INDEX = 1;
 
-    public static final boolean SUMMER_BOT = false;
+    public static final boolean SUMMER_BOT = true;
 
     public static class CAN_IDS {
         static {

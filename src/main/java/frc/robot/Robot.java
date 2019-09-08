@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
         SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
         
-        SmartDashboard.putNumber("thor", Limelight.getThor());
+        SmartDashboard.putBoolean("Cargo Ship Mode", OI.getInstance().getCargoShipMode());
     }
 
     /**

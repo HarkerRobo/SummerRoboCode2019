@@ -51,7 +51,6 @@ public class Wrist extends Subsystem {
     public static final int HORIZONTAL_BACK = 2035;
     public static final int DEFENSE_POSITION = 910;
 
-    public static final double CARGO_FF = -0.1;
     public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.10; //Gravity FF required to keep the wrist level at 0 degrees
     public static final double kS = 0.03;
     public static final double kA = 0.00036;
