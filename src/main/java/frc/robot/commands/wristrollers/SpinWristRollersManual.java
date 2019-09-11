@@ -20,7 +20,7 @@ import harkerrobolib.util.MathUtil;
  */
 public class SpinWristRollersManual extends IndefiniteCommand {
     
-    private static final double SPEED_MULTIPLIER = 0.5;
+    private static final double SPEED_MULTIPLIER = 0.6;
 
     public SpinWristRollersManual() {
         requires(WristRollers.getInstance());
@@ -37,12 +37,14 @@ public class SpinWristRollersManual extends IndefiniteCommand {
         boolean x = OI.getInstance().getDriverGamepad().getButtonXState();
         double output;
 
-        if (RobotMap.SUMMER_BOT) {
+        if (OI.mode == DemoMode.SAFE) {
             output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
         } else {
             output = SPEED_MULTIPLIER * (a ? 1 : (x ? -1 : 0));
         }
-
-        WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, WristRollers.CARGO_FF);
-    }
+        if (Math.abs(output) > 0)
+            WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, output);
+        else
+        WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, WristRollers.CARGO_FF);
+        }
 }

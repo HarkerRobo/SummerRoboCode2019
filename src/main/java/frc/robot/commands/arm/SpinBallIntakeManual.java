@@ -18,7 +18,7 @@ import harkerrobolib.util.MathUtil;
  */
 public class SpinBallIntakeManual extends IndefiniteCommand {
 
-    private static final double SPEED_MULTIPLIER = 0.5;
+    private static final double SPEED_MULTIPLIER = 0.7;
 
     public SpinBallIntakeManual() {
         requires(Arm.getInstance());
@@ -35,13 +35,13 @@ public class SpinBallIntakeManual extends IndefiniteCommand {
         boolean x = OI.getInstance().getDriverGamepad().getButtonXState();
         double output;
 
-        if (RobotMap.SUMMER_BOT) {
+        if (OI.mode == DemoMode.SAFE) {
             output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
         } else {
             output = SPEED_MULTIPLIER * (a ? 1 : (x ? -1 : 0));
         }
 
         Arm.getInstance().getRollers().set(ControlMode.PercentOutput, SPEED_MULTIPLIER * output);
-        //Arm.getInstance().getRollers().set(SPEED_MULTIPLIER * output);
+        // Arm.getInstance().getRollers().set(SPEED_MULTIPLIER);
     }
 }

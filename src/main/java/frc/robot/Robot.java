@@ -73,7 +73,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
         SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
         SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
-        
+        SmartDashboard.putString
+        ("double solenoid value", HatchFlower.getInstance().getSolenoid().get().toString());    
         SmartDashboard.putBoolean("Cargo Ship Mode", OI.getInstance().getCargoShipMode());
     }
 

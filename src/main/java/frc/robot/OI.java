@@ -35,7 +35,7 @@ import harkerrobolib.wrappers.XboxGamepad;
  * @since 6/14/19
  */
 public class OI {
-    public static final DemoMode mode = DemoMode.SAFE;
+    public static final DemoMode mode = DemoMode.NORMAL;
 
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
     public static final double XBOX_TRIGGER_DEADBAND = 0.1;
@@ -76,7 +76,7 @@ public class OI {
     public void initBindings() {
         MoveElevatorAndWrist groundCargo = new MoveElevatorAndWrist(100, -170);
         
-        MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(7320, 2000);
+        MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(6400, 1989);
         
         MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
         MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
@@ -86,7 +86,7 @@ public class OI {
         MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
         MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
         MoveElevatorAndWrist backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
-        // MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
+        MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
 
         // SequentialCommandGroup testAuton = new SequentialCommandGroup(
         //         new SetFlower(HatchFlower.OPEN),
@@ -104,33 +104,35 @@ public class OI {
             driverGamepad.getUpDPadButton().whenPressed(defenseMode);
 
             driverGamepad.getButtonStart().whenPressed(new ZeroElevator());
-            driverGamepad.getButtonSelect().whenPressed(new ZeroWrist());  
+            driverGamepad.getButtonSelect().whenPressed(new ZeroWrist(
+
+            ));  
             operatorGamepad.getButtonStart().whenPressed(new ZeroElevator());
             operatorGamepad.getButtonSelect().whenPressed(new ZeroWrist()); 
             
-            driverGamepad.getButtonStickLeft().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
+            // driverGamepad.getButtonStickLeft().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
             operatorGamepad.getButtonBumperRight().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
 
-            // operatorGamepad.getLeftDPadButton().whenPressed(
-            //         new ConditionalCommand(backHatch, //If Has hatch
-            //             new ConditionalCommand(backShipAndLoading, backRocketFirstCargo, () -> cargoShipMode), //If has cargo
-            //             () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
-            //         )
-            // );
-            // operatorGamepad.getRightDPadButton().whenPressed(
-            //         new ConditionalCommand(
-            //             new ConditionalCommand(backHatch, backRocketSecondHatch, () -> cargoShipMode), //If has hatch
-            //             new ConditionalCommand(backShipAndLoading, backRocketSecondCargo, () -> cargoShipMode), //If has cargo
-            //             () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
-            //     )
-            // );
-            // operatorGamepad.getUpDPadButton().whenPressed(
-            //     new ConditionalCommand(
-            //         frontRocketSecondHatch, //If has hatch
-            //         new ConditionalCommand(frontShipAndLoading, frontRocketSecondCargo, () -> cargoShipMode), //If has cargo
-            //         () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
-            //     )
-            // );
+            operatorGamepad.getLeftDPadButton().whenPressed(
+                    new ConditionalCommand(backHatch, //If Has hatch
+                        new ConditionalCommand(backShipAndLoading, backRocketFirstCargo, () -> cargoShipMode), //If has cargo
+                        () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
+                    )
+            );
+            operatorGamepad.getRightDPadButton().whenPressed(
+                    new ConditionalCommand(
+                        new ConditionalCommand(backHatch, backRocketSecondHatch, () -> cargoShipMode), //If has hatch
+                        new ConditionalCommand(backShipAndLoading, backRocketSecondCargo, () -> cargoShipMode), //If has cargo
+                        () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
+                )
+            );
+            operatorGamepad.getUpDPadButton().whenPressed(
+                new ConditionalCommand(
+                    frontRocketSecondHatch, //If has hatch
+                    new ConditionalCommand(frontShipAndLoading, backHatch, () -> cargoShipMode), //If has cargo
+                    () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
+                )
+            );
             operatorGamepad.getDownDPadButton().whenPressed(groundCargo);
 
             //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));

@@ -21,11 +21,11 @@ public class HatchFlower extends Subsystem {
     /**
      * DoubleSolenoid.Value for when the flower is not holding a hatch panel
      */
-    public static final DoubleSolenoid.Value OPEN = Value.kReverse;
+    public static final DoubleSolenoid.Value CLOSED = Value.kReverse;
     /**
      * DoubleSolenoid.Value for when the flower is holding a hatch panel
      */
-    public static final DoubleSolenoid.Value CLOSED = Value.kForward;
+    public static final DoubleSolenoid.Value OPEN = Value.kForward;
 
     private HatchFlower() {
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.FLOWER_FORWARD_CHANNEL, RobotMap.CAN_IDS.FLOWER_REVERSE_CHANNEL);
