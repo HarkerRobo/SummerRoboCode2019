@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
+import frc.robot.RobotMap;
 import frc.robot.subsystems.Wrist;
 import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
@@ -16,8 +17,15 @@ import harkerrobolib.util.MathUtil;
  */
 public class MoveWristPercentOutput extends IndefiniteCommand {
 
-    private static final double LAG_COMPENSATION = 0.7;
-    private double SPEED_MULTIPLIER = 0.3;
+    static {
+        if (RobotMap.PRACTICE_BOT)
+            LAG_COMPENSATION = 0.7;
+        else
+            LAG_COMPENSATION = 1;
+    }
+
+    private static final double LAG_COMPENSATION;
+    private static final double SPEED_MULTIPLIER = 0.3;
     private double lastSetpoint;
     private boolean shouldHold;
 

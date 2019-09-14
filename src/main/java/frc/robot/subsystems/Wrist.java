@@ -29,6 +29,8 @@ public class Wrist extends Subsystem {
 
             FRONTMOST_POSITION = -197;
             BACKMOST_POSITION = 2095;
+            
+            HORIZONTAL_BACK = 2035;
         } else {
             SENSOR_PHASE = false;
             TALON_INVERTED = true;
@@ -36,6 +38,7 @@ public class Wrist extends Subsystem {
 
             FRONTMOST_POSITION = -97;
             BACKMOST_POSITION = 2115;
+            HORIZONTAL_BACK = 2000;
         }
     }
 
@@ -44,17 +47,17 @@ public class Wrist extends Subsystem {
     private TalonSRX master;
     private VictorSPX follower;
 
-    private static int COMPENSATION_VOLTAGE = 10;
+    private static double COMPENSATION_VOLTAGE = 10;
 
     private static boolean SENSOR_PHASE;
     private static boolean TALON_INVERTED;
     private static boolean VICTOR_INVERTED;
 
-    public static int FRONTMOST_POSITION;
-    public static int BACKMOST_POSITION;
+    public static final int FRONTMOST_POSITION;
+    public static final int BACKMOST_POSITION;
     public static final int MIDDLE_POSITION = 1050;
     public static final int HORIZONTAL_FRONT = 0;
-    public static final int HORIZONTAL_BACK = 2035;
+    public static final int HORIZONTAL_BACK;
     public static final int DEFENSE_POSITION = 910; 
 
     public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.10; //Gravity FF required to keep the wrist level at 0 degrees
