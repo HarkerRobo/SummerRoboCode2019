@@ -118,6 +118,8 @@ public class Drivetrain extends HSDrivetrain {
         Conversions.setWheelDiameter(WHEEL_DIAMETER);
         applyToMasters((talon) -> talon.setSelectedSensorPosition(0));
         applyToMasters((talon) -> talon.setSensorPhase(false));
+        getLeftMaster().setNeutralMode(NeutralMode.Brake);
+        getLeftMaster().setNeutralMode(NeutralMode.Brake);
     }
 
     public void initDefaultCommand() {

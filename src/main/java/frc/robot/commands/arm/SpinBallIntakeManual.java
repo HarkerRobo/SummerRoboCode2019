@@ -2,6 +2,7 @@ package frc.robot.commands.arm;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.OI.DemoMode;
@@ -18,7 +19,8 @@ import harkerrobolib.util.MathUtil;
  */
 public class SpinBallIntakeManual extends IndefiniteCommand {
 
-    private static final double SPEED_MULTIPLIER = 0.7;
+    private static final double VICTOR_SPEED_MULTIPLIER = 0.6;
+    private static final double SPARK_SPEED_MULTIPLIER = 0.25;
 
     public SpinBallIntakeManual() {
         requires(Arm.getInstance());
@@ -38,10 +40,10 @@ public class SpinBallIntakeManual extends IndefiniteCommand {
         if (OI.mode == DemoMode.SAFE) {
             output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
         } else {
-            output = SPEED_MULTIPLIER * (a ? 1 : (x ? -1 : 0));
+            output = (a ? 1 : (x ? -1 : 0));
         }
-
-        Arm.getInstance().getRollers().set(ControlMode.PercentOutput, SPEED_MULTIPLIER * output);
-        // Arm.getInstance().getRollers().set(SPEED_MULTIPLIER);
+        SmartDashboard.putBoolean("A", OI.getInstance().getDriverGamepad().getButtonAState());
+        // Arm.getInstance().getRollers().set(ControlMode.PercentOutput, VICTOR_SPEED_MULTIPLIER * output);
+        Arm.getInstance().getRollers().set(SPARK_SPEED_MULTIPLIER * output);
     }
 }

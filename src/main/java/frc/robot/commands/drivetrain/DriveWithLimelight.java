@@ -43,6 +43,7 @@ public class DriveWithLimelight extends IndefiniteCommand{
         controller.enable();
         
         SmartDashboard.putString("Drivetrain Mode", "Limelight");
+        Limelight.setCamModeVision();
     }
 
     @Override
