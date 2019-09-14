@@ -22,7 +22,7 @@ import harkerrobolib.util.MathUtil;
 public class Wrist extends Subsystem {
 
     static {
-        if (RobotMap.SUMMER_BOT) {
+        if (RobotMap.PRACTICE_BOT) {
             SENSOR_PHASE = true;
             TALON_INVERTED = false;
             VICTOR_INVERTED = false;

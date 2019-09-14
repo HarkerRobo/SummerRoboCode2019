@@ -76,6 +76,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString
         ("double solenoid value", HatchFlower.getInstance().getSolenoid().get().toString());    
         SmartDashboard.putBoolean("Cargo Ship Mode", OI.getInstance().getCargoShipMode());
+        SmartDashboard.putString("Flower State", HatchFlower.getInstance().getSolenoid().get().toString());
     }
 
     /**

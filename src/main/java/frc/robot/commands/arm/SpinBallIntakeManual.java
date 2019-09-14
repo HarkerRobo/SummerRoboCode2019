@@ -37,13 +37,14 @@ public class SpinBallIntakeManual extends IndefiniteCommand {
         boolean x = OI.getInstance().getDriverGamepad().getButtonXState();
         double output;
 
-        if (OI.mode == DemoMode.SAFE) {
+        if (OI.mode == DemoMode.SAFE)
             output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
-        } else {
+        else 
             output = (a ? 1 : (x ? -1 : 0));
-        }
-        SmartDashboard.putBoolean("A", OI.getInstance().getDriverGamepad().getButtonAState());
-        // Arm.getInstance().getRollers().set(ControlMode.PercentOutput, VICTOR_SPEED_MULTIPLIER * output);
-        Arm.getInstance().getRollers().set(SPARK_SPEED_MULTIPLIER * output);
+        
+        if (RobotMap.PRACTICE_BOT)
+            Arm.getInstance().getVictor().set(ControlMode.PercentOutput, VICTOR_SPEED_MULTIPLIER * output);
+        else
+            Arm.getInstance().getSpark().set(SPARK_SPEED_MULTIPLIER * output);
     }
 }

@@ -39,6 +39,10 @@ public class HatchFlower extends Subsystem {
         return solenoid;
     }
 
+    public void toggleFlower(DoubleSolenoid.Value value) {
+        solenoid.set(solenoid.get() == DoubleSolenoid.Value.kReverse ? OPEN : CLOSED);
+    }
+    
     public static HatchFlower getInstance() {
         if (instance == null)
             instance = new HatchFlower();
