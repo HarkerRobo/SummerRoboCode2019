@@ -67,8 +67,8 @@ public class Wrist extends Subsystem {
     public static final double MOTION_MAGIC_KP = 0.9; //1.2
     public static final double MOTION_MAGIC_KI = 0.0015;
     public static final double MOTION_MAGIC_KD = 30;
-    public static final int CRUISE_VELOCITY = 420; //Encoder Units per 100ms
-    public static final int MAX_ACCELERATION = 640; //Encoder Units per 100ms per s
+    public static final int CRUISE_VELOCITY = 380;//420; //Encoder Units per 100ms
+    public static final int MAX_ACCELERATION = 580;//640; //Encoder Units per 100ms per s
     public static final double RAMP_RATE = 0.1;
 
     public static final int VELOCITY_SLOT = 1;

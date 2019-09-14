@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.arm.SpinBallIntakeManual;
 
@@ -19,14 +20,24 @@ import frc.robot.commands.arm.SpinBallIntakeManual;
  */
 public class Arm extends Subsystem{
 
+    static {
+        if(RobotMap.PRACTICE_BOT) {
+            IN = Value.kReverse;
+            OUT = Value.kForward;
+        } else {
+            IN = Value.kForward;
+            OUT = Value.kReverse;
+        }
+    }
+    
     private static Arm instance;
 
     private DoubleSolenoid solenoid;
     private VictorSPX victor; //For Practice Bot
     private CANSparkMax spark; //For Comp Bot
 
-    public static final DoubleSolenoid.Value IN = Value.kReverse;
-    public static final DoubleSolenoid.Value OUT = Value.kForward;
+    public static final DoubleSolenoid.Value IN;
+    public static final DoubleSolenoid.Value OUT;
     
     public Arm() {
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.ARM_FORWARD_CHANNEL, RobotMap.CAN_IDS.ARM_REVERSE_CHANNEL);
