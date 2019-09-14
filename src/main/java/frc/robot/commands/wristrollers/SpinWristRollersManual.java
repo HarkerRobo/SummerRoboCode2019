@@ -3,6 +3,7 @@ package frc.robot.commands.wristrollers;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.OI.DemoMode;
@@ -20,7 +21,8 @@ import harkerrobolib.util.MathUtil;
  */
 public class SpinWristRollersManual extends IndefiniteCommand {
     
-    private static final double SPEED_MULTIPLIER = 0.6;
+    private static final double INTAKE_SPEED_MULTIPLIER = 0.45;
+    private static final double OUTTAKE_SPEED_MULTIPLIER = 0.8;
 
     public SpinWristRollersManual() {
         requires(WristRollers.getInstance());
@@ -40,11 +42,14 @@ public class SpinWristRollersManual extends IndefiniteCommand {
         if (OI.mode == DemoMode.SAFE) {
             output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
         } else {
-            output = SPEED_MULTIPLIER * (a ? 1 : (x ? -1 : 0));
+            output = (a ? 1 : (x ? -1 : 0));
         }
+        output *= Math.signum(output) == 1 ? INTAKE_SPEED_MULTIPLIER : OUTTAKE_SPEED_MULTIPLIER;
         if (Math.abs(output) > 0)
             WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, output);
         else
-        WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, WristRollers.CARGO_FF);
+            WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, WristRollers.CARGO_FF);
+        
+        SmartDashboard.putNumber("WristRoller Speed", WristRollers.getInstance().getRollers().getMotorOutputPercent());
         }
 }

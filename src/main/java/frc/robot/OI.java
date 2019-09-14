@@ -87,6 +87,7 @@ public class OI {
         MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
         MoveElevatorAndWrist backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
         MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
+        MoveElevatorAndWrist frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
 
         // SequentialCommandGroup testAuton = new SequentialCommandGroup(
         //         new SetFlower(HatchFlower.OPEN),
@@ -104,13 +105,11 @@ public class OI {
             driverGamepad.getUpDPadButton().whenPressed(defenseMode);
 
             driverGamepad.getButtonStart().whenPressed(new ZeroElevator());
-            driverGamepad.getButtonSelect().whenPressed(new ZeroWrist(
-
-            ));  
+            driverGamepad.getButtonSelect().whenPressed(new ZeroWrist());  
             operatorGamepad.getButtonStart().whenPressed(new ZeroElevator());
             operatorGamepad.getButtonSelect().whenPressed(new ZeroWrist()); 
             
-            // driverGamepad.getButtonStickLeft().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
+            driverGamepad.getButtonStickLeft().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
             operatorGamepad.getButtonBumperRight().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
 
             operatorGamepad.getLeftDPadButton().whenPressed(
@@ -129,7 +128,7 @@ public class OI {
             operatorGamepad.getUpDPadButton().whenPressed(
                 new ConditionalCommand(
                     frontRocketSecondHatch, //If has hatch
-                    new ConditionalCommand(frontShipAndLoading, backHatch, () -> cargoShipMode), //If has cargo
+                    new ConditionalCommand(frontShipAndLoading, frontRocketFirstCargo, () -> cargoShipMode), //If has cargo
                     () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
                 )
             );
