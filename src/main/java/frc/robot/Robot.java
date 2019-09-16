@@ -72,15 +72,17 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString("Elevator Command", Elevator.getInstance().getCurrentCommandName());
         SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
         SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());
+        SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getCurrentDegreeAngle());
         SmartDashboard.putString
         ("double solenoid value", HatchFlower.getInstance().getSolenoid().get().toString());    
-        SmartDashboard.putBoolean("Cargo Ship Mode", OI.getInstance().getCargoShipMode());
+        SmartDashboard.putBoolean("Is scoring on cargo ship?", OI.getInstance().getCargoShipMode());
+        SmartDashboard.putBoolean("Has hatch?", HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN);
         SmartDashboard.putString("Flower State", HatchFlower.getInstance().getSolenoid().get().toString());
     }
 
     /**
-     * This autonomous (along with the chooser code above) shows how to select
+     * This autonomous (along with
+     *  the chooser code above) shows how to select
      * between different autonomous modes using the dashboard. The sendable
      * chooser code works with the Java SmartDashboard. If you prefer the
      * LabVIEW Dashboard, remove all of the chooser code and uncomment the
