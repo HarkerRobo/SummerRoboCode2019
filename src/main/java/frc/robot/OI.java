@@ -35,6 +35,32 @@ import harkerrobolib.wrappers.XboxGamepad;
  * @since 6/14/19
  */
 public class OI {
+    
+    static {
+        if(RobotMap.PRACTICE_BOT) {
+            groundCargo = new MoveElevatorAndWrist(100, -170);
+            backHatch = new MoveElevatorAndWrist(6400, 1989);
+            backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
+            frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
+            defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
+            backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
+            backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
+            backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
+            frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
+            frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
+        } else {
+            groundCargo = new MoveElevatorAndWrist(100, -70);
+            backHatch = new MoveElevatorAndWrist(6400, 1989);
+            backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
+            frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
+            defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
+            backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
+            backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
+            backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
+            frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
+            frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
+        }
+    }
     public static final DemoMode mode = DemoMode.NORMAL;
 
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
@@ -49,6 +75,17 @@ public class OI {
     private static OI instance;
 
     private boolean cargoShipMode;
+
+    private static final MoveElevatorAndWrist groundCargo;
+    private static final MoveElevatorAndWrist backHatch;
+    private static final MoveElevatorAndWrist backShipAndLoading;
+    private static final MoveElevatorAndWrist frontShipAndLoading;
+    private static final MoveElevatorAndWrist defenseMode;
+    private static final MoveElevatorAndWrist backRocketFirstCargo;
+    private static final MoveElevatorAndWrist backRocketSecondCargo;
+    private static final MoveElevatorAndWrist backRocketSecondHatch;
+    private static final MoveElevatorAndWrist frontRocketSecondHatch;
+    private static final MoveElevatorAndWrist frontRocketFirstCargo;
 
     public enum DemoMode {
         /**
@@ -74,20 +111,20 @@ public class OI {
     }
 
     public void initBindings() {
-        MoveElevatorAndWrist groundCargo = new MoveElevatorAndWrist(100, -170);
+        // MoveElevatorAndWrist groundCargo = new MoveElevatorAndWrist(100, -170);
         
-        MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(6400, 1989);
+        // MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(6400, 1989);
         
-        MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
-        MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
+        // MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
+        // MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
 
-        MoveElevatorAndWrist defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
+        // MoveElevatorAndWrist defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
         
-        MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
-        MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
-        MoveElevatorAndWrist backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
-        MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
-        MoveElevatorAndWrist frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
+        // MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
+        // MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
+        // MoveElevatorAndWrist backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
+        // MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
+        // MoveElevatorAndWrist frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
 
         // SequentialCommandGroup testAuton = new SequentialCommandGroup(
         //         new SetFlower(HatchFlower.OPEN),
