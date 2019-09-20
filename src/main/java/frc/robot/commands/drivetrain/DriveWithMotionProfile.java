@@ -71,6 +71,7 @@ public class DriveWithMotionProfile extends Command {
         Drivetrain.getInstance().applyToMasters((talon) -> talon.selectProfileSlot(Drivetrain.MOTION_PROF_SLOT, RobotMap.PRIMARY_PID_INDEX));
         Drivetrain.getInstance().getLeftMaster().startMotionProfile(leftStream, MIN_BUFFERED_PTS, ControlMode.MotionProfile);
         Drivetrain.getInstance().getRightMaster().startMotionProfile(rightStream, MIN_BUFFERED_PTS, ControlMode.MotionProfile);
+        
     }
 
     @Override
