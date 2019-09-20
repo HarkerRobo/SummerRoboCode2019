@@ -43,7 +43,7 @@ public class OI {
             backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
             frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
             defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
-            backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
+            backRocketFirstCargo = new MoveElevatorAndWrist(6300, Wrist.HORIZONTAL_BACK);
             backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
             backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
             frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
@@ -113,18 +113,7 @@ public class OI {
     public void initBindings() {
         // MoveElevatorAndWrist groundCargo = new MoveElevatorAndWrist(100, -170);
         
-        // MoveElevatorAndWrist backHatch = new MoveElevatorAndWrist(6400, 1989);
         
-        // MoveElevatorAndWrist backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
-        // MoveElevatorAndWrist frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
-
-        // MoveElevatorAndWrist defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
-        
-        // MoveElevatorAndWrist backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
-        // MoveElevatorAndWrist backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
-        // MoveElevatorAndWrist backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
-        // MoveElevatorAndWrist frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
-        // MoveElevatorAndWrist frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
 
         // SequentialCommandGroup testAuton = new SequentialCommandGroup(
         //         new SetFlower(HatchFlower.OPEN),
@@ -141,8 +130,11 @@ public class OI {
 
             driverGamepad.getUpDPadButton().whenPressed(defenseMode);
 
+            driverGamepad.getButtonBumperRight().whenPressed(new AlignWithLimelight());
+
             driverGamepad.getButtonStart().whenPressed(new ZeroElevator());
             driverGamepad.getButtonSelect().whenPressed(new ZeroWrist());  
+            
             operatorGamepad.getButtonStart().whenPressed(new ZeroElevator());
             operatorGamepad.getButtonSelect().whenPressed(new ZeroWrist()); 
             

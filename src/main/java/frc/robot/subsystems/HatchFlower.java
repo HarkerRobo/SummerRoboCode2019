@@ -16,8 +16,8 @@ public class HatchFlower extends Subsystem {
 
     static {
         if(RobotMap.PRACTICE_BOT) {
-            OPEN = Value.kForward;
-            CLOSED = Value.kReverse;
+            OPEN = Value.kReverse;
+            CLOSED = Value.kForward;
         } else {
             OPEN = Value.kReverse;
             CLOSED = Value.kForward;

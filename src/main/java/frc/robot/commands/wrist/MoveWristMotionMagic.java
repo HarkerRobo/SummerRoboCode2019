@@ -45,6 +45,8 @@ public class MoveWristMotionMagic extends TimedCommand {
     @Override
     protected void initialize() {
         Wrist.getInstance().getMaster().selectProfileSlot(Wrist.MOTION_MAGIC_SLOT, RobotMap.PRIMARY_PID_INDEX);
+        Wrist.getInstance().getMaster().configClosedloopRamp(Wrist.RAMP_RATE);
+
         startTime = Timer.getFPGATimestamp();
 
         Wrist.getInstance().getMaster().configForwardSoftLimitEnable(true);

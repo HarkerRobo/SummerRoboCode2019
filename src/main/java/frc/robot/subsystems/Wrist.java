@@ -25,7 +25,7 @@ public class Wrist extends Subsystem {
         if (RobotMap.PRACTICE_BOT) {
             SENSOR_PHASE = true;
             TALON_INVERTED = false;
-            VICTOR_INVERTED = false;
+            VICTOR_INVERTED = true;
 
             FRONTMOST_POSITION = -197;
             BACKMOST_POSITION = 2095;

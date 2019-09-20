@@ -43,20 +43,13 @@ NetworkTables.addKeyListener("/SmartDashboard/Has hatch?", (key, value) => {
  * Updates the action that performs when the trigger is actuated.
  */
 NetworkTables.addKeyListener("/SmartDashboard/Trigger Mode", (key, value) => {
-    const wristMode = Math.round(value);
-    if (wristMode == 0) { // Limelight align
+    if (wristMode) { // Limelight align
         document.getElementById("wrist").style.display = "none";
         document.getElementById("align").style.display = "inline-block";
-        document.getElementById("climb").style.display = "none"
     }
-    else if (wristMode == 1) { // Wrist Manual Control
+    else { // Climb
         document.getElementById("wrist").style.display = "inline-block";
         document.getElementById("align").style.display = "none";
-        document.getElementById("climb").style.display = "none"
-    } else { // Climb
-        document.getElementById("wrist").style.display = "none";
-        document.getElementById("align").style.display = "none";
-        document.getElementById("climb").style.display = "inline-block"
     }
 }, true)
 

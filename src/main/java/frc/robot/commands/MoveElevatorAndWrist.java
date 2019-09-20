@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI;
 import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.elevator.MoveElevatorMotionMagic;
 import frc.robot.commands.extender.SetExtender;
@@ -15,6 +16,7 @@ import frc.robot.commands.wrist.MoveWristMotionMagic;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HatchExtender;
+import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
 import harkerrobolib.commands.ConditionalCommand;
 
@@ -69,7 +71,7 @@ public class MoveElevatorAndWrist extends Command {
         }
         group.addSequential(new MoveWristMotionMagic(wristSetpoint, WRIST_ALLOWABLE_ERROR));
         group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint, ELEVATOR_ALLOWABLE_ERROR));
-        if(wristSetpoint == Wrist.DEFENSE_POSITION) {
+        if(wristSetpoint == Wrist.DEFENSE_POSITION || wristSetpoint == 100) {
             group.addSequential(new SetArm(Arm.IN));
         }
         group.start();

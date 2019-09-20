@@ -13,6 +13,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.commands.drivetrain.AlignWithLimelight;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
@@ -68,7 +69,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putString("Drivetrain Command", Drivetrain.getInstance().getCurrentCommandName());
+        SmartDashboard.putBoolean("Trigger Mode", Drivetrain.getInstance().getCurrentCommandName() == "AlignWithLimelight");
         SmartDashboard.putString("Elevator Command", Elevator.getInstance().getCurrentCommandName());
         SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
         SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());

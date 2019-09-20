@@ -24,7 +24,7 @@ import harkerrobolib.util.Conversions.SpeedUnit;
  * @since 6/15/19
  */
 public class DriveWithVelocity extends IndefiniteCommand {
-    private static final double SPEED_MULTIPLIER = 0.3;
+    private static final double SPEED_MULTIPLIER = 1;
     private boolean hasJoystickInput;
 
     public DriveWithVelocity() {
@@ -48,7 +48,9 @@ public class DriveWithVelocity extends IndefiniteCommand {
         double joystickX = OI.getInstance().getDriverGamepad().getLeftX();
         
         double speed = MathUtil.mapJoystickOutput(joystickY, OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_FORWARD_VELOCITY * SPEED_MULTIPLIER;
-        double turn = MathUtil.mapJoystickOutput(joystickX, OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
+        double turn = MathUtil.mapJoystickOutput(joystickX, OI.XBOX_JOYSTICK_DEADBAND);
+        turn = turn * turn * Math.signum(turn);
+        turn *= Drivetrain.MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
 
         speed = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, speed, SpeedUnit.ENCODER_UNITS);
         turn = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, turn, SpeedUnit.ENCODER_UNITS);
