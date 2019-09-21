@@ -1,4 +1,4 @@
-package frc.robot.auton;
+package frc.robot.auton.test;
 
 public class CurveRightTest {
     

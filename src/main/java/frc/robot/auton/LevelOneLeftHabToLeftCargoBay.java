@@ -1,7 +1,7 @@
 package frc.robot.auton;
 
 public class LevelOneLeftHabToLeftCargoBay {
-    public static double[][] LevelOneLeftHabToLeftCargoBayLeft = new double[][] {
+    public static double[][] pathLeft = new double[][] {
         {0,0,0,-179.9997},
         {-0.0004,-0.0388,-3.5398,-179.9985},
         {-0.0011,-0.0733,-3.6224,-179.9961},
@@ -307,7 +307,7 @@ public class LevelOneLeftHabToLeftCargoBay {
         {-11.4737,-0.0737,5.2174,-179.9973}
     };
 
-    public static double[][] LevelOneLeftHabToLeftCargoBayRight = new double[][] {
+    public static double[][] pathRight = new double[][] {
         {0,0,0,-179.9997},
         {-0.0005,-0.0434,-3.9602,-179.9985},
         {-0.0013,-0.0839,-4.2485,-179.9961},

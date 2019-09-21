@@ -79,6 +79,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Is scoring on cargo ship?", OI.getInstance().getCargoShipMode());
         SmartDashboard.putBoolean("Has hatch?", HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN);
         SmartDashboard.putString("Flower State", HatchFlower.getInstance().getSolenoid().get().toString());
+        SmartDashboard.putNumber("State", OI.state);
     }
 
     /**

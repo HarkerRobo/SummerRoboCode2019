@@ -7,11 +7,18 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
+import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
-import frc.robot.auton.CurveRightEndStraight;
-import frc.robot.auton.CurveRightTest;
-import frc.robot.auton.SmoothCurveRightEndStraight;
-import frc.robot.auton.StraightLinePath5Ft;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.auton.test.CurveRightEndStraight;
+import frc.robot.auton.test.CurveRightTest;
+import frc.robot.auton.LeftCargoBayAlign;
+import frc.robot.auton.LeftCargoBayAlignToLeftLoadingDock;
+import frc.robot.auton.LeftLoadingDockAlign;
+import frc.robot.auton.LeftLoadingDockAlignToLeftRocket;
+import frc.robot.auton.LevelOneLeftHabToLeftCargoBay;
+import frc.robot.auton.test.SmoothCurveRightEndStraight;
+import frc.robot.auton.test.StraightLinePath5Ft;
 import frc.robot.commands.MoveElevatorAndWrist;
 import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.arm.ToggleArm;
@@ -23,9 +30,11 @@ import frc.robot.commands.extender.SetExtender;
 import frc.robot.commands.extender.ToggleExtender;
 import frc.robot.commands.flower.SetFlower;
 import frc.robot.commands.flower.ToggleFlower;
+import harkerrobolib.auto.ParallelCommandGroup;
 import harkerrobolib.auto.SequentialCommandGroup;
 import harkerrobolib.commands.CallMethodCommand;
 import harkerrobolib.commands.ConditionalCommand;
+import harkerrobolib.commands.PrintCommand;
 import harkerrobolib.wrappers.XboxGamepad;
 
 /**
@@ -87,6 +96,11 @@ public class OI {
     private static final MoveElevatorAndWrist frontRocketSecondHatch;
     private static final MoveElevatorAndWrist frontRocketFirstCargo;
 
+    public static int state;
+    private static Command firstPath; //Path from Hab to Cargo Ship
+    private static Command secondPath; //Path from the cargo bay to the loading dock
+    private static Command thirdPath; //Path from loading dock to rocket
+
     public enum DemoMode {
         /**
          * Normal Controls and Speeds for Testing or Competitions
@@ -102,6 +116,9 @@ public class OI {
         driverGamepad = new XboxGamepad(DRIVER_PORT);
         operatorGamepad = new XboxGamepad(OPERATOR_PORT);
 
+        state = -1;
+
+        chooseAutonPaths();
         initBindings();
         cargoShipMode = true;
     }
@@ -110,10 +127,36 @@ public class OI {
         return cargoShipMode;
     }
 
+    public void chooseAutonPaths() {
+        DriveWithMotionProfile habToFrontCargoBay = new DriveWithMotionProfile(
+            LevelOneLeftHabToLeftCargoBay.pathLeft, LevelOneLeftHabToLeftCargoBay.pathRight, 10
+        );
+        SequentialCommandGroup frontCargoBayToLoadingDock = new SequentialCommandGroup(
+            new DriveWithMotionProfile(LeftCargoBayAlign.pathLeft, LeftCargoBayAlign.pathRight, 10),  
+            new DriveWithMotionProfile(LeftCargoBayAlignToLeftLoadingDock.pathLeft,LeftCargoBayAlignToLeftLoadingDock.pathRight,10)
+        );
+        SequentialCommandGroup loadingDockToRocket = new SequentialCommandGroup(
+            new DriveWithMotionProfile(LeftLoadingDockAlign.pathLeft, LeftLoadingDockAlign.pathRight, 10),
+            new DriveWithMotionProfile(LeftLoadingDockAlignToLeftRocket.pathLeft, LeftLoadingDockAlignToLeftRocket.pathRight, 10)
+        );
+        
+        firstPath = habToFrontCargoBay;
+        secondPath = frontCargoBayToLoadingDock;
+        thirdPath = loadingDockToRocket;
+    }
+
+    private void incrementState()
+    { 
+        if(state < 2) { state++;} else {state = 0;}
+    }
+
     public void initBindings() {
         // MoveElevatorAndWrist groundCargo = new MoveElevatorAndWrist(100, -170);
-        
-        
+
+        // Go from Hab to cargo ship/rocket ship
+        // Have driver align manually
+        // Go to loading station
+        // Go to rocket/cargo ship
 
         // SequentialCommandGroup testAuton = new SequentialCommandGroup(
         //         new SetFlower(HatchFlower.OPEN),
@@ -154,6 +197,7 @@ public class OI {
                         () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
                 )
             );
+            
             operatorGamepad.getUpDPadButton().whenPressed(
                 new ConditionalCommand(
                     frontRocketSecondHatch, //If has hatch
@@ -161,9 +205,7 @@ public class OI {
                     () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
                 )
             );
-            operatorGamepad.getDownDPadButton().whenPressed(groundCargo);
-
-            //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
+            operatorGamepad.getDownDPadButton().whenPressed(groundCargo);   
         }
         else  {
             //Driver Controller (For guest) Left Joystick controls Drivetrain (30% speed)
@@ -172,11 +214,28 @@ public class OI {
             driverGamepad.getButtonBumperRight().whenPressed(new ZeroWrist());
             //driverGamepad.getButtonY().toggleWhenPressed(new DriveWithLimelight());
             //driverGamepad.getButtonX().whenPressed(new AlignWithLimelight());
-
+            //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
+            
             operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
             operatorGamepad.getButtonB().whenPressed(new ToggleExtender());
             operatorGamepad.getButtonA().whenPressed(new ToggleArm());
             
+            driverGamepad.getButtonY().whenPressed(
+                new ParallelCommandGroup(
+                    new CallMethodCommand(() -> state = state +1),
+                    new ConditionalCommand( 
+                        new ConditionalCommand(
+                            new CallMethodCommand(() -> SmartDashboard.putString("Path", "firstPath")), 
+                            new CallMethodCommand(() -> SmartDashboard.putString("Path", "secondPath")), 
+                            () -> state == 0
+                        ),  
+                        new CallMethodCommand(() -> SmartDashboard.putString("Path","thirdPath")),
+                        () -> state == 1
+                    )
+                )
+            );
+            
+            //D-Pad bindings
             operatorGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
             operatorGamepad.getDownDPadButton().whenPressed(groundCargo);
             operatorGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);

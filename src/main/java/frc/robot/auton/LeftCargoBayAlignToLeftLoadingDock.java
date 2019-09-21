@@ -1,7 +1,7 @@
 package frc.robot.auton;
 
 public class LeftCargoBayAlignToLeftLoadingDock {
-    public static double[][] LeftCargoBayAlignToLeftLoadingDockLeft = new double[][] {
+    public static double[][] pathLeft = new double[][] {
         {0,0,0,89.9995},
         {-0.0007,-0.0527,-3.9687,89.9977},
         {-0.0014,-0.0932,-5.2461,89.995},
@@ -378,7 +378,7 @@ public class LeftCargoBayAlignToLeftLoadingDock {
         {-18.1644,-0.0705,5.9644,0.003}
     };
 
-    public static double[][] LeftCargoBayAlignToLeftLoadingDockRight = new double[][] {
+    public static double[][] pathRight = new double[][] {
         {0,0,0,89.9995},
         {-0.0006,-0.0469,-3.5313,89.9977},
         {-0.0012,-0.0782,-4.0558,89.995},

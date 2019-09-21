@@ -1,4 +1,4 @@
-package frc.robot.auton;
+package frc.robot.auton.test;
 
 /**
  * Stores the Left and Right side Motion Profile Trajectories for driving in a straight line 5ft

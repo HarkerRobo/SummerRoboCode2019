@@ -1,4 +1,4 @@
-package frc.robot.auton;
+package frc.robot.auton.test;
 
 /**
  * Stores the Left and Right side Motion Profile Trajectories for driving in a straight line 8ft
@@ -8,7 +8,7 @@ package frc.robot.auton;
  * @since 6/19/19
  */
 public class StraightLinePath8Ft {
-    public static double[][] StraightLine8ftLeft = new double[][] {
+    public static double[][] pathLeft = new double[][] {
         {0,0,0,0},
         {0.0006,0.0552,5.4165,0},
         {0.0021,0.1518,9.677,0},
@@ -192,7 +192,7 @@ public class StraightLinePath8Ft {
         {7.9999,0,0,0}
     };
 
-    public static double[][] StraightLine8ftRight = new double[][] {
+    public static double[][] pathRight = new double[][] {
         {0,0,0,0},
         {0.0006,0.0552,5.4165,0},
         {0.0021,0.1518,9.677,0},
