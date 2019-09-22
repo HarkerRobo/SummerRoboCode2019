@@ -51,8 +51,8 @@ public class Robot extends TimedRobot {
         
         //Initialize Subsystems
         Drivetrain.getInstance();
-        Elevator.getInstance();
-        Wrist.getInstance();
+        //Elevator.getInstance();
+        //Wrist.getInstance();
         Arm.getInstance();
         HatchExtender.getInstance();
         HatchFlower.getInstance();

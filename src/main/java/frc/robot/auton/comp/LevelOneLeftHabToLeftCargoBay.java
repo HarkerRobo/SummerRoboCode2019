@@ -1,4 +1,4 @@
-package frc.robot.auton;
+package frc.robot.auton.comp;
 
 public class LevelOneLeftHabToLeftCargoBay {
     public static double[][] pathLeft = new double[][] {

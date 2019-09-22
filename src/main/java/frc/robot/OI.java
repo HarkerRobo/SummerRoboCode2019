@@ -12,11 +12,10 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.auton.test.CurveRightEndStraight;
 import frc.robot.auton.test.CurveRightTest;
-import frc.robot.auton.LeftCargoBayAlign;
-import frc.robot.auton.LeftCargoBayAlignToLeftLoadingDock;
-import frc.robot.auton.LeftLoadingDockAlign;
-import frc.robot.auton.LeftLoadingDockAlignToLeftRocket;
-import frc.robot.auton.LevelOneLeftHabToLeftCargoBay;
+import frc.robot.auton.comp.LeftCargoBayToLeftLoadingDock;
+import frc.robot.auton.comp.LeftLoadingDockToLeftRocket;
+import frc.robot.auton.comp.LevelOneLeftHabToLeftCargoBay;
+import frc.robot.auton.comp.LevelOneMiddleHabToRightCargoBay;
 import frc.robot.auton.test.SmoothCurveRightEndStraight;
 import frc.robot.auton.test.StraightLinePath5Ft;
 import frc.robot.commands.MoveElevatorAndWrist;
@@ -44,9 +43,9 @@ import harkerrobolib.wrappers.XboxGamepad;
  * @since 6/14/19
  */
 public class OI {
-    
+
     static {
-        if(RobotMap.PRACTICE_BOT) {
+        if (RobotMap.PRACTICE_BOT) {
             groundCargo = new MoveElevatorAndWrist(100, -170);
             backHatch = new MoveElevatorAndWrist(6400, 1989);
             backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
@@ -97,10 +96,10 @@ public class OI {
     private static final MoveElevatorAndWrist frontRocketFirstCargo;
 
     public static int state;
-    private static Command firstPath; //Path from Hab to Cargo Ship
-    private static Command secondPath; //Path from the cargo bay to the loading dock
-    private static Command thirdPath; //Path from loading dock to rocket
-
+    private static DriveWithMotionProfile firstPath; // Path from Left Hab to Left Cargo Ship
+    private static DriveWithMotionProfile secondPath; // Path from the Left Front cargo bay to the Left loading dock
+    private static DriveWithMotionProfile thirdPath; // Path from Left loading dock to Left rocket
+ 
     public enum DemoMode {
         /**
          * Normal Controls and Speeds for Testing or Competitions
@@ -128,26 +127,49 @@ public class OI {
     }
 
     public void chooseAutonPaths() {
-        DriveWithMotionProfile habToFrontCargoBay = new DriveWithMotionProfile(
-            LevelOneLeftHabToLeftCargoBay.pathLeft, LevelOneLeftHabToLeftCargoBay.pathRight, 10
+        //Starting on the Left of the Hab:
+        DriveWithMotionProfile leftHabToLeftFrontCargoBay = new DriveWithMotionProfile(
+                LevelOneLeftHabToLeftCargoBay.pathLeft, LevelOneLeftHabToLeftCargoBay.pathRight, 10
         );
-        SequentialCommandGroup frontCargoBayToLoadingDock = new SequentialCommandGroup(
-            new DriveWithMotionProfile(LeftCargoBayAlign.pathLeft, LeftCargoBayAlign.pathRight, 10),  
-            new DriveWithMotionProfile(LeftCargoBayAlignToLeftLoadingDock.pathLeft,LeftCargoBayAlignToLeftLoadingDock.pathRight,10)
+        DriveWithMotionProfile frontLeftCargoBayToLeftLoadingDock = new DriveWithMotionProfile(
+                LeftCargoBayToLeftLoadingDock.pathLeft, LeftCargoBayToLeftLoadingDock.pathRight, 10
         );
-        SequentialCommandGroup loadingDockToRocket = new SequentialCommandGroup(
-            new DriveWithMotionProfile(LeftLoadingDockAlign.pathLeft, LeftLoadingDockAlign.pathRight, 10),
-            new DriveWithMotionProfile(LeftLoadingDockAlignToLeftRocket.pathLeft, LeftLoadingDockAlignToLeftRocket.pathRight, 10)
+        DriveWithMotionProfile leftLoadingDockToLeftRocket = new DriveWithMotionProfile(
+                LeftLoadingDockToLeftRocket.pathLeft, LeftLoadingDockToLeftRocket.pathRight, 10
         );
         
-        firstPath = habToFrontCargoBay;
-        secondPath = frontCargoBayToLoadingDock;
-        thirdPath = loadingDockToRocket;
-    }
+        //Starting on the Middle of the Hab(can go either way to loading station):
+        DriveWithMotionProfile middleHabToLeftFrontCargoBay = new DriveWithMotionProfile(
+                LevelOneMiddleHabToRightCargoBay.pathRight, LevelOneMiddleHabToRightCargoBay.pathLeft, 10
+        );
+        DriveWithMotionProfile middleHabToRightFrontCargoBay = new DriveWithMotionProfile(
+                LevelOneMiddleHabToRightCargoBay.pathLeft, LevelOneMiddleHabToRightCargoBay.pathRight, 10
+        );
 
-    private void incrementState()
-    { 
-        if(state < 2) { state++;} else {state = 0;}
+        //Starting on the Right of the Hab:
+        DriveWithMotionProfile rightHabToRightFrontCargoBay = new DriveWithMotionProfile(
+            LevelOneLeftHabToLeftCargoBay.pathRight, LevelOneLeftHabToLeftCargoBay.pathLeft, 10
+        );
+        DriveWithMotionProfile frontRightCargoBayToRightLoadingDock = new DriveWithMotionProfile(
+                LeftCargoBayToLeftLoadingDock.pathRight, LeftCargoBayToLeftLoadingDock.pathLeft, 10
+        );
+        DriveWithMotionProfile rightLoadingDockToRightRocket = new DriveWithMotionProfile(
+                LeftLoadingDockToLeftRocket.pathRight, LeftLoadingDockToLeftRocket.pathLeft, 10
+        );
+        
+        firstPath = leftHabToLeftFrontCargoBay;
+        secondPath = frontLeftCargoBayToLeftLoadingDock;
+        thirdPath = leftLoadingDockToLeftRocket;
+
+        /*
+        firstPathM = 
+        secondPathM = 
+        thirdPathM = 
+
+        firstPathR = rightHabToRightFrontCargoBay;
+        secondPathR = frontRightCargoBayToRightLoadingDock;
+        thirdPathR = rightLoadingDockToRightRocket;
+        */
     }
 
     public void initBindings() {
@@ -205,7 +227,22 @@ public class OI {
                     () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
                 )
             );
-            operatorGamepad.getDownDPadButton().whenPressed(groundCargo);   
+            operatorGamepad.getDownDPadButton().whenPressed(groundCargo);  
+            
+            driverGamepad.getButtonY().whenPressed(
+                new SequentialCommandGroup(
+                    new CallMethodCommand(() -> state = state+1),
+                    new ConditionalCommand( 
+                        new ConditionalCommand(
+                            new CallMethodCommand(() -> SmartDashboard.putString("Path", "firstPath")), 
+                            new CallMethodCommand(() -> SmartDashboard.putString("Path", "secondPath")), 
+                            () -> state == 0
+                        ),  
+                        new CallMethodCommand(() -> SmartDashboard.putString("Path", "thirdPath")),
+                        () -> state == 2
+                    )
+                )
+            );
         }
         else  {
             //Driver Controller (For guest) Left Joystick controls Drivetrain (30% speed)
@@ -219,22 +256,7 @@ public class OI {
             operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
             operatorGamepad.getButtonB().whenPressed(new ToggleExtender());
             operatorGamepad.getButtonA().whenPressed(new ToggleArm());
-            
-            driverGamepad.getButtonY().whenPressed(
-                new ParallelCommandGroup(
-                    new CallMethodCommand(() -> state = state +1),
-                    new ConditionalCommand( 
-                        new ConditionalCommand(
-                            new CallMethodCommand(() -> SmartDashboard.putString("Path", "firstPath")), 
-                            new CallMethodCommand(() -> SmartDashboard.putString("Path", "secondPath")), 
-                            () -> state == 0
-                        ),  
-                        new CallMethodCommand(() -> SmartDashboard.putString("Path","thirdPath")),
-                        () -> state == 1
-                    )
-                )
-            );
-            
+
             //D-Pad bindings
             operatorGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
             operatorGamepad.getDownDPadButton().whenPressed(groundCargo);
