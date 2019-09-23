@@ -58,7 +58,7 @@ public class OI {
             frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
         } else {
             groundCargo = new MoveElevatorAndWrist(100, -70);
-            backHatch = new MoveElevatorAndWrist(6400, 1989);
+            backHatch = new MoveElevatorAndWrist(6860, 1989);
             backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
             frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
             defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
@@ -69,6 +69,7 @@ public class OI {
             frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
         }
     }
+
     public static final DemoMode mode = DemoMode.NORMAL;
 
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
@@ -253,6 +254,8 @@ public class OI {
             //driverGamepad.getButtonX().whenPressed(new AlignWithLimelight());
             //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
             
+            driverGamepad.getButtonSelect().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight,10));
+
             operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
             operatorGamepad.getButtonB().whenPressed(new ToggleExtender());
             operatorGamepad.getButtonA().whenPressed(new ToggleArm());
