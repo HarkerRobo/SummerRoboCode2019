@@ -94,7 +94,7 @@ public class Drivetrain extends HSDrivetrain {
     private static final int MOTION_FRAME_PERIOD = 10;
 
     public static final double MAX_FORWARD_VELOCITY = 10; //14
-    public static final double MAX_TURN_VELOCITY = 6;
+    public static final double MAX_TURN_VELOCITY = 4;
 
     private Drivetrain() {
         super(new HSTalon(RobotMap.CAN_IDS.DT_LEFT_MASTER), new HSTalon(RobotMap.CAN_IDS.DT_RIGHT_MASTER),

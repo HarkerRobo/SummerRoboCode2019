@@ -20,7 +20,7 @@ import harkerrobolib.util.MathUtil;
 public class SpinBallIntakeManual extends IndefiniteCommand {
 
     private static final double VICTOR_SPEED_MULTIPLIER = 0.5;
-    private static final double SPARK_SPEED_MULTIPLIER = 0.25;
+    private static final double SPARK_SPEED_MULTIPLIER = 0.15;
 
     public SpinBallIntakeManual() {
         requires(Arm.getInstance());

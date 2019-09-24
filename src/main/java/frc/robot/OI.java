@@ -196,7 +196,7 @@ public class OI {
 
             driverGamepad.getUpDPadButton().whenPressed(defenseMode);
 
-            driverGamepad.getButtonBumperRight().whenPressed(new AlignWithLimelight());
+            //driverGamepad.getButtonBumperRight().whenPressed(new AlignWithLimelight());
 
             driverGamepad.getButtonStart().whenPressed(new ZeroElevator());
             driverGamepad.getButtonSelect().whenPressed(new ZeroWrist());  

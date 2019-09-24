@@ -22,7 +22,7 @@ import harkerrobolib.util.MathUtil;
 public class SpinWristRollersManual extends IndefiniteCommand {
     
     private static final double INTAKE_SPEED_MULTIPLIER = 0.45;
-    private static final double OUTTAKE_SPEED_MULTIPLIER = 0.9;
+    private static final double OUTTAKE_SPEED_MULTIPLIER = 1;
 
     public SpinWristRollersManual() {
         requires(WristRollers.getInstance());
@@ -44,7 +44,8 @@ public class SpinWristRollersManual extends IndefiniteCommand {
         } else {
             output = (a ? 1 : (x ? -1 : 0));
         }
-        output *= Math.signum(output) == 1 ? INTAKE_SPEED_MULTIPLIER : OUTTAKE_SPEED_MULTIPLIER;
+        output *= Math.signum(output) == -1 ? INTAKE_SPEED_MULTIPLIER : OUTTAKE_SPEED_MULTIPLIER;
+        
         if (Math.abs(output) > 0)
             WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, output);
         else
