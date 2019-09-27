@@ -27,6 +27,19 @@ NetworkTables.addKeyListener("/SmartDashboard/Is scoring on cargo ship?", (key, 
 }, true);
 
 /**
+ * Updates the auton path state.
+ */
+NetworkTables.addKeyListener("/SmartDashboard/State", (key, value) =>{
+    document.getElementById("state").innerHTML = value;
+}, true);
+
+/**
+ * Updates whether or not the path has finished.
+ */
+NetworkTables.addKeyListener("/SmartDashboard/Is path completed?", (key, value) => {
+    document.getElementById("complete").innerHTML = value;
+}, true);
+/**
  * Updates whether the robot has a hatch or cargo.
  */
 NetworkTables.addKeyListener("/SmartDashboard/Has hatch?", (key, value) => {

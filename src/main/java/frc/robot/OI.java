@@ -161,16 +161,6 @@ public class OI {
         firstPath = leftHabToLeftFrontCargoBay;
         secondPath = frontLeftCargoBayToLeftLoadingDock;
         thirdPath = leftLoadingDockToLeftRocket;
-
-        /*
-        firstPathM = 
-        secondPathM = 
-        thirdPathM = 
-
-        firstPathR = rightHabToRightFrontCargoBay;
-        secondPathR = frontRightCargoBayToRightLoadingDock;
-        thirdPathR = rightLoadingDockToRightRocket;
-        */
     }
 
     public void initBindings() {
@@ -233,14 +223,17 @@ public class OI {
             driverGamepad.getButtonY().whenPressed(
                 new SequentialCommandGroup(
                     new CallMethodCommand(() -> state = state+1),
-                    new ConditionalCommand( 
+                    new ConditionalCommand(
                         new ConditionalCommand(
-                            new CallMethodCommand(() -> SmartDashboard.putString("Path", "firstPath")), 
-                            new CallMethodCommand(() -> SmartDashboard.putString("Path", "secondPath")), 
+                            firstPath,
+                            secondPath,
                             () -> state == 0
                         ),  
-                        new CallMethodCommand(() -> SmartDashboard.putString("Path", "thirdPath")),
-                        () -> state == 2
+                        new ConditionalCommand(
+                            thirdPath,
+                            ()-> state == 2
+                        ),
+                        () -> state < 2
                     )
                 )
             );
