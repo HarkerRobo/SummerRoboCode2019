@@ -37,20 +37,20 @@ public class Drivetrain extends HSDrivetrain {
     public static final double FREE_VELOCITY = 18;
 
     //Arbitrary Feed Forward Constants
-    public static final double leftkS = 0.09;
-    public static final double rightkS = 0.08;
-    public static final double leftkF = 0.22;
-    public static final double rightkF = 0.24;
-    public static final double leftkA = 0.027;
-    public static final double rightkA = 0.027;
+    public static final double leftkS; 
+    public static final double rightkS;
+    public static final double leftkF; 
+    public static final double rightkF;
+    public static final double leftkA ;
+    public static final double rightkA;
 
     //Velocity PID Constants
     public static final int VELOCITY_SLOT = 0;
-    private static final double VELOCITY_LEFT_kF = leftkF;
+    private static final double VELOCITY_LEFT_kF;
     private static final double VELOCITY_LEFT_kP = 0.75;
     private static final double VELOCITY_LEFT_kI = 0;
     private static final double VELOCITY_LEFT_kD = 8;
-    private static final double VELOCITY_RIGHT_kF = rightkF;
+    private static final double VELOCITY_RIGHT_kF;
     private static final double VELOCITY_RIGHT_kP = 0.75;
     private static final double VELOCITY_RIGHT_kI = 0;
     private static final double VELOCITY_RIGHT_kD = 8;
@@ -68,16 +68,16 @@ public class Drivetrain extends HSDrivetrain {
     public static final double POSITION_RAMP_RATE = 0.2;
 
     //Motion Profiling Constants
-    public static final int MOTION_PROF_SLOT = 2;
-    private static final double MOTION_PROF_LEFT_kF = leftkF;
-    private static final double MOTION_PROF_LEFT_kP = 2;//1.6; //2.7;//1;//1.6;//;1.3;
-    private static final double MOTION_PROF_LEFT_kI = 0;
-    private static final double MOTION_PROF_LEFT_kD = 60;//80;//50;//30;//20;
-    private static final double MOTION_PROF_RIGHT_kF = rightkF;
-    private static final double MOTION_PROF_RIGHT_kP = 1.4;//1;//1.4;
-    private static final double MOTION_PROF_RIGHT_kI = 0;
-    private static final double MOTION_PROF_RIGHT_kD = 30;//30;//20;//10;
-    public static final double MOTION_PROF_RAMP_RATE = 0;//0.1;
+    public static final int MOTION_PROF_SLOT;
+    private static final double MOTION_PROF_LEFT_kF;
+    private static final double MOTION_PROF_LEFT_kP;//1.6; //2.7;//1;//1.6;//;1.3;
+    private static final double MOTION_PROF_LEFT_kI;
+    private static final double MOTION_PROF_LEFT_kD;//80;//50;//30;//20;
+    private static final double MOTION_PROF_RIGHT_kF;
+    private static final double MOTION_PROF_RIGHT_kP;//1;//1.4;
+    private static final double MOTION_PROF_RIGHT_kI;
+    private static final double MOTION_PROF_RIGHT_kD;//30;//20;//10;
+    public static final double MOTION_PROF_RAMP_RATE;//0.1;
 
     public static final double TX_SETPOINT = 0;
     public static final double TX_ALLOWABLE_ERROR = 1;
@@ -95,6 +95,55 @@ public class Drivetrain extends HSDrivetrain {
 
     public static final double MAX_FORWARD_VELOCITY = 10; //14
     public static final double MAX_TURN_VELOCITY = 4;
+
+    static {
+        if(RobotMap.PRACTICE_BOT){
+            leftkS = 0.09;
+            rightkS = 0.08;
+            leftkF = 0.22;
+            rightkF = 0.24;
+            leftkA = 0.027;
+            rightkA = 0.027;
+
+            VELOCITY_LEFT_kF = leftkF;
+            VELOCITY_RIGHT_kF = rightkF;
+
+            MOTION_PROF_SLOT = 2;
+            MOTION_PROF_LEFT_kF = leftkF;
+            MOTION_PROF_LEFT_kP = 2;//1.6; //2.7;//1;//1.6;//;1.3;
+            MOTION_PROF_LEFT_kI = 0;
+            MOTION_PROF_LEFT_kD = 60;//80;//50;//30;//20;
+            MOTION_PROF_RIGHT_kF = rightkF;
+            MOTION_PROF_RIGHT_kP = 1.4;//1;//1.4;
+            MOTION_PROF_RIGHT_kI = 0;
+            MOTION_PROF_RIGHT_kD = 30;//30;//20;//10;
+            MOTION_PROF_RAMP_RATE = 0;//0.1;
+
+            
+        }
+        else{
+            leftkS = 0.09;
+            rightkS = 0.08;
+            leftkF = 0.22;
+            rightkF = 0.24;
+            leftkA = 0.027;
+            rightkA = 0.027;
+
+            VELOCITY_LEFT_kF = leftkF;
+            VELOCITY_RIGHT_kF = rightkF;
+
+            MOTION_PROF_SLOT = 2;
+            MOTION_PROF_LEFT_kF = leftkF;
+            MOTION_PROF_LEFT_kP = 2.4;//1.6; //2.7;//1;//1.6;//;1.3;
+            MOTION_PROF_LEFT_kI = 0;
+            MOTION_PROF_LEFT_kD = 10;//80;//50;//30;//20;
+            MOTION_PROF_RIGHT_kF = rightkF;
+            MOTION_PROF_RIGHT_kP = 1.7;//1;//1.4;
+            MOTION_PROF_RIGHT_kI = 0;
+            MOTION_PROF_RIGHT_kD = 6.6;//30;//20;//10;
+            MOTION_PROF_RAMP_RATE = 0;//0.1;
+        }
+    }
 
     private Drivetrain() {
         super(new HSTalon(RobotMap.CAN_IDS.DT_LEFT_MASTER), new HSTalon(RobotMap.CAN_IDS.DT_RIGHT_MASTER),

@@ -57,6 +57,8 @@ public class Robot extends TimedRobot {
         HatchExtender.getInstance();
         HatchFlower.getInstance();
         WristRollers.getInstance();
+
+        Limelight.setLEDS(true);
     }
 
     /**
@@ -69,13 +71,8 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void robotPeriodic() {
-        SmartDashboard.putBoolean("Trigger Mode", Drivetrain.getInstance().getCurrentCommandName() == "AlignWithLimelight");
-        SmartDashboard.putString("Elevator Command", Elevator.getInstance().getCurrentCommandName());
-        SmartDashboard.putString("Wrist Command", Wrist.getInstance().getCurrentCommandName());
         SmartDashboard.putNumber("Elevator Position", Elevator.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getCurrentDegreeAngle());
-        SmartDashboard.putString
-        ("double solenoid value", HatchFlower.getInstance().getSolenoid().get().toString());    
+        SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());    
         SmartDashboard.putBoolean("Is scoring on cargo ship?", OI.getInstance().getCargoShipMode());
         SmartDashboard.putBoolean("Has hatch?", HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN);
         SmartDashboard.putString("Flower State", HatchFlower.getInstance().getSolenoid().get().toString());

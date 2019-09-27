@@ -7,6 +7,7 @@ import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.HatchExtender;
 import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
+import frc.robot.util.Limelight;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,6 +19,7 @@ import frc.robot.auton.comp.LevelOneLeftHabToLeftCargoBay;
 import frc.robot.auton.comp.LevelOneMiddleHabToRightCargoBay;
 import frc.robot.auton.test.SmoothCurveRightEndStraight;
 import frc.robot.auton.test.StraightLinePath5Ft;
+import frc.robot.auton.test.StraightLinePath8Ft;
 import frc.robot.commands.MoveElevatorAndWrist;
 import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.arm.ToggleArm;
@@ -63,8 +65,8 @@ public class OI {
             frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
             defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
             backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
-            backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
-            backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
+            backRocketSecondCargo = new MoveElevatorAndWrist(20997, 1695);
+            backRocketSecondHatch = new MoveElevatorAndWrist(20423, 1815);
             frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
             frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
         }
@@ -158,9 +160,9 @@ public class OI {
                 LeftLoadingDockToLeftRocket.pathRight, LeftLoadingDockToLeftRocket.pathLeft, 10
         );
         
-        firstPath = leftHabToLeftFrontCargoBay;
-        secondPath = frontLeftCargoBayToLeftLoadingDock;
-        thirdPath = leftLoadingDockToLeftRocket;
+        firstPath = new DriveWithMotionProfile(StraightLinePath8Ft.pathLeft, StraightLinePath8Ft.pathRight, 10);
+        secondPath = new DriveWithMotionProfile(StraightLinePath8Ft.pathLeft, StraightLinePath8Ft.pathRight, 10);
+        thirdPath = new DriveWithMotionProfile(StraightLinePath8Ft.pathLeft, StraightLinePath8Ft.pathRight, 10);
     }
 
     public void initBindings() {
@@ -186,7 +188,7 @@ public class OI {
 
             driverGamepad.getUpDPadButton().whenPressed(defenseMode);
 
-            //driverGamepad.getButtonBumperRight().whenPressed(new AlignWithLimelight());
+            driverGamepad.getButtonBumperRight().whilePressed(new DriveWithLimelight());
 
             driverGamepad.getButtonStart().whenPressed(new ZeroElevator());
             driverGamepad.getButtonSelect().whenPressed(new ZeroWrist());  
@@ -220,7 +222,9 @@ public class OI {
             );
             operatorGamepad.getDownDPadButton().whenPressed(groundCargo);  
             
-            driverGamepad.getButtonY().whenPressed(
+            operatorGamepad.getButtonBumperRight().whenPressed(new CallMethodCommand(()->{Limelight.toggleLEDs();;}));
+            
+            /**driverGamepad.getButtonY().whenPressed(
                 new SequentialCommandGroup(
                     new CallMethodCommand(() -> state = state+1),
                     new ConditionalCommand(
@@ -236,7 +240,8 @@ public class OI {
                         () -> state < 2
                     )
                 )
-            );
+            ); 
+            */
         }
         else  {
             //Driver Controller (For guest) Left Joystick controls Drivetrain (30% speed)

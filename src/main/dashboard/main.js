@@ -55,8 +55,8 @@ NetworkTables.addKeyListener("/SmartDashboard/Has hatch?", (key, value) => {
 /**
  * Updates the action that performs when the trigger is actuated.
  */
-NetworkTables.addKeyListener("/SmartDashboard/Trigger Mode", (key, value) => {
-    if (wristMode) { // Limelight align
+NetworkTables.addKeyListener("/SmartDashboard/Drivetrain Mode", (key, wristMode) => {
+    if (wristMode === "Limelight") { // Limelight align
         document.getElementById("wrist").style.display = "none";
         document.getElementById("align").style.display = "inline-block";
     }
@@ -109,7 +109,6 @@ document.getElementById("hatch").style.display = "inline-block";
 document.getElementById("cargo").style.display = "none";
 document.getElementById("wrist").style.display = "none";
 document.getElementById("align").style.display = "inline-block";
-document.getElementById("climb").style.display = "none"
 
 
 function drawLimelightFeed() {

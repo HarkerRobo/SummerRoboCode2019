@@ -29,6 +29,7 @@ public class Limelight {
     public static final String CORNERX_KEY = "tcornx";
     public static final String CORNERY_KEY = "tcorny";
     public static final String CAMTRAN_KEY = "camtran";
+    public static final String LED_MODE = "ledMode";
 
     public static final int LED_OFF = 1;
     public static final int LED_ON = 3;
@@ -75,13 +76,32 @@ public class Limelight {
     }
 
     /**
-     * Toggles the limelight between driver and vision mode
+     * Toggles the limelight between driver and vision mode.
      */
     public static void toggleCamMode() {
         if (table.getEntry(MODE_KEY).getDouble(0) == VISION_MODE)
             table.getEntry(MODE_KEY).setNumber(DRIVER_MODE);
         else
             table.getEntry(MODE_KEY).setNumber(VISION_MODE);
+    }
+
+    /**
+     * Toggles the limelight LEDs on or off.
+     */
+    public static void toggleLEDs() 
+    {
+        if(table.getEntry(LED_MODE).getNumber(0).intValue() == LED_ON) 
+            table.getEntry(LED_MODE).setNumber(LED_OFF);
+        else
+            table.getEntry(LED_MODE).setNumber(LED_ON);
+    }
+
+    /**
+     * Sets the LEDS to be on or off
+     */
+    public static void setLEDS(boolean on)
+    {
+        table.getEntry(LED_MODE).setNumber(on ? LED_ON : LED_OFF);
     }
 
     public static void setCamModeDriver() {
