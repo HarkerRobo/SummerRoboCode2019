@@ -65,7 +65,7 @@ public class OI {
             frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
             defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
             backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
-            backRocketSecondCargo = new MoveElevatorAndWrist(20997, 1695);
+            backRocketSecondCargo = new MoveElevatorAndWrist(19836, 1836);
             backRocketSecondHatch = new MoveElevatorAndWrist(20423, 1815);
             frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
             frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
@@ -222,7 +222,7 @@ public class OI {
             );
             operatorGamepad.getDownDPadButton().whenPressed(groundCargo);  
             
-            operatorGamepad.getButtonBumperRight().whenPressed(new CallMethodCommand(()->{Limelight.toggleLEDs();;}));
+            operatorGamepad.getButtonBumperLeft().whenPressed(new CallMethodCommand(()->{Limelight.toggleLEDs();;}));
             
             /**driverGamepad.getButtonY().whenPressed(
                 new SequentialCommandGroup(
