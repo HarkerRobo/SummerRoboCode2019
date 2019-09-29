@@ -166,8 +166,6 @@ public class OI {
     }
 
     public void initBindings() {
-        // MoveElevatorAndWrist groundCargo = new MoveElevatorAndWrist(100, -170);
-
         // Go from Hab to cargo ship/rocket ship
         // Have driver align manually
         // Go to loading station

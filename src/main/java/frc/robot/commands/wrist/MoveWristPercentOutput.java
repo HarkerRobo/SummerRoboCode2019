@@ -25,7 +25,7 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
     }
 
     private static final double LAG_COMPENSATION;
-    private static final double SPEED_MULTIPLIER = 0.3;
+    private static final double SPEED_MULTIPLIER = 0.4;//0.3;
     private double lastSetpoint;
     private boolean shouldHold;
 
