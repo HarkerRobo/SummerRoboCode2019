@@ -43,6 +43,7 @@ public class Arm extends Subsystem{
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.ARM_FORWARD_CHANNEL, RobotMap.CAN_IDS.ARM_REVERSE_CHANNEL);
         victor = new VictorSPX(RobotMap.CAN_IDS.BALL_INTAKE_VICTOR);
         spark = new CANSparkMax(RobotMap.CAN_IDS.BALL_INTAKE_SPARK, MotorType.kBrushless);
+        solenoid.set(IN);
     }
 
     @Override

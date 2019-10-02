@@ -10,6 +10,7 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +24,7 @@ import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristRollers;
 import frc.robot.util.Limelight;
 import harkerrobolib.auto.ParallelCommandGroup;
+import harkerrobolib.commands.CallMethodCommand;
 import harkerrobolib.commands.CancelCommand;
 
 /**
@@ -40,6 +42,7 @@ import harkerrobolib.commands.CancelCommand;
  */
 public class Robot extends TimedRobot {
 
+    // Solenoid solenoid = new Solenoid(4);
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -59,6 +62,10 @@ public class Robot extends TimedRobot {
         WristRollers.getInstance();
 
         Limelight.setLEDS(true);
+
+        // OI.getInstance().getOperatorGamepad().getButtonY().whenPressed(new CallMethodCommand(() -> {
+        //     solenoid.set(!solenoid.get());
+        // }));
     }
 
     /**

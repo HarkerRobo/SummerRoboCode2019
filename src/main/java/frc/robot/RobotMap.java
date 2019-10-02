@@ -13,7 +13,7 @@ public class RobotMap {
     public static final int PRIMARY_PID_INDEX = 0;
     public static final int SECONDARY_PID_INDEX = 1;
 
-    public static final boolean PRACTICE_BOT = false;
+    public static final boolean PRACTICE_BOT = true;
 
     public static class CAN_IDS {
         static {
@@ -31,18 +31,19 @@ public class RobotMap {
                 WRIST_MASTER = 5; 
                 WRIST_FOLLOWER = 7;
 
-                ARM_FORWARD_CHANNEL = 4; 
-                ARM_REVERSE_CHANNEL = 0;
+                ARM_FORWARD_CHANNEL = 1;
+                ARM_REVERSE_CHANNEL = 2;
+
                 BALL_INTAKE_VICTOR = 0; //Summer bot
                 BALL_INTAKE_SPARK = 1; //Season bot
 
                 ROLLERS_TALON = 1;
                 
-                EXTENDER_FORWARD_CHANNEL = 6; 
-                EXTENDER_REVERSE_CHANNEL = 2;
+                EXTENDER_FORWARD_CHANNEL =  0;
+                EXTENDER_REVERSE_CHANNEL = 6;
 
-                FLOWER_FORWARD_CHANNEL = 1; 
-                FLOWER_REVERSE_CHANNEL = 5;
+                FLOWER_FORWARD_CHANNEL = 5;
+                FLOWER_REVERSE_CHANNEL = 4;
             } else {
                 DT_LEFT_MASTER = 4; 
                 DT_RIGHT_MASTER = 1; 

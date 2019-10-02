@@ -61,7 +61,7 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
         }
 
         SmartDashboard.putNumber("Elevator Error", Elevator.getInstance().getMaster().getClosedLoopError());
-        SmartDashboard.putString("Elevator Control Mode", Elevator.getInstance().getMaster().getControlMode().toString());
+        // SmartDashboard.putString("Elevator Control Mode", Elevator.getInstance().getMaster().getControlMode().toString());
     }
 
     @Override

@@ -104,6 +104,7 @@ public class Elevator extends Subsystem {
         master.configReverseSoftLimitThreshold(LOWER_SOFT_LIMIT);
         master.configForwardSoftLimitEnable(true);
         master.configReverseSoftLimitEnable(true);
+
     }
 
     private void configVoltageComp() {

@@ -15,7 +15,15 @@ import frc.robot.commands.wristrollers.SpinWristRollersManual;
  */
 public class WristRollers extends Subsystem {
     
-    private static final boolean INVERT = true;
+    private static final boolean INVERT;
+
+    static {
+        if(RobotMap.PRACTICE_BOT) {
+            INVERT = true;
+        } else {
+            INVERT = false;
+        }
+    }
 
     private static WristRollers instance;
     

@@ -38,6 +38,7 @@ public class HatchFlower extends Subsystem {
 
     private HatchFlower() {
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.FLOWER_FORWARD_CHANNEL, RobotMap.CAN_IDS.FLOWER_REVERSE_CHANNEL);
+        solenoid.set(CLOSED);
     }
 
     @Override
