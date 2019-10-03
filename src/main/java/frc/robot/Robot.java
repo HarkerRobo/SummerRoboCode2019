@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
         HatchFlower.getInstance();
         WristRollers.getInstance();
 
-        Limelight.setLEDS(true);
+        //Limelight.setLEDS(true);
 
         // OI.getInstance().getOperatorGamepad().getButtonY().whenPressed(new CallMethodCommand(() -> {
         //     solenoid.set(!solenoid.get());

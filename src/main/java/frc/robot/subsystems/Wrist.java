@@ -27,10 +27,12 @@ public class Wrist extends Subsystem {
             TALON_INVERTED = false;
             VICTOR_INVERTED = true;
 
-            FRONTMOST_POSITION = -197;
-            BACKMOST_POSITION = 2095;
+            FRONTMOST_POSITION = -40;//-156 for horizontal on new wrist-197 for old
+            BACKMOST_POSITION = 2151;
             
-            HORIZONTAL_BACK = 2035;
+            HORIZONTAL_BACK = 2048;
+            MIDDLE_POSITION = 1040; 
+            DEFENSE_POSITION = 1040;
         } else {
             SENSOR_PHASE = false;
             TALON_INVERTED = true;
@@ -39,6 +41,8 @@ public class Wrist extends Subsystem {
             FRONTMOST_POSITION = -97;
             BACKMOST_POSITION = 2115;
             HORIZONTAL_BACK = 2000;
+            MIDDLE_POSITION = 1050;
+            DEFENSE_POSITION = 910;
         }
     }
 
@@ -55,10 +59,10 @@ public class Wrist extends Subsystem {
 
     public static final int FRONTMOST_POSITION;
     public static final int BACKMOST_POSITION;
-    public static final int MIDDLE_POSITION = 1050;
+    public static final int MIDDLE_POSITION;
     public static final int HORIZONTAL_FRONT = 0;
     public static final int HORIZONTAL_BACK;
-    public static final int DEFENSE_POSITION = 910; 
+    public static final int DEFENSE_POSITION; 
 
     public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.12;//0.10; //Gravity FF required to keep the wrist level at 0 degrees
     public static final double kS = 0.03;
@@ -93,8 +97,8 @@ public class Wrist extends Subsystem {
         master.setInverted(TALON_INVERTED);
         follower.setInverted(VICTOR_INVERTED);
         master.setSensorPhase(SENSOR_PHASE);
-        master.configForwardSoftLimitThreshold(BACKMOST_POSITION);
-        master.configReverseSoftLimitThreshold(FRONTMOST_POSITION);
+        //master.configForwardSoftLimitThreshold(BACKMOST_POSITION);
+        //master.configReverseSoftLimitThreshold(FRONTMOST_POSITION);
         configVoltageComp();
         setupMotionMagic();
         setupVelocity();
