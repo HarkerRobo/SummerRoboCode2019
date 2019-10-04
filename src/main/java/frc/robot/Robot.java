@@ -84,6 +84,7 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Has hatch?", HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN);
         SmartDashboard.putString("Flower State", HatchFlower.getInstance().getSolenoid().get().toString());
         SmartDashboard.putNumber("State", OI.state);
+        SmartDashboard.putString("Current Wrist Command", Wrist.getInstance().getCurrentCommandName());
     }
 
     /**

@@ -13,12 +13,12 @@ import frc.robot.subsystems.Wrist;
  */
 public class ZeroWrist extends TimedCommand {
 
-    private double SPEED = -0.2;
-    private double VELOCITY_SPIKE = -73;
+    private double SPEED = 0.3;//-0.2;
+    private double VELOCITY_ERROR = -60;
     private boolean isSpike;
     private double startTime;
     private static final double INVALID_TIME = 0.06;
-    private static final double TIMEOUT = 1.0;
+    private static final double TIMEOUT = 5;
 
     public ZeroWrist() {
         super(TIMEOUT);
@@ -37,7 +37,7 @@ public class ZeroWrist extends TimedCommand {
     protected void execute() {
         Wrist.getInstance().getMaster().set(ControlMode.Velocity, SPEED * Wrist.CRUISE_VELOCITY);
         SmartDashboard.putNumber("velocity error", Wrist.getInstance().getMaster().getClosedLoopError());
-        isSpike = Wrist.getInstance().getMaster().getClosedLoopError() <= VELOCITY_SPIKE && Timer.getFPGATimestamp() - startTime >= INVALID_TIME;
+        isSpike = Wrist.getInstance().getMaster().getClosedLoopError() <= VELOCITY_ERROR && Timer.getFPGATimestamp() - startTime >= INVALID_TIME;
         SmartDashboard.putBoolean("isSpike", isSpike);
     }
 
@@ -48,7 +48,7 @@ public class ZeroWrist extends TimedCommand {
 
     @Override
     protected void end() {
-        Wrist.getInstance().getMaster().setSelectedSensorPosition(Wrist.FRONTMOST_POSITION);
+        Wrist.getInstance().getMaster().setSelectedSensorPosition(Wrist.BACKMOST_POSITION);
         Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
     }
 
