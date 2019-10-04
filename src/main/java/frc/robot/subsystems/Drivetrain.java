@@ -59,7 +59,7 @@ public class Drivetrain extends HSDrivetrain {
     //Position PID Constants
     public static final int POSITION_SLOT = 1;
     private static final double POSITION_LEFT_kP = 0.3;
-    private static final double POSITION_LEFT_kI = 0;//0.001;
+    private static final double POSITION_LEFT_kI = 0;
     private static final double POSITION_LEFT_kD = 60;
     private static final double POSITION_RIGHT_kP = 0.3;
     private static final double POSITION_RIGHT_kI = 0;
@@ -70,18 +70,18 @@ public class Drivetrain extends HSDrivetrain {
     //Motion Profiling Constants
     public static final int MOTION_PROF_SLOT;
     private static final double MOTION_PROF_LEFT_kF;
-    private static final double MOTION_PROF_LEFT_kP;//1.6; //2.7;//1;//1.6;//;1.3;
+    private static final double MOTION_PROF_LEFT_kP;
     private static final double MOTION_PROF_LEFT_kI;
-    private static final double MOTION_PROF_LEFT_kD;//80;//50;//30;//20;
+    private static final double MOTION_PROF_LEFT_kD;
     private static final double MOTION_PROF_RIGHT_kF;
-    private static final double MOTION_PROF_RIGHT_kP;//1;//1.4;
+    private static final double MOTION_PROF_RIGHT_kP;
     private static final double MOTION_PROF_RIGHT_kI;
-    private static final double MOTION_PROF_RIGHT_kD;//30;//20;//10;
-    public static final double MOTION_PROF_RAMP_RATE;//0.1;
+    private static final double MOTION_PROF_RIGHT_kD;
+    public static final double MOTION_PROF_RAMP_RATE;
 
     public static final double TX_SETPOINT = 0;
     public static final double TX_ALLOWABLE_ERROR = 1;
-    public static final double TX_kP = 0.018;//0.014;
+    public static final double TX_kP = 0.018;
     public static final double TX_kI = 0;
     public static final double TX_kD = 0;
 
@@ -118,8 +118,6 @@ public class Drivetrain extends HSDrivetrain {
             MOTION_PROF_RIGHT_kI = 0;
             MOTION_PROF_RIGHT_kD = 30;//30;//20;//10;
             MOTION_PROF_RAMP_RATE = 0;//0.1;
-
-            
         }
         else{
             leftkS = 0.09;

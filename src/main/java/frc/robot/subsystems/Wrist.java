@@ -97,12 +97,12 @@ public class Wrist extends Subsystem {
         master.setInverted(TALON_INVERTED);
         follower.setInverted(VICTOR_INVERTED);
         master.setSensorPhase(SENSOR_PHASE);
-        //master.configForwardSoftLimitThreshold(BACKMOST_POSITION);
-        //master.configReverseSoftLimitThreshold(FRONTMOST_POSITION);
+        master.configForwardSoftLimitThreshold(BACKMOST_POSITION);
+        master.configReverseSoftLimitThreshold(FRONTMOST_POSITION);
         configVoltageComp();
         setupMotionMagic();
         setupVelocity();
-        master.setSelectedSensorPosition(BACKMOST_POSITION);
+        master.setSelectedSensorPosition(RobotMap.PRACTICE_BOT ? BACKMOST_POSITION  : FRONTMOST_POSITION);
         master.setNeutralMode(NeutralMode.Coast);
     }
 
