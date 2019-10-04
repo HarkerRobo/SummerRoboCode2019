@@ -65,18 +65,48 @@ public class Wrist extends Subsystem {
     public static final int DEFENSE_POSITION; 
 
     public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.12;//0.10; //Gravity FF required to keep the wrist level at 0 degrees
-    public static final double kS = 0.03;
-    public static final double kA = 0.00036;
-    public static final double kF = 2;
+    public static final double kS;
+    public static final double kA;
+    public static final double kF;
 
-    public static final int MOTION_MAGIC_SLOT = 0;
-    public static final double MOTION_MAGIC_KF = kF; //1.3
-    public static final double MOTION_MAGIC_KP = 0.9; //1.2
-    public static final double MOTION_MAGIC_KI = 0.0015;
-    public static final double MOTION_MAGIC_KD = 30;
-    public static final int CRUISE_VELOCITY = 380;//420; //Encoder Units per 100ms
-    public static final int MAX_ACCELERATION = 580;//640; //Encoder Units per 100ms per s
-    public static final double RAMP_RATE = 0.1;
+    public static final int MOTION_MAGIC_SLOT;
+    public static final double MOTION_MAGIC_KF;
+    public static final double MOTION_MAGIC_KP;
+    public static final double MOTION_MAGIC_KI;
+    public static final double MOTION_MAGIC_KD;
+    public static final int CRUISE_VELOCITY; 
+    public static final int MAX_ACCELERATION; 
+    public static final double RAMP_RATE;
+
+    static {
+        if(RobotMap.PRACTICE_BOT) {
+            kS = 0.03;
+            kA = 0.0000;
+            kF = 2;
+
+            MOTION_MAGIC_SLOT = 0;
+            MOTION_MAGIC_KF = kF; //1.3
+            MOTION_MAGIC_KP = 0.; //1.2
+            MOTION_MAGIC_KI = 0.00;
+            MOTION_MAGIC_KD = 0;
+            CRUISE_VELOCITY = 190;//380; //Encoder Units per 100ms
+            MAX_ACCELERATION = 290;//580; //Encoder Units per 100ms per s
+            RAMP_RATE = 0.1;
+        } else {
+            kS = 0.03;
+            kA = 0.00036;
+            kF = 2;
+
+            MOTION_MAGIC_SLOT = 0;
+            MOTION_MAGIC_KF = kF; //1.3
+            MOTION_MAGIC_KP = 0.9; //1.2
+            MOTION_MAGIC_KI = 0.0015;
+            MOTION_MAGIC_KD = 30;
+            CRUISE_VELOCITY = 190;//380; //Encoder Units per 100ms
+            MAX_ACCELERATION = 290;//580; //Encoder Units per 100ms per s
+            RAMP_RATE = 0.1;
+        }
+    }
 
     public static final int VELOCITY_SLOT = 1;
     public static final double VELOCITY_KF = kF;
@@ -97,8 +127,8 @@ public class Wrist extends Subsystem {
         master.setInverted(TALON_INVERTED);
         follower.setInverted(VICTOR_INVERTED);
         master.setSensorPhase(SENSOR_PHASE);
-        //master.configForwardSoftLimitThreshold(BACKMOST_POSITION);
-        //master.configReverseSoftLimitThreshold(FRONTMOST_POSITION);
+        master.configForwardSoftLimitThreshold(BACKMOST_POSITION);
+        master.configReverseSoftLimitThreshold(FRONTMOST_POSITION);
         configVoltageComp();
         setupMotionMagic();
         setupVelocity();

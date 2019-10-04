@@ -72,7 +72,7 @@ public class OI {
         }
     }
 
-    public static final DemoMode mode = DemoMode.NORMAL;
+    
 
     public static final double XBOX_JOYSTICK_DEADBAND = 0.1;
     public static final double XBOX_TRIGGER_DEADBAND = 0.1;
@@ -165,6 +165,8 @@ public class OI {
         thirdPath = new DriveWithMotionProfile(StraightLinePath8Ft.pathLeft, StraightLinePath8Ft.pathRight, 10);
     }
 
+    public static final DemoMode mode = DemoMode.SAFE;
+
     public void initBindings() {
         // Go from Hab to cargo ship/rocket ship
         // Have driver align manually
@@ -250,7 +252,7 @@ public class OI {
             //driverGamepad.getButtonX().whenPressed(new AlignWithLimelight());
             //driverGamepad.getButtonY().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight, 10));
             
-            driverGamepad.getButtonSelect().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight,10));
+            //driverGamepad.getButtonSelect().whenPressed(new DriveWithMotionProfile(CurveRightEndStraight.pathLeft, CurveRightEndStraight.pathRight,10));
 
             operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
             operatorGamepad.getButtonB().whenPressed(new ToggleExtender());
@@ -261,7 +263,7 @@ public class OI {
             operatorGamepad.getDownDPadButton().whenPressed(groundCargo);
             operatorGamepad.getRightDPadButton().whenPressed(frontShipAndLoading);
             operatorGamepad.getLeftDPadButton().whenPressed(backHatch);
-
+            operatorGamepad.getButtonY().whenPressed(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
             driverGamepad.getButtonStickLeft().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
             operatorGamepad.getButtonBumperRight().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
 

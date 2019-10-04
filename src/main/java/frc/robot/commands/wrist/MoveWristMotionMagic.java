@@ -60,8 +60,10 @@ public class MoveWristMotionMagic extends TimedCommand {
         double totalErrorSign = Math.signum(setpoint - Wrist.getInstance().getMaster().getSelectedSensorPosition());
         Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * totalErrorSign + Wrist.kA * accelSign * Wrist.MAX_ACCELERATION);
         prevVel = vel;
+        SmartDashboard.putNumber("Wrist Trajectory Velocity", Wrist.getInstance().getMaster().getActiveTrajectoryVelocity());
 
         SmartDashboard.putNumber("Wrist Error", Wrist.getInstance().getMaster().getClosedLoopError());
+        SmartDashboard.putNumber("Wrist Output", Wrist.getInstance().getMaster().getMotorOutputPercent());
     }
 
     @Override

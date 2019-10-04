@@ -24,7 +24,17 @@ import harkerrobolib.util.Conversions.SpeedUnit;
  * @since 6/15/19
  */
 public class DriveWithVelocity extends IndefiniteCommand {
-    private static final double SPEED_MULTIPLIER = 1;
+
+    private static final double SPEED_MULTIPLIER;
+    
+    static {
+        if(OI.mode == DemoMode.SAFE) {
+            SPEED_MULTIPLIER = 0.5;
+        } else {
+            SPEED_MULTIPLIER = 1;
+        }
+    }
+
     private boolean hasJoystickInput;
 
     public DriveWithVelocity() {
