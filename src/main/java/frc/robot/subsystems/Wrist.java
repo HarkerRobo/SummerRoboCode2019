@@ -132,7 +132,7 @@ public class Wrist extends Subsystem {
         configVoltageComp();
         setupMotionMagic();
         setupVelocity();
-        master.setSelectedSensorPosition(FRONTMOST_POSITION);
+        master.setSelectedSensorPosition(RobotMap.PRACTICE_BOT ? BACKMOST_POSITION  : FRONTMOST_POSITION);
         master.setNeutralMode(NeutralMode.Coast);
     }
 
