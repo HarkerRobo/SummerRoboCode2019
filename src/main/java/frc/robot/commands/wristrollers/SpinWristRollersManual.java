@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
 import frc.robot.OI.DemoMode;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristRollers;
 import harkerrobolib.commands.IndefiniteCommand;
@@ -21,29 +22,27 @@ import harkerrobolib.util.MathUtil;
  */
 public class SpinWristRollersManual extends IndefiniteCommand {
     
-    private static final double INTAKE_SPEED_MULTIPLIER = 0.45;
+    private static final double INTAKE_SPEED_MULTIPLIER = 0.7;
     private static final double OUTTAKE_SPEED_MULTIPLIER = 0.45;
 
     public SpinWristRollersManual() {
         requires(WristRollers.getInstance());
+        //requires(Arm.getInstance());
     }
 
     @Override
+    protected void initialize() {
+        // if(RobotMap.PRACTICE_BOT){
+        //     Arm.getInstance().getSolenoid().set(Arm.OUT);
+        // }
+    }
+    @Override
     protected void execute() {
-        double leftTrigger = OI.getInstance().getDriverGamepad().getLeftTrigger();
-        double rightTrigger = OI.getInstance().getDriverGamepad().getRightTrigger();
-        leftTrigger = MathUtil.mapJoystickOutput(leftTrigger, OI.XBOX_TRIGGER_DEADBAND);
-        rightTrigger = MathUtil.mapJoystickOutput(-rightTrigger, OI.XBOX_TRIGGER_DEADBAND);
-
+        
         boolean a = OI.getInstance().getDriverGamepad().getButtonAState();
         boolean x = OI.getInstance().getDriverGamepad().getButtonXState();
         double output;
-
-        if (OI.mode == DemoMode.SAFE) {
-            output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
-        } else {
-            output = (a ? 1 : (x ? -1 : 0));
-        }
+        output = (a ? 1 : (x ? -1 : 0));
         output *= Math.signum(output) == -1 ? INTAKE_SPEED_MULTIPLIER : OUTTAKE_SPEED_MULTIPLIER;
         
         if (Math.abs(output) > 0)
@@ -52,5 +51,6 @@ public class SpinWristRollersManual extends IndefiniteCommand {
             WristRollers.getInstance().getRollers().set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, WristRollers.CARGO_FF);
         
         SmartDashboard.putNumber("WristRoller Speed", WristRollers.getInstance().getRollers().getMotorOutputPercent());
+        SmartDashboard.putNumber("WristRoller current", WristRollers.getInstance().getRollers().getOutputCurrent());
         }
 }

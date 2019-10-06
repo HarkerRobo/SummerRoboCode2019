@@ -21,7 +21,7 @@ public class WristRollers extends Subsystem {
         if(RobotMap.PRACTICE_BOT) {
             INVERT = false;
         } else {
-            INVERT = false;
+            INVERT = true;
         }
     }
 

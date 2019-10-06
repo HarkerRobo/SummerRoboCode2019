@@ -28,23 +28,24 @@ public class SpinBallIntakeManual extends IndefiniteCommand {
 
     @Override
     protected void execute() {
-        double leftTrigger = OI.getInstance().getDriverGamepad().getLeftTrigger();
-        double rightTrigger = OI.getInstance().getDriverGamepad().getRightTrigger();
-        leftTrigger = MathUtil.mapJoystickOutput(-leftTrigger, OI.XBOX_TRIGGER_DEADBAND);
-        rightTrigger = MathUtil.mapJoystickOutput(rightTrigger, OI.XBOX_TRIGGER_DEADBAND);
+        // double leftTrigger = OI.getInstance().getDriverGamepad().getLeftTrigger();
+        // double rightTrigger = OI.getInstance().getDriverGamepad().getRightTrigger();
+        // leftTrigger = MathUtil.mapJoystickOutput(-leftTrigger, OI.XBOX_TRIGGER_DEADBAND);
+        // rightTrigger = MathUtil.mapJoystickOutput(rightTrigger, OI.XBOX_TRIGGER_DEADBAND);
 
         boolean a = OI.getInstance().getDriverGamepad().getButtonAState();
         boolean x = OI.getInstance().getDriverGamepad().getButtonXState();
         double output;
 
-        if (OI.mode == DemoMode.SAFE)
-            output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
-        else 
+        // if (OI.mode == DemoMode.SAFE)
+            // output = Math.abs(leftTrigger) > Math.abs(rightTrigger) ? leftTrigger : rightTrigger;
+        // else 
             output = (a ? 1 : (x ? -1 : 0));
         
         if (RobotMap.PRACTICE_BOT)
             Arm.getInstance().getVictor().set(ControlMode.PercentOutput, VICTOR_SPEED_MULTIPLIER * output);
         else
             Arm.getInstance().getSpark().set(SPARK_SPEED_MULTIPLIER * output);
+        
     }
 }

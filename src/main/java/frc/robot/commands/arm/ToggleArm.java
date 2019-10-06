@@ -2,6 +2,7 @@ package frc.robot.commands.arm;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.InstantCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.Arm;
 import harkerrobolib.util.Pneumatics;
 
@@ -21,6 +22,7 @@ public class ToggleArm extends InstantCommand {
     @Override
     public void initialize() {
         Value value = Arm.getInstance().getSolenoid().get();
+        System.out.println("toggle arm");
         Arm.getInstance().getSolenoid().set(Pneumatics.switchSolenoidValue(value));
     }
 }
