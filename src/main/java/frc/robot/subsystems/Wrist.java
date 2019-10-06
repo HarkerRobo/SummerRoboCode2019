@@ -31,7 +31,7 @@ public class Wrist extends Subsystem {
             BACKMOST_POSITION = 2151;
             
             HORIZONTAL_BACK = 2048;
-            MIDDLE_POSITION = 1040; 
+            MIDDLE_POSITION = 766; 
             DEFENSE_POSITION = 1040;
         } else {
             SENSOR_PHASE = false;
@@ -81,16 +81,16 @@ public class Wrist extends Subsystem {
     static {
         if(RobotMap.PRACTICE_BOT) {
             kS = 0.03;
-            kA = 0.0000;
-            kF = 2;
+            kA = 0.00036;
+            kF = 1.75;
 
             MOTION_MAGIC_SLOT = 0;
             MOTION_MAGIC_KF = kF; //1.3
-            MOTION_MAGIC_KP = 0.; //1.2
-            MOTION_MAGIC_KI = 0.00;
-            MOTION_MAGIC_KD = 0;
-            CRUISE_VELOCITY = 190;//380; //Encoder Units per 100ms
-            MAX_ACCELERATION = 290;//580; //Encoder Units per 100ms per s
+            MOTION_MAGIC_KP = 0.5; //1.2
+            MOTION_MAGIC_KI = 0.00007;
+            MOTION_MAGIC_KD = 5;
+            CRUISE_VELOCITY = 380; //Encoder Units per 100ms
+            MAX_ACCELERATION = 550;//580; //Encoder Units per 100ms per s
             RAMP_RATE = 0.1;
         } else {
             kS = 0.03;
@@ -102,8 +102,8 @@ public class Wrist extends Subsystem {
             MOTION_MAGIC_KP = 0.9; //1.2
             MOTION_MAGIC_KI = 0.0015;
             MOTION_MAGIC_KD = 30;
-            CRUISE_VELOCITY = 190;//380; //Encoder Units per 100ms
-            MAX_ACCELERATION = 290;//580; //Encoder Units per 100ms per s
+            CRUISE_VELOCITY = 380;//380; //Encoder Units per 100ms
+            MAX_ACCELERATION = 580;//580; //Encoder Units per 100ms per s
             RAMP_RATE = 0.1;
         }
     }
@@ -132,7 +132,7 @@ public class Wrist extends Subsystem {
         configVoltageComp();
         setupMotionMagic();
         setupVelocity();
-        master.setSelectedSensorPosition(RobotMap.PRACTICE_BOT ? BACKMOST_POSITION  : FRONTMOST_POSITION);
+        master.setSelectedSensorPosition(FRONTMOST_POSITION);       
         master.setNeutralMode(NeutralMode.Coast);
     }
 

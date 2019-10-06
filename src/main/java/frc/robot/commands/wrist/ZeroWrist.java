@@ -16,15 +16,21 @@ public class ZeroWrist extends TimedCommand {
 
     static {
         if (RobotMap.PRACTICE_BOT)
-            SPEED = 0.3;
+        {
+            SPEED = -0.3;
+            VELOCITY_ERROR = 100;
+        }
         else
+        {
             SPEED = -0.2;
+            VELOCITY_ERROR= 73;
+        }
     }
 
     private static final double SPEED;
-    private static final double INVALID_TIME = 0.06;
+    private static final double INVALID_TIME = 0.5;//0.2;
     private static final double TIMEOUT = 5;
-    private double VELOCITY_ERROR = -60;
+    private static final double VELOCITY_ERROR;
     private boolean isSpike;
     private double startTime;
 
@@ -47,7 +53,7 @@ public class ZeroWrist extends TimedCommand {
     protected void execute() {
         Wrist.getInstance().getMaster().set(ControlMode.Velocity, SPEED * Wrist.CRUISE_VELOCITY);
         SmartDashboard.putNumber("velocity error", Wrist.getInstance().getMaster().getClosedLoopError());
-        isSpike = Wrist.getInstance().getMaster().getClosedLoopError() <= VELOCITY_ERROR && Timer.getFPGATimestamp() - startTime >= INVALID_TIME;
+        isSpike = Math.abs(Wrist.getInstance().getMaster().getClosedLoopError()) >= VELOCITY_ERROR && Timer.getFPGATimestamp() - startTime >= INVALID_TIME;
         SmartDashboard.putBoolean("isSpike", isSpike);
     }
 
@@ -58,7 +64,7 @@ public class ZeroWrist extends TimedCommand {
 
     @Override
     protected void end() {
-        Wrist.getInstance().getMaster().setSelectedSensorPosition(RobotMap.PRACTICE_BOT ? Wrist.BACKMOST_POSITION : Wrist.FRONTMOST_POSITION);
+        Wrist.getInstance().getMaster().setSelectedSensorPosition(Wrist.FRONTMOST_POSITION);
         Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
     }
 

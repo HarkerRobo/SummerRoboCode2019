@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.drivetrain.AlignWithLimelight;
@@ -60,7 +61,6 @@ public class Robot extends TimedRobot {
         HatchExtender.getInstance();
         HatchFlower.getInstance();
         WristRollers.getInstance();
-
         //Limelight.setLEDS(true);
 
         // OI.getInstance().getOperatorGamepad().getButtonY().whenPressed(new CallMethodCommand(() -> {
@@ -85,6 +85,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putString("Flower State", HatchFlower.getInstance().getSolenoid().get().toString());
         SmartDashboard.putNumber("State", OI.state);
         SmartDashboard.putString("Current Wrist Command", Wrist.getInstance().getCurrentCommandName());
+        SmartDashboard.putNumber("Wrist Error", Wrist.getInstance().getMaster().getClosedLoopError());
+        SmartDashboard.putString("Arm State", Arm.getInstance().getSolenoid().get().toString());
+    
     }
 
     /**

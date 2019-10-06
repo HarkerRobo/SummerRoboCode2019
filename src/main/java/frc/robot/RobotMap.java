@@ -13,7 +13,7 @@ public class RobotMap {
     public static final int PRIMARY_PID_INDEX = 0;
     public static final int SECONDARY_PID_INDEX = 1;
 
-    public static final boolean PRACTICE_BOT = false;
+    public static final boolean PRACTICE_BOT = true;
 
     public static class CAN_IDS {
         static {
@@ -44,6 +44,9 @@ public class RobotMap {
 
                 FLOWER_FORWARD_CHANNEL = 5;
                 FLOWER_REVERSE_CHANNEL = 4;
+
+                //CLIMBER_MASTER = 0;
+                //CLIMBER_FOLLOWER = 8;
             } else {
                 DT_LEFT_MASTER = 4; 
                 DT_RIGHT_MASTER = 1; 
@@ -97,5 +100,8 @@ public class RobotMap {
 
         public static int FLOWER_FORWARD_CHANNEL; 
         public static int FLOWER_REVERSE_CHANNEL;
+
+        public static int CLIMBER_MASTER;
+        public static int CLIMBER_FOLLOWER;
     }
 }
