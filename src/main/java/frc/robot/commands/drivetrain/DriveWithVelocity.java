@@ -26,6 +26,7 @@ import harkerrobolib.util.Conversions.SpeedUnit;
 public class DriveWithVelocity extends IndefiniteCommand {
 
     private static final double SPEED_MULTIPLIER;
+    private static final double SLOW_MODE_MULTIPLIER = 0.5;
     
     static {
         if(OI.mode == DemoMode.SAFE) {
@@ -61,6 +62,11 @@ public class DriveWithVelocity extends IndefiniteCommand {
         double turn = MathUtil.mapJoystickOutput(joystickX, OI.XBOX_JOYSTICK_DEADBAND);
         turn = turn * turn * Math.signum(turn);
         turn *= Drivetrain.MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
+
+        if(OI.getInstance().getDriverGamepad().getLeftTrigger() > OI.XBOX_TRIGGER_DEADBAND) {
+            speed *= SPEED_MULTIPLIER;
+            turn *= SPEED_MULTIPLIER;
+        }
 
         speed = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, speed, SpeedUnit.ENCODER_UNITS);
         turn = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, turn, SpeedUnit.ENCODER_UNITS);

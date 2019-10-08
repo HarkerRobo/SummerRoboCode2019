@@ -27,12 +27,12 @@ public class Wrist extends Subsystem {
             TALON_INVERTED = false;
             VICTOR_INVERTED = true;
 
-            FRONTMOST_POSITION = -40;//-156 for horizontal on new wrist-197 for old
+            FRONTMOST_POSITION = 0;
             BACKMOST_POSITION = 2151;
             
-            HORIZONTAL_BACK = 2048;
-            MIDDLE_POSITION = 766; 
-            DEFENSE_POSITION = 1040;
+            HORIZONTAL_BACK = 2020;
+            MIDDLE_POSITION = 1072; 
+            DEFENSE_POSITION = 890;
         } else {
             SENSOR_PHASE = false;
             TALON_INVERTED = true;
@@ -41,7 +41,7 @@ public class Wrist extends Subsystem {
             FRONTMOST_POSITION = -97;
             BACKMOST_POSITION = 2115;
             HORIZONTAL_BACK = 2000;
-            MIDDLE_POSITION = 1050;
+            MIDDLE_POSITION = 1072;
             DEFENSE_POSITION = 910;
         }
     }
@@ -64,7 +64,7 @@ public class Wrist extends Subsystem {
     public static final int HORIZONTAL_BACK;
     public static final int DEFENSE_POSITION; 
 
-    public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.12;//0.10; //Gravity FF required to keep the wrist level at 0 degrees
+    public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.15;//0.12; //Gravity FF required to keep the wrist level at 0 degrees
     public static final double kS;
     public static final double kA;
     public static final double kF;
@@ -110,7 +110,9 @@ public class Wrist extends Subsystem {
 
     public static final int VELOCITY_SLOT = 1;
     public static final double VELOCITY_KF = kF;
-
+    public static final int CONTINUOUS_CURRENT_LIMIT = 7;
+    public static final int PEAK_CURRENT_LIMIT = 10;
+    public static final int PEAK_TIME = 50;
     public static final int ALLOWABLE_ERROR = 50;
     public static final int MIDDLE_VARIANCE = 200;
 
@@ -130,10 +132,17 @@ public class Wrist extends Subsystem {
         master.configForwardSoftLimitThreshold(BACKMOST_POSITION);
         master.configReverseSoftLimitThreshold(FRONTMOST_POSITION);
         configVoltageComp();
+        
+        master.configContinuousCurrentLimit(CONTINUOUS_CURRENT_LIMIT);
+        master.configPeakCurrentDuration(PEAK_TIME);
+        master.configPeakCurrentLimit(PEAK_CURRENT_LIMIT);
+        master.enableCurrentLimit(true);
+
         setupMotionMagic();
         setupVelocity();
         master.setSelectedSensorPosition(FRONTMOST_POSITION);       
         master.setNeutralMode(NeutralMode.Coast);
+  
     }
 
     @Override

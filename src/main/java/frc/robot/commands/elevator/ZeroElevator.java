@@ -44,7 +44,6 @@ public class ZeroElevator extends TimedCommand {
 
     @Override
     protected void execute() {
-        double current = Elevator.getInstance().getMaster().getOutputCurrent();
         isSpike = Elevator.getInstance().getMaster().getClosedLoopError() <= VELOCITY_SPIKE && Timer.getFPGATimestamp() - startTime > INVALID_TIME;
         SmartDashboard.putNumber("Vel Error", Elevator.getInstance().getMaster().getClosedLoopError());
     }

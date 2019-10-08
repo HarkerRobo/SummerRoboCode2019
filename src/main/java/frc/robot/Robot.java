@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.OI.DemoMode;
 import frc.robot.commands.drivetrain.AlignWithLimelight;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Drivetrain;
@@ -56,11 +57,17 @@ public class Robot extends TimedRobot {
         //Initialize Subsystems
         Drivetrain.getInstance();
         Elevator.getInstance();
-        Wrist.getInstance();
+        // Wrist.getInstance();
         Arm.getInstance();
         HatchExtender.getInstance();
         HatchFlower.getInstance();
         WristRollers.getInstance();
+        if(OI.mode == DemoMode.SAFE) {
+            Arm.getInstance().getSolenoid().set(Arm.OUT);
+        }
+        else {
+            Arm.getInstance().getSolenoid().set(Arm.IN);
+        }
         //Limelight.setLEDS(true);
 
         // OI.getInstance().getOperatorGamepad().getButtonY().whenPressed(new CallMethodCommand(() -> {

@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Wrist;
 
 /**
@@ -52,6 +53,7 @@ public class ZeroWrist extends TimedCommand {
     @Override
     protected void execute() {
         Wrist.getInstance().getMaster().set(ControlMode.Velocity, SPEED * Wrist.CRUISE_VELOCITY);
+        Elevator.getInstance().getMaster().set(ControlMode.PercentOutput, -1 * Wrist.HORIZONTAL_FORWARD_GRAV_FF);
         SmartDashboard.putNumber("velocity error", Wrist.getInstance().getMaster().getClosedLoopError());
         isSpike = Math.abs(Wrist.getInstance().getMaster().getClosedLoopError()) >= VELOCITY_ERROR && Timer.getFPGATimestamp() - startTime >= INVALID_TIME;
         SmartDashboard.putBoolean("isSpike", isSpike);
@@ -66,6 +68,7 @@ public class ZeroWrist extends TimedCommand {
     protected void end() {
         Wrist.getInstance().getMaster().setSelectedSensorPosition(Wrist.FRONTMOST_POSITION);
         Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
+        Elevator.getInstance().getMaster().set(ControlMode.Disabled, 0);
     }
 
     @Override

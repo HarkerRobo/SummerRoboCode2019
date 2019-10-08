@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
+import frc.robot.RobotMap;
 import frc.robot.commands.arm.SetArm;
 import frc.robot.commands.elevator.MoveElevatorMotionMagic;
 import frc.robot.commands.extender.SetExtender;
@@ -30,8 +31,18 @@ import harkerrobolib.commands.ConditionalCommand;
  */
 public class MoveElevatorAndWrist extends Command {
 
-    private static final int ELEVATOR_ALLOWABLE_ERROR = 1000;
-    private static final int WRIST_ALLOWABLE_ERROR = 240;
+    static {
+        if (RobotMap.PRACTICE_BOT) {
+            ELEVATOR_ALLOWABLE_ERROR = Elevator.ALLOWABLE_ERROR;
+            WRIST_ALLOWABLE_ERROR = Wrist.ALLOWABLE_ERROR;
+        } else {
+            ELEVATOR_ALLOWABLE_ERROR = 1000;
+            WRIST_ALLOWABLE_ERROR = 240;
+        }
+    }
+
+    private static final int ELEVATOR_ALLOWABLE_ERROR;
+    private static final int WRIST_ALLOWABLE_ERROR;
     private int elevatorSetpoint;
     private int wristSetpoint;
     private CommandGroup group;
@@ -51,19 +62,20 @@ public class MoveElevatorAndWrist extends Command {
     @Override
     protected void initialize() {
         group = new CommandGroup();
+        group.addSequential(new SetArm(Arm.IN));
         group.addSequential(new SetExtender(HatchExtender.IN));
         int currentWristPos = Wrist.getInstance().getMaster().getSelectedSensorPosition();
-        boolean isWristInMiddle = Math.abs(currentWristPos - Wrist.MIDDLE_POSITION) < Wrist.MIDDLE_VARIANCE;
-        SmartDashboard.putBoolean("isWristInMiddle", isWristInMiddle);
+        boolean isWristInDefense = Math.abs(currentWristPos - Wrist.DEFENSE_POSITION) < Wrist.MIDDLE_VARIANCE;
+        SmartDashboard.putBoolean("isWristInMiddle", isWristInDefense);
 
         if (!(currentWristPos > Wrist.MIDDLE_POSITION && wristSetpoint > Wrist.MIDDLE_POSITION)) {
-            group.addSequential(new SetArm(Arm.OUT));
-            group.addSequential(new WaitCommand(0.3));
-            if (!isWristInMiddle) {
+            // group.addSequential(new SetArm(Arm.OUT));
+            // group.addSequential(new WaitCommand(0.3));
+            if (!isWristInDefense) {
                 if (currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint <= Wrist.MIDDLE_POSITION) { // Passthrough back to front
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK, WRIST_ALLOWABLE_ERROR));
                     group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
-                } else if (currentWristPos <= Wrist.MIDDLE_POSITION && wristSetpoint >= Wrist.MIDDLE_POSITION) { // Pasthrough front to back
+                } else if ((currentWristPos <= Wrist.MIDDLE_POSITION && wristSetpoint >= Wrist.MIDDLE_POSITION) || wristSetpoint == Wrist.DEFENSE_POSITION)  { // Pasthrough front to back
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT, WRIST_ALLOWABLE_ERROR));
                     group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
                 }
@@ -71,9 +83,13 @@ public class MoveElevatorAndWrist extends Command {
         }
         group.addSequential(new MoveWristMotionMagic(wristSetpoint, WRIST_ALLOWABLE_ERROR));
         group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint, ELEVATOR_ALLOWABLE_ERROR));
-        if(wristSetpoint == Wrist.DEFENSE_POSITION || wristSetpoint == 100) {
-            group.addSequential(new SetArm(Arm.IN));
+
+        if(HatchFlower.getInstance().getSolenoid().get() == HatchFlower.CLOSED) {
+            group.addSequential(new SetArm(Arm.OUT));
         }
+        // if(wristSetpoint == Wrist.DEFENSE_POSITION || wristSetpoint == 100) {
+        //     group.addSequential(new SetArm(Arm.IN));
+        // }
         group.start();
         //startTime = Timer.getFPGATimestamp();
     }

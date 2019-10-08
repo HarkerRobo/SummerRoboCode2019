@@ -6,6 +6,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
+import frc.robot.OI.DemoMode;
 import frc.robot.subsystems.Wrist;
 import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
@@ -25,7 +26,7 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
     }
 
     private static final double LAG_COMPENSATION;
-    private static final double SPEED_MULTIPLIER = 0.4;//0.3;
+    private static final double SPEED_MULTIPLIER = 0.4;
     private double lastSetpoint;
     private boolean shouldHold;
 
@@ -48,9 +49,12 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
         double operatorRightX = OI.getInstance().getOperatorGamepad().getRightX();
 
         double joystickValue = Math.abs(driverRightX) > 0 ? driverRightX : operatorRightX;
-        
+     
         double output = MathUtil.mapJoystickOutput(joystickValue, OI.XBOX_JOYSTICK_DEADBAND);
-        
+        if(OI.mode == DemoMode.SAFE)
+        {
+            output = 0;
+        }
         if (Math.abs(output) > 0) {
             Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*output);//, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(output));
             lastSetpoint = Wrist.getInstance().getMaster().getSelectedSensorPosition() + (int)(Wrist.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
