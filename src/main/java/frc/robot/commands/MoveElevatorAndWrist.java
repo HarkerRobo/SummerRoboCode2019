@@ -69,8 +69,6 @@ public class MoveElevatorAndWrist extends Command {
         SmartDashboard.putBoolean("isWristInMiddle", isWristInDefense);
 
         if (!(currentWristPos > Wrist.MIDDLE_POSITION && wristSetpoint > Wrist.MIDDLE_POSITION)) {
-            // group.addSequential(new SetArm(Arm.OUT));
-            // group.addSequential(new WaitCommand(0.3));
             if (!isWristInDefense) {
                 if (currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint <= Wrist.MIDDLE_POSITION) { // Passthrough back to front
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK, WRIST_ALLOWABLE_ERROR));
@@ -79,6 +77,10 @@ public class MoveElevatorAndWrist extends Command {
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT, WRIST_ALLOWABLE_ERROR));
                     group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
                 }
+            }
+            else
+            {
+                group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
             }
         }
         group.addSequential(new MoveWristMotionMagic(wristSetpoint, WRIST_ALLOWABLE_ERROR));

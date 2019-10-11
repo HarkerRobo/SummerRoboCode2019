@@ -52,7 +52,8 @@ public class OI {
 
     static {
         if (RobotMap.PRACTICE_BOT) {
-            groundCargo = new MoveElevatorAndWrist(0, 400);
+            groundCargo = new MoveElevatorAndWrist(0, 700);
+            frontCargo2Rocket = new MoveElevatorAndWrist(16773, 706);
             backHatch = new MoveElevatorAndWrist(6400, 1989);
             backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
             frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
@@ -60,7 +61,7 @@ public class OI {
             backRocketFirstCargo = new MoveElevatorAndWrist(6300, Wrist.HORIZONTAL_BACK);
             backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
             backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
-            frontRocketSecondHatch = new MoveElevatorAndWrist(18192, Wrist.HORIZONTAL_FRONT);
+            frontRocketSecondHatch = new MoveElevatorAndWrist(18189, 139);
             frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
             climbPos = new MoveElevatorAndWrist(0, Wrist.HORIZONTAL_BACK);
             //private static final MoveElevatorAndWrist frontRocketFirstHatch = new MoveElevatorAndWrist(Elevator.LOWER_SOFT_LIMIT, Wrist.HORIZONTAL_FRONT);
@@ -95,6 +96,7 @@ public class OI {
     private boolean cargoShipMode;
 
     private static final MoveElevatorAndWrist groundCargo;
+    private static final MoveElevatorAndWrist frontCargo2Rocket;
     private static final MoveElevatorAndWrist backHatch;
     private static final MoveElevatorAndWrist backShipAndLoading;
     private static final MoveElevatorAndWrist frontShipAndLoading;
@@ -173,7 +175,7 @@ public class OI {
         thirdPath = new DriveWithMotionProfile(StraightLinePath8Ft.pathLeft, StraightLinePath8Ft.pathRight, 10);
     }
 
-    public static final DemoMode mode = DemoMode.NORMAL;
+    public static final DemoMode mode = DemoMode.SAFE;
 
     public void initBindings() {
 
@@ -231,10 +233,12 @@ public class OI {
             );
             operatorGamepad.getDownDPadButton().whenPressed(groundCargo);  
             
-            operatorGamepad.getButtonBumperLeft().whenPressed(new CallMethodCommand(()->{Limelight.toggleLEDs();;}));
+            operatorGamepad.getButtonBumperLeft().whenPressed(new CallMethodCommand(()->{Limelight.toggleLEDs();
+        }));
             // driverGamepad.getButtonStickRight().whenPressed(new SequentialCommandGroup(climbPos,
             // new DriveToPosition(Climber.HAB_DISTANCE),
             // new ExtendClimbers()));
+            
             /**driverGamepad.getButtonY().whenPressed(
                 new SequentialCommandGroup(
                     new CallMethodCommand(() -> state = state+1),
@@ -269,7 +273,7 @@ public class OI {
         
             operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
             operatorGamepad.getButtonA().whenPressed(new ToggleExtender());
-            // operatorGamepad.getButtonB().whenPressed(new ToggleArm());
+            operatorGamepad.getButtonB().whenPressed(new ToggleArm());
                 
             //D-Pad bindings
             // operatorGamepad.getUpDPadButton().whenPressed(backShipAndLoading);
@@ -280,9 +284,9 @@ public class OI {
             driverGamepad.getButtonA().whilePressed(new SpinWristRollersManual());
 
             // driverGamepad.getLeftTrigger().whenPressed(new CallMethodCommand(() -> {Drivetrain.IS_SLOW_MODE = Drivetrain.IS_SLOW_MODE == false; }));
-            // operatorGamepad.getButtonY().whenPressed(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
-            // operatorGamepad.getRightDPadButton().whenPressed(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT));
-            // operatorGamepad.getUpDPadButton().whenPressed(new MoveWristMotionMagic(Wrist.MIDDLE_POSITION));
+            operatorGamepad.getButtonY().whenPressed(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
+            operatorGamepad.getRightDPadButton().whenPressed(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT));
+            operatorGamepad.getUpDPadButton().whenPressed(new MoveWristMotionMagic(Wrist.MIDDLE_POSITION));
 
             driverGamepad.getButtonStickLeft().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
             operatorGamepad.getButtonBumperRight().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));

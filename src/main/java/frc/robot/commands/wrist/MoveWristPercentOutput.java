@@ -51,10 +51,7 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
         double joystickValue = Math.abs(driverRightX) > 0 ? driverRightX : operatorRightX;
      
         double output = MathUtil.mapJoystickOutput(joystickValue, OI.XBOX_JOYSTICK_DEADBAND);
-        if(OI.mode == DemoMode.SAFE)
-        {
-            output = 0;
-        }
+    
         if (Math.abs(output) > 0) {
             Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*output);//, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(output));
             lastSetpoint = Wrist.getInstance().getMaster().getSelectedSensorPosition() + (int)(Wrist.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
@@ -67,6 +64,8 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
                 lastSetpoint = Wrist.HORIZONTAL_FRONT;
             Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, lastSetpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Math.signum(output) * Wrist.kS);
         }
+        SmartDashboard.putNumber("Wrist Percent Output", Wrist.getInstance().getMaster().getMotorOutputPercent());
+
    }
 
     @Override

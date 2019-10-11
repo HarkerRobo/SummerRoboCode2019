@@ -30,8 +30,8 @@ public class Wrist extends Subsystem {
             FRONTMOST_POSITION = 0;
             BACKMOST_POSITION = 2151;
             
-            HORIZONTAL_BACK = 2020;
-            MIDDLE_POSITION = 1072; 
+            HORIZONTAL_BACK = 2020;//1948;
+            MIDDLE_POSITION = 830; 
             DEFENSE_POSITION = 890;
         } else {
             SENSOR_PHASE = false;
@@ -86,7 +86,7 @@ public class Wrist extends Subsystem {
 
             MOTION_MAGIC_SLOT = 0;
             MOTION_MAGIC_KF = kF; //1.3
-            MOTION_MAGIC_KP = 0.5; //1.2
+            MOTION_MAGIC_KP = 0.7;//6;//0.5; 
             MOTION_MAGIC_KI = 0.00007;
             MOTION_MAGIC_KD = 5;
             CRUISE_VELOCITY = 380; //Encoder Units per 100ms
@@ -99,7 +99,7 @@ public class Wrist extends Subsystem {
 
             MOTION_MAGIC_SLOT = 0;
             MOTION_MAGIC_KF = kF; //1.3
-            MOTION_MAGIC_KP = 0.9; //1.2
+            MOTION_MAGIC_KP = 1;//0.9; //1.2
             MOTION_MAGIC_KI = 0.0015;
             MOTION_MAGIC_KD = 30;
             CRUISE_VELOCITY = 380;//380; //Encoder Units per 100ms
@@ -124,7 +124,7 @@ public class Wrist extends Subsystem {
 
     private void talonInit() {
         master.configFactoryDefault();
-        master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative);
+        master.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute);
         follower.follow(master);
         master.setInverted(TALON_INVERTED);
         follower.setInverted(VICTOR_INVERTED);
