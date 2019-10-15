@@ -51,9 +51,10 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
         double joystickValue = Math.abs(driverRightX) > 0 ? driverRightX : operatorRightX;
      
         double output = MathUtil.mapJoystickOutput(joystickValue, OI.XBOX_JOYSTICK_DEADBAND);
+        SmartDashboard.putNumber("Driver Right X", output);
     
         if (Math.abs(output) > 0) {
-            Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*output);//, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(output));
+            Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, SPEED_MULTIPLIER*output, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * Math.signum(output));
             lastSetpoint = Wrist.getInstance().getMaster().getSelectedSensorPosition() + (int)(Wrist.getInstance().getMaster().getSelectedSensorVelocity() * LAG_COMPENSATION);
             shouldHold = true;
         }
@@ -63,6 +64,10 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
             else if (lastSetpoint < Wrist.FRONTMOST_POSITION)
                 lastSetpoint = Wrist.HORIZONTAL_FRONT;
             Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, lastSetpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Math.signum(output) * Wrist.kS);
+        }
+        else
+        {
+            Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
         }
         SmartDashboard.putNumber("Wrist Percent Output", Wrist.getInstance().getMaster().getMotorOutputPercent());
 

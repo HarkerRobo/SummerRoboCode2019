@@ -30,13 +30,13 @@ public class Wrist extends Subsystem {
             FRONTMOST_POSITION = 0;
             BACKMOST_POSITION = 2151;
             
-            HORIZONTAL_BACK = 2020;//1948;
+            HORIZONTAL_BACK = 1900;//2020;
             MIDDLE_POSITION = 830; 
             DEFENSE_POSITION = 890;
         } else {
             SENSOR_PHASE = false;
             TALON_INVERTED = true;
-            VICTOR_INVERTED = true;
+            VICTOR_INVERTED = false;
 
             FRONTMOST_POSITION = -97;
             BACKMOST_POSITION = 2115;
@@ -62,7 +62,9 @@ public class Wrist extends Subsystem {
     public static final int MIDDLE_POSITION;
     public static final int HORIZONTAL_FRONT = 0;
     public static final int HORIZONTAL_BACK;
-    public static final int DEFENSE_POSITION; 
+    public static final int DEFENSE_POSITION;  
+    public static final int END_CLIMB;
+    public static final int PRE_CLIMB;
 
     public static final double HORIZONTAL_FORWARD_GRAV_FF = 0.15;//0.12; //Gravity FF required to keep the wrist level at 0 degrees
     public static final double kS;
@@ -86,12 +88,15 @@ public class Wrist extends Subsystem {
 
             MOTION_MAGIC_SLOT = 0;
             MOTION_MAGIC_KF = kF; //1.3
-            MOTION_MAGIC_KP = 0.7;//6;//0.5; 
+            MOTION_MAGIC_KP = 0.7; 
             MOTION_MAGIC_KI = 0.00007;
             MOTION_MAGIC_KD = 5;
             CRUISE_VELOCITY = 380; //Encoder Units per 100ms
             MAX_ACCELERATION = 550;//580; //Encoder Units per 100ms per s
             RAMP_RATE = 0.1;
+            END_CLIMB = 2000;
+            PRE_CLIMB = 1980;
+
         } else {
             kS = 0.03;
             kA = 0.00036;
@@ -105,16 +110,21 @@ public class Wrist extends Subsystem {
             CRUISE_VELOCITY = 380;//380; //Encoder Units per 100ms
             MAX_ACCELERATION = 580;//580; //Encoder Units per 100ms per s
             RAMP_RATE = 0.1;
+            END_CLIMB = 0;
+            PRE_CLIMB = 0;
         }
     }
 
     public static final int VELOCITY_SLOT = 1;
     public static final double VELOCITY_KF = kF;
-    public static final int CONTINUOUS_CURRENT_LIMIT = 7;
-    public static final int PEAK_CURRENT_LIMIT = 10;
-    public static final int PEAK_TIME = 50;
+    public static final int CONTINUOUS_CURRENT_LIMIT = 15;
+    public static final int PEAK_CURRENT_LIMIT = 20;
+    public static final int PEAK_TIME = 500;
     public static final int ALLOWABLE_ERROR = 50;
     public static final int MIDDLE_VARIANCE = 200;
+    public static final double CLIMB_FF= 0.5;//0.9;
+
+    public static final int CLIMBING_CURRENT_PEAK = 25;
 
     private Wrist() {
         master = new TalonSRX(RobotMap.CAN_IDS.WRIST_MASTER);

@@ -22,23 +22,24 @@ public class Climber extends Subsystem {
 
     private static Climber climber;
 
+	public static int ALLOWABLE_ERROR = 10;
+
     private TalonSRX climberTalon;
     private VictorSPX climberVictor;
 
-    private double kP = 0.0;
+    private double kP = 0.7;
     private double kI = 0.0;
     private double kD = 0.0;
     private double kF = 0.0;
-
-
+    public static final double CLIMBER_FF = 0.75;// 0.8;//0.18;
     public static final int LOWEST_POS = 0;
     public static final int HAB_DISTANCE = 0;
     public static final boolean MASTER_INVERTED = false;
     public static final boolean VICTOR_INVERTED = false;
-    private static final boolean SENSOR_PHASE = true;
-
-    public static final double PUSHED_DOWN_POSITION = 0.0; 
-
+    private static final boolean SENSOR_PHASE = false;
+    public static final int MM_PID_SLOT = 0;
+    public static final int LVL_2_POS = 7500;//10500; //From Level one to Level 2
+    public static final int LVL_3_POS = 20750; 
     public Climber(){
         climberTalon = new TalonSRX(RobotMap.CAN_IDS.CLIMBER_MASTER);
         climberVictor = new VictorSPX(RobotMap.CAN_IDS.CLIMBER_FOLLOWER);
@@ -71,10 +72,10 @@ public class Climber extends Subsystem {
         climberTalon.setSensorPhase(SENSOR_PHASE);
         climberTalon.setSelectedSensorPosition(0);
         
-        climberTalon.config_kP(RobotMap.PRIMARY_PID_INDEX, kP);
-        climberTalon.config_kI(RobotMap.PRIMARY_PID_INDEX, kI);
-        climberTalon.config_kD(RobotMap.PRIMARY_PID_INDEX, kD);
-        climberTalon.config_kF(RobotMap.PRIMARY_PID_INDEX, kF);
+        climberTalon.config_kP(MM_PID_SLOT, kP);
+        climberTalon.config_kI(MM_PID_SLOT, kI);
+        climberTalon.config_kD(MM_PID_SLOT, kD);
+        climberTalon.config_kF(MM_PID_SLOT, kF);
     }
     
     public void followMasters(){

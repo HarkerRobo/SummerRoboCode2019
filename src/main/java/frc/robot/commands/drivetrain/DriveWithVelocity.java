@@ -64,8 +64,8 @@ public class DriveWithVelocity extends IndefiniteCommand {
         turn *= Drivetrain.MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
 
         if(OI.getInstance().getDriverGamepad().getLeftTrigger() > OI.XBOX_TRIGGER_DEADBAND) {
-            speed *= SPEED_MULTIPLIER;
-            turn *= SPEED_MULTIPLIER;
+            speed *= SLOW_MODE_MULTIPLIER;
+            turn *= SLOW_MODE_MULTIPLIER;
         }
 
         speed = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, speed, SpeedUnit.ENCODER_UNITS);

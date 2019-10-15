@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI.DemoMode;
 import frc.robot.commands.drivetrain.AlignWithLimelight;
 import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HatchExtender;
@@ -57,7 +58,7 @@ public class Robot extends TimedRobot {
         //Initialize Subsystems
         Drivetrain.getInstance();
         Elevator.getInstance();
-        // Wrist.getInstance();
+        Wrist.getInstance();
         Arm.getInstance();
         HatchExtender.getInstance();
         HatchFlower.getInstance();
@@ -90,11 +91,16 @@ public class Robot extends TimedRobot {
         SmartDashboard.putBoolean("Is scoring on cargo ship?", OI.getInstance().getCargoShipMode());
         SmartDashboard.putBoolean("Has hatch?", HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN);
         SmartDashboard.putString("Flower State", HatchFlower.getInstance().getSolenoid().get().toString());
-        SmartDashboard.putNumber("State", OI.state);
+        // SmartDashboard.putNumber("State", OI.state);
         SmartDashboard.putString("Current Wrist Command", Wrist.getInstance().getCurrentCommandName());
-        SmartDashboard.putNumber("Wrist Error", Wrist.getInstance().getMaster().getClosedLoopError());
-        SmartDashboard.putString("Arm State", Arm.getInstance().getSolenoid().get().toString());
-    
+        // SmartDashboard.putNumber("Wrist Error", Wrist.getInstance().getMaster().getClosedLoopError());
+        // SmartDashboard.putString("Arm State", Arm.getInstance().getSolenoid().get().toString());
+        // SmartDashboard.putNumber("Climber Position", Climber.getInstance().getMaster().getSelectedSensorPosition());
+        SmartDashboard.putNumber("Climber Current", Climber.getInstance().getMaster().getOutputCurrent());
+        SmartDashboard.putNumber("Elevator Current", Elevator.getInstance().getMaster().getOutputCurrent());
+        SmartDashboard.putNumber("Wrist Current", Wrist.getInstance().getMaster().getOutputCurrent());
+        SmartDashboard.putNumber("Left DT Current", Drivetrain.getInstance().getLeftMaster().getOutputCurrent());
+        SmartDashboard.putNumber("Right DT Current", Drivetrain.getInstance().getRightMaster().getOutputCurrent());
     }
 
     /**

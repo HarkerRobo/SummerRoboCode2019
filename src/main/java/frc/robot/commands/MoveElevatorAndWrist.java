@@ -62,13 +62,19 @@ public class MoveElevatorAndWrist extends Command {
     @Override
     protected void initialize() {
         group = new CommandGroup();
-        group.addSequential(new SetArm(Arm.IN));
+        if(RobotMap.PRACTICE_BOT)
+            group.addSequential(new SetArm(Arm.IN));
         group.addSequential(new SetExtender(HatchExtender.IN));
         int currentWristPos = Wrist.getInstance().getMaster().getSelectedSensorPosition();
         boolean isWristInDefense = Math.abs(currentWristPos - Wrist.DEFENSE_POSITION) < Wrist.MIDDLE_VARIANCE;
         SmartDashboard.putBoolean("isWristInMiddle", isWristInDefense);
 
         if (!(currentWristPos > Wrist.MIDDLE_POSITION && wristSetpoint > Wrist.MIDDLE_POSITION)) {
+            if(!RobotMap.PRACTICE_BOT){//CHECK THIS IF SOMETHING GOES WRONG
+                group.addSequential(new SetArm(Arm.OUT));
+                group.addSequential(new WaitCommand(0.3));
+            }
+            
             if (!isWristInDefense) {
                 if (currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint <= Wrist.MIDDLE_POSITION) { // Passthrough back to front
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK, WRIST_ALLOWABLE_ERROR));

@@ -49,34 +49,42 @@ import harkerrobolib.wrappers.XboxGamepad;
  * @since 6/14/19
  */
 public class OI {
-
+    // front hatch 1 0, 0
+    // front hatch 2: 19600 0
     static {
         if (RobotMap.PRACTICE_BOT) {
-            groundCargo = new MoveElevatorAndWrist(0, 700);
-            frontCargo2Rocket = new MoveElevatorAndWrist(16773, 706);
-            backHatch = new MoveElevatorAndWrist(6400, 1989);
+            groundCargo = new MoveElevatorAndWrist(0, 0);
+            
+            
+            frontHatch = new MoveElevatorAndWrist(0, 0);
             backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
             frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
             defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
+            
             backRocketFirstCargo = new MoveElevatorAndWrist(6300, Wrist.HORIZONTAL_BACK);
             backRocketSecondCargo = new MoveElevatorAndWrist(19600, 1750);
-            backRocketSecondHatch = new MoveElevatorAndWrist(19600, 1750);
-            frontRocketSecondHatch = new MoveElevatorAndWrist(18189, 139);
+            backHatch = new MoveElevatorAndWrist(0, Wrist.HORIZONTAL_BACK);
+            backRocketSecondHatch = new MoveElevatorAndWrist(21000, 1750);
+
             frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
-            climbPos = new MoveElevatorAndWrist(0, Wrist.HORIZONTAL_BACK);
+            frontRocketSecondCargo = new MoveElevatorAndWrist(16773, 706);
+            //frontRocketFirstHatch = groundCargo;
+            frontRocketSecondHatch = new MoveElevatorAndWrist(19600, 0);
+            
             //private static final MoveElevatorAndWrist frontRocketFirstHatch = new MoveElevatorAndWrist(Elevator.LOWER_SOFT_LIMIT, Wrist.HORIZONTAL_FRONT);
         } else {
             groundCargo = new MoveElevatorAndWrist(100, -70);
             backHatch = new MoveElevatorAndWrist(6860, 1989);
+            frontHatch = new MoveElevatorAndWrist(0, 0);
             backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
             frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
             defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
             backRocketFirstCargo = new MoveElevatorAndWrist(6000, Wrist.HORIZONTAL_BACK);
-            backRocketSecondCargo = new MoveElevatorAndWrist(19836, 1836);
+            backRocketSecondCargo = new MoveElevatorAndWrist(21009, 1723);
             backRocketSecondHatch = new MoveElevatorAndWrist(20423, 1815);
             frontRocketSecondHatch = new MoveElevatorAndWrist(14500, Wrist.HORIZONTAL_FRONT);
             frontRocketFirstCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);
-            climbPos = null;
+            frontRocketSecondCargo = new MoveElevatorAndWrist(10600, Wrist.HORIZONTAL_FRONT);;
         }
     }
 
@@ -96,17 +104,18 @@ public class OI {
     private boolean cargoShipMode;
 
     private static final MoveElevatorAndWrist groundCargo;
-    private static final MoveElevatorAndWrist frontCargo2Rocket;
+    // private static final MoveElevatorAndWrist frontCargo2Rocket;
     private static final MoveElevatorAndWrist backHatch;
     private static final MoveElevatorAndWrist backShipAndLoading;
     private static final MoveElevatorAndWrist frontShipAndLoading;
     private static final MoveElevatorAndWrist defenseMode;
+    private static final MoveElevatorAndWrist frontHatch;
     private static final MoveElevatorAndWrist backRocketFirstCargo;
     private static final MoveElevatorAndWrist backRocketSecondCargo;
     private static final MoveElevatorAndWrist backRocketSecondHatch;
     private static final MoveElevatorAndWrist frontRocketSecondHatch;
     private static final MoveElevatorAndWrist frontRocketFirstCargo;
-    private static final MoveElevatorAndWrist climbPos;
+    private static final MoveElevatorAndWrist frontRocketSecondCargo;
 
     public static int state;
     private static DriveWithMotionProfile firstPath; // Path from Left Hab to Left Cargo Ship
@@ -175,7 +184,7 @@ public class OI {
         thirdPath = new DriveWithMotionProfile(StraightLinePath8Ft.pathLeft, StraightLinePath8Ft.pathRight, 10);
     }
 
-    public static final DemoMode mode = DemoMode.SAFE;
+    public static final DemoMode mode = DemoMode.NORMAL;
 
     public void initBindings() {
 
@@ -192,10 +201,15 @@ public class OI {
         //         new SetFlower(HatchFlower.CLOSED)
         // );
 
+
+        //Make y front cargo
+        //Make down d-pad lower rocket front
+        //
         if (mode == DemoMode.NORMAL) {
             operatorGamepad.getButtonA().whenPressed(new ToggleExtender());
             operatorGamepad.getButtonX().whenPressed(new ToggleFlower());
             operatorGamepad.getButtonB().whenPressed(new ToggleArm());
+            operatorGamepad.getButtonY().whenPressed(groundCargo);
 
             driverGamepad.getUpDPadButton().whenPressed(defenseMode);
 
@@ -210,34 +224,52 @@ public class OI {
             driverGamepad.getButtonStickLeft().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
             operatorGamepad.getButtonBumperRight().whenPressed(new CallMethodCommand(() -> cargoShipMode = !cargoShipMode));
 
+            //back hatch 1 or front cargo 1
             operatorGamepad.getLeftDPadButton().whenPressed(
                     new ConditionalCommand(backHatch, //If Has hatch
-                        new ConditionalCommand(backShipAndLoading, backRocketFirstCargo, () -> cargoShipMode), //If has cargo
+                        new ConditionalCommand(frontShipAndLoading, frontRocketSecondCargo, () -> cargoShipMode), //If has cargo
                         () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
                     )
             );
+
+            //back hatch 2 or front cargo 2
             operatorGamepad.getRightDPadButton().whenPressed(
                     new ConditionalCommand(
                         new ConditionalCommand(backHatch, backRocketSecondHatch, () -> cargoShipMode), //If has hatch
-                        new ConditionalCommand(backShipAndLoading, backRocketSecondCargo, () -> cargoShipMode), //If has cargo
+                        new ConditionalCommand(frontShipAndLoading, frontRocketSecondCargo, () -> cargoShipMode), //If has cargo
                         () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
                 )
             );
             
+            //front rocket level 2
             operatorGamepad.getUpDPadButton().whenPressed(
                 new ConditionalCommand(
-                    frontRocketSecondHatch, //If has hatch
-                    new ConditionalCommand(frontShipAndLoading, frontRocketFirstCargo, () -> cargoShipMode), //If has cargo
+                    new ConditionalCommand(groundCargo, frontRocketSecondHatch, ()-> cargoShipMode),
+                    new ConditionalCommand(frontShipAndLoading, frontRocketSecondCargo, ()-> cargoShipMode), 
                     () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
                 )
-            );
-            operatorGamepad.getDownDPadButton().whenPressed(groundCargo);  
-            
-            operatorGamepad.getButtonBumperLeft().whenPressed(new CallMethodCommand(()->{Limelight.toggleLEDs();
-        }));
-            // driverGamepad.getButtonStickRight().whenPressed(new SequentialCommandGroup(climbPos,
-            // new DriveToPosition(Climber.HAB_DISTANCE),
-            // new ExtendClimbers()));
+            );  
+
+            //front rocket level 1
+            operatorGamepad.getDownDPadButton().whenPressed(
+                new ConditionalCommand(
+                    groundCargo, 
+                    new ConditionalCommand(frontShipAndLoading, frontRocketFirstCargo, ()-> cargoShipMode), 
+                    () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
+                )
+            );  
+
+            operatorGamepad.getButtonBumperLeft().whenPressed(new CallMethodCommand(()->{Limelight.toggleLEDs();}));
+
+            // operatorGamepad.getUpDPadButton().whenPressed(
+            //     new ConditionalCommand(
+            //         new ConditionalCommand(
+            //             new ConditionalCommand(frontHatch, frontRocketSecondHatch, () -> RobotMap.PRACTICE_BOT), 
+            //             frontRocketSecondHatch, () -> cargoShipMode), //If has hatch
+            //         new ConditionalCommand(frontShipAndLoading, frontRocketFirstCargo, () -> cargoShipMode), //If has cargo
+            //         () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
+            //     )
+            // );
             
             /**driverGamepad.getButtonY().whenPressed(
                 new SequentialCommandGroup(
