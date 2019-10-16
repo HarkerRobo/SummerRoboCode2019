@@ -41,6 +41,9 @@ public class MoveElevatorAndWrist extends Command {
         }
     }
 
+    private static final int FRONT_MIDDLE = 500;
+    private static final int BACK_MIDDLE = 1000;
+
     private static final int ELEVATOR_ALLOWABLE_ERROR;
     private static final int WRIST_ALLOWABLE_ERROR;
     private int elevatorSetpoint;
@@ -67,15 +70,22 @@ public class MoveElevatorAndWrist extends Command {
         group.addSequential(new SetExtender(HatchExtender.IN));
         int currentWristPos = Wrist.getInstance().getMaster().getSelectedSensorPosition();
         boolean isWristInDefense = Math.abs(currentWristPos - Wrist.DEFENSE_POSITION) < Wrist.MIDDLE_VARIANCE;
-        SmartDashboard.putBoolean("isWristInMiddle", isWristInDefense);
+        // SmartDashboard.putBoolean("isWristInMiddle", isWristInDefense);
 
-        if (!(currentWristPos > Wrist.MIDDLE_POSITION && wristSetpoint > Wrist.MIDDLE_POSITION)) {
+        //If we need to do passthrough checks, differs for comp and practice bots because of arm
+        boolean checkPassthrough = 
+            RobotMap.PRACTICE_BOT ? 
+                (currentWristPos <= FRONT_MIDDLE && wristSetpoint >= FRONT_MIDDLE) || 
+                (currentWristPos >= BACK_MIDDLE && wristSetpoint <= BACK_MIDDLE) : 
+                !(currentWristPos > Wrist.MIDDLE_POSITION && wristSetpoint > Wrist.MIDDLE_POSITION);
+
+        if (checkPassthrough) {
             if(!RobotMap.PRACTICE_BOT){//CHECK THIS IF SOMETHING GOES WRONG
                 group.addSequential(new SetArm(Arm.OUT));
                 group.addSequential(new WaitCommand(0.3));
             }
             
-            if(RobotMap.PRACTICE_BOT && (currentWristPos >= FRONT_MIDDLE && currentWristPos <= BACK_MIDDLE))
+            if(RobotMap.PRACTICE_BOT && (currentWristPos >= FRONT_MIDDLE && currentWristPos <= BACK_MIDDLE))//Practice Bot Middle Range
             {
                 if (wristSetpoint > Wrist.MIDDLE_POSITION)
                 {
@@ -86,7 +96,7 @@ public class MoveElevatorAndWrist extends Command {
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT));
                 }
             }
-            else if (!isWristInDefense) {
+            else if (!isWristInDefense) { //If not in defense mode, check for 
                 if (currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint <= Wrist.MIDDLE_POSITION) { // Passthrough back to front
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK, WRIST_ALLOWABLE_ERROR));
                     group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
