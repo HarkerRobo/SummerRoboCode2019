@@ -29,7 +29,7 @@ public class SpinWristRollersManual extends IndefiniteCommand {
             OUTTAKE_SPEED_MULTIPLIER = 0.3;
         }
     }
-    private static final double INTAKE_SPEED_MULTIPLIER = 0.7;
+    private static final double INTAKE_SPEED_MULTIPLIER = 0.5;
     private static final double OUTTAKE_SPEED_MULTIPLIER;
 
     public SpinWristRollersManual() {

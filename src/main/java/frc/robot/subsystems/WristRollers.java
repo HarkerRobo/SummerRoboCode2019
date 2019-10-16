@@ -29,7 +29,7 @@ public class WristRollers extends Subsystem {
     
     private TalonSRX rollers;
 
-    public static final double CARGO_FF = -0.1;
+    public static final double CARGO_FF = -0.2;
 
     private WristRollers() {
         rollers = new TalonSRX(RobotMap.CAN_IDS.ROLLERS_TALON);
