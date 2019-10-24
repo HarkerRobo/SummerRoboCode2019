@@ -21,12 +21,13 @@ import harkerrobolib.util.Conversions.SpeedUnit;
  * @author Jatin Kohli
  * @author Chirag Kaushik
  * 
+ * 
  * @since 6/15/19
  */
 public class DriveWithVelocity extends IndefiniteCommand {
 
     private static final double SPEED_MULTIPLIER;
-    private static final double SLOW_MODE_MULTIPLIER = 0.5;
+    private static final double SLOW_MODE_MULTIPLIER = 0.2;
     
     static {
         if(OI.mode == DemoMode.SAFE) {
@@ -80,6 +81,8 @@ public class DriveWithVelocity extends IndefiniteCommand {
 
         SmartDashboard.putNumber("Left Error", Drivetrain.getInstance().getLeftMaster().getClosedLoopError());
         SmartDashboard.putNumber("Right Error", Drivetrain.getInstance().getRightMaster().getClosedLoopError());
+        SmartDashboard.putNumber("left current", Drivetrain.getInstance().getLeftMaster().getOutputCurrent());
+        SmartDashboard.putNumber("right current", Drivetrain.getInstance().getRightMaster().getOutputCurrent());
     }
 
     @Override

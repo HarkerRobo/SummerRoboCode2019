@@ -46,12 +46,13 @@ public class MoveElevatorAndWrist extends Command {
 
     private static final int ELEVATOR_ALLOWABLE_ERROR;
     private static final int WRIST_ALLOWABLE_ERROR;
+    private static final int EL_DANGER_HEIGHT = 500;
     private int elevatorSetpoint;
     private int wristSetpoint;
     private CommandGroup group;
-    
-    //private static final double INVALID_TIME = 0.06;
-    //private double startTime;
+
+    // private static final double INVALID_TIME = 0.06;
+    // private double startTime;
 
     /**
      * @param elevatorSetpoint The desired Elevator Postion, in Encoder Ticks
@@ -65,68 +66,78 @@ public class MoveElevatorAndWrist extends Command {
     @Override
     protected void initialize() {
         group = new CommandGroup();
-        if(RobotMap.PRACTICE_BOT)
+        if (RobotMap.PRACTICE_BOT)
             group.addSequential(new SetArm(Arm.IN));
         group.addSequential(new SetExtender(HatchExtender.IN));
         int currentWristPos = Wrist.getInstance().getMaster().getSelectedSensorPosition();
         boolean isWristInDefense = Math.abs(currentWristPos - Wrist.DEFENSE_POSITION) < Wrist.MIDDLE_VARIANCE;
         // SmartDashboard.putBoolean("isWristInMiddle", isWristInDefense);
 
-        //If we need to do passthrough checks, differs for comp and practice bots because of arm
-        boolean checkPassthrough = 
-            RobotMap.PRACTICE_BOT ? 
-                (currentWristPos <= FRONT_MIDDLE && wristSetpoint >= FRONT_MIDDLE) || 
-                (currentWristPos >= BACK_MIDDLE && wristSetpoint <= BACK_MIDDLE) : 
-                !(currentWristPos > Wrist.MIDDLE_POSITION && wristSetpoint > Wrist.MIDDLE_POSITION);
+        // If we need to do passthrough checks, differs for comp and practice bots
+        // because of arm
+        boolean checkPassthrough = RobotMap.PRACTICE_BOT
+                ? (currentWristPos <= FRONT_MIDDLE && wristSetpoint >= FRONT_MIDDLE)
+                        || (currentWristPos >= BACK_MIDDLE && wristSetpoint <= BACK_MIDDLE)
+                : !(currentWristPos > Wrist.MIDDLE_POSITION && wristSetpoint > Wrist.MIDDLE_POSITION);
 
-        if (checkPassthrough) {
-            if(!RobotMap.PRACTICE_BOT){//CHECK THIS IF SOMETHING GOES WRONG
-                group.addSequential(new SetArm(Arm.OUT));
-                group.addSequential(new WaitCommand(0.3));
-            }
-            
-            if(RobotMap.PRACTICE_BOT && (currentWristPos >= FRONT_MIDDLE && currentWristPos <= BACK_MIDDLE))//Practice Bot Middle Range
+        if (checkPassthrough && !RobotMap.PRACTICE_BOT) {// CHECK THIS IF SOMETHING GOES WRONG
+            group.addSequential(new SetArm(Arm.OUT));
+            group.addSequential(new WaitCommand(0.3));
+        }
+
+        // if (!(RobotMap.PRACTICE_BOT && HatchFlower.getInstance().getSolenoid().get() == HatchFlower.CLOSED
+        //         && checkPassthrough)) 
+
+        //If we're on practice bot, have cargo, and need to passthrough, don't
+        if (!(RobotMap.PRACTICE_BOT && HatchFlower.getInstance().getSolenoid().get() == HatchFlower.CLOSED && 
+                !(currentWristPos <= BACK_MIDDLE && (wristSetpoint <= 700))))
+        { 
+              
+            if (RobotMap.PRACTICE_BOT && (Wrist.isInRange(FRONT_MIDDLE, BACK_MIDDLE, currentWristPos)
+                    || (Wrist.isInRange(FRONT_MIDDLE, BACK_MIDDLE, wristSetpoint)
+                            && elevatorSetpoint >= EL_DANGER_HEIGHT))) // Practice Bot Middle Range
             {
-                if (wristSetpoint > Wrist.MIDDLE_POSITION)
-                {
+                if (wristSetpoint > Wrist.MIDDLE_POSITION) {
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
-                }
-                else
-                {
+                } else {
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT));
                 }
-            }
-            else if (!isWristInDefense) { //If not in defense mode, check for 
-                if (currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint <= Wrist.MIDDLE_POSITION) { // Passthrough back to front
+                group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint, ELEVATOR_ALLOWABLE_ERROR));
+            } else if (checkPassthrough && !isWristInDefense) { // If not in defense mode, check for
+                if (currentWristPos >= Wrist.MIDDLE_POSITION && wristSetpoint <= Wrist.MIDDLE_POSITION) { // Passthrough
+                                                                                                          // back to
+                                                                                                          // front
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK, WRIST_ALLOWABLE_ERROR));
-                    group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
-                } else if ((currentWristPos <= Wrist.MIDDLE_POSITION && wristSetpoint >= Wrist.MIDDLE_POSITION) || wristSetpoint == Wrist.DEFENSE_POSITION)  { // Pasthrough front to back
+                    group.addSequential(
+                            new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
+                } else if ((currentWristPos <= Wrist.MIDDLE_POSITION && wristSetpoint >= Wrist.MIDDLE_POSITION)
+                        || wristSetpoint == Wrist.DEFENSE_POSITION) { // Pasthrough front to back
                     group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_FRONT, WRIST_ALLOWABLE_ERROR));
-                    group.addSequential(new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
+                    group.addSequential(
+                            new MoveElevatorMotionMagic(Elevator.PASSTHROUGH_HEIGHT, ELEVATOR_ALLOWABLE_ERROR));
                 }
-            }
-            else
-            {
+            } else if (checkPassthrough) {
                 group.addSequential(new MoveWristMotionMagic(Wrist.HORIZONTAL_BACK));
             }
-        }
-        group.addSequential(new MoveWristMotionMagic(wristSetpoint, WRIST_ALLOWABLE_ERROR));
-        group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint, ELEVATOR_ALLOWABLE_ERROR));
 
-        if(HatchFlower.getInstance().getSolenoid().get() == HatchFlower.CLOSED) {
+            group.addSequential(new MoveWristMotionMagic(wristSetpoint, WRIST_ALLOWABLE_ERROR));
+            group.addSequential(new MoveElevatorMotionMagic(elevatorSetpoint, ELEVATOR_ALLOWABLE_ERROR));
+        }
+        
+        if (HatchFlower.getInstance().getSolenoid().get() == HatchFlower.CLOSED) {
             group.addSequential(new SetArm(Arm.OUT));
         }
         // if(wristSetpoint == Wrist.DEFENSE_POSITION || wristSetpoint == 100) {
-        //     group.addSequential(new SetArm(Arm.IN));
+        // group.addSequential(new SetArm(Arm.IN));
         // }
         group.start();
-        //startTime = Timer.getFPGATimestamp();
+        // startTime = Timer.getFPGATimestamp();
     }
 
     @Override
     protected boolean isFinished() {
         return group.isCompleted();
-        //(Timer.getFPGATimestamp() - startTime) > INVALID_TIME
+        // (Timer.getFPGATimestamp() - startTime) > INVALID_TIME
     }
 
     @Override

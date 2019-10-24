@@ -40,12 +40,12 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
 
     @Override
     protected void execute() {
-        double driverRightY = OI.getInstance().getDriverGamepad().getRightY();
-        double operatorRightY = OI.getInstance().getOperatorGamepad().getRightY();
+        double driverRightY = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightY(), OI.XBOX_JOYSTICK_DEADBAND);
+        double operatorRightY = MathUtil.mapJoystickOutput(OI.getInstance().getOperatorGamepad().getRightY(), OI.XBOX_JOYSTICK_DEADBAND);
 
         double joystickValue = Math.abs(driverRightY) > 0 ? driverRightY : operatorRightY;
         
-        double output = SPEED_MULTIPLIER * MathUtil.mapJoystickOutput(joystickValue, OI.XBOX_JOYSTICK_DEADBAND);
+        double output = SPEED_MULTIPLIER*joystickValue;
         
         if (Math.abs(output) > 0) {
             Elevator.getInstance().getMaster().set(ControlMode.PercentOutput, output, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Math.signum(output) * Elevator.kS);

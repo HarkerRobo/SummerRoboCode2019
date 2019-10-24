@@ -77,7 +77,7 @@ NetworkTables.addKeyListener("/SmartDashboard/Elevator Position", (key, value) =
  * Updates the current wrist position, in degrees rounded to one decimal place.
  */
 NetworkTables.addKeyListener("/SmartDashboard/Wrist Position", (key, value) => {
-    document.getElementById("wristPos").innerHTML = `${value.toFixed(1)} degreees`;
+    document.getElementById("wristPos").innerHTML = `${value.toFixed(1)} encoder units`;
 }, true);
 
 /**

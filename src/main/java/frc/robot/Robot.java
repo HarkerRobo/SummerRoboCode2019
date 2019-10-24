@@ -96,13 +96,13 @@ public class Robot extends TimedRobot {
         // SmartDashboard.putNumber("Wrist Error", Wrist.getInstance().getMaster().getClosedLoopError());
         SmartDashboard.putString("Extender State", HatchExtender.getInstance().getSolenoid().get().toString());
         // SmartDashboard.putNumber("Climber Position", Climber.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("Climber Current", Climber.getInstance().getMaster().getOutputCurrent());
-        SmartDashboard.putNumber("Elevator Current", Elevator.getInstance().getMaster().getOutputCurrent());
+        SmartDashboard.putNumber("el Current", Elevator.getInstance().getMaster().getOutputCurrent());
         SmartDashboard.putNumber("Wrist Current", Wrist.getInstance().getMaster().getOutputCurrent());
         SmartDashboard.putNumber("Left DT Current", Drivetrain.getInstance().getLeftMaster().getOutputCurrent());
         SmartDashboard.putNumber("Right DT Current", Drivetrain.getInstance().getRightMaster().getOutputCurrent());
-        SmartDashboard.putNumber("Elevator Setpoint", Elevator.getInstance().getMaster().getClosedLoopTarget());
-        SmartDashboard.putNumber("Wrist Setpoint", Wrist.getInstance().getMaster().getClosedLoopTarget());
+        // SmartDashboard.putNumber("Elevator Setpoint", Elevator.getInstance().getMaster().getClosedLoopTarget());
+        // SmartDashboard.putNumber("Wrist Setpoint", Wrist.getInstance().getMaster().getClosedLoopTarget());
+
     }
 
     /**

@@ -58,7 +58,7 @@ public class OI {
             
             frontHatch = new MoveElevatorAndWrist(0, 0);
             backShipAndLoading = new MoveElevatorAndWrist(18350, Wrist.HORIZONTAL_BACK);
-            frontShipAndLoading = new MoveElevatorAndWrist(17600, 100);
+            frontShipAndLoading = new MoveElevatorAndWrist(13648, 458);//13648458
             defenseMode = new MoveElevatorAndWrist(0, Wrist.DEFENSE_POSITION);
             
             backRocketFirstCargo = new MoveElevatorAndWrist(6300, Wrist.HORIZONTAL_BACK);
@@ -66,8 +66,8 @@ public class OI {
             backHatch = new MoveElevatorAndWrist(0, Wrist.HORIZONTAL_BACK);
             backRocketSecondHatch = new MoveElevatorAndWrist(21000, 1920);
 
-            frontRocketFirstCargo = new MoveElevatorAndWrist(0, 700);
-            frontRocketSecondCargo = new MoveElevatorAndWrist(15300, 700);
+            frontRocketFirstCargo = new MoveElevatorAndWrist(0, 632);//700);
+            frontRocketSecondCargo = new MoveElevatorAndWrist(15300, 679);//700);
             //frontRocketFirstHatch = groundCargo;
             frontRocketSecondHatch = new MoveElevatorAndWrist(19600, 0);
             
@@ -226,7 +226,8 @@ public class OI {
 
             //back hatch 1 or front cargo 1
             operatorGamepad.getLeftDPadButton().whenPressed(
-                    new ConditionalCommand(backHatch, //If Has hatch
+                    new ConditionalCommand(
+                        backHatch, //If Has hatch
                         new ConditionalCommand(frontShipAndLoading, frontRocketSecondCargo, () -> cargoShipMode), //If has cargo
                         () -> HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN
                     )

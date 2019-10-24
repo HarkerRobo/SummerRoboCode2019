@@ -198,4 +198,8 @@ public class Wrist extends Subsystem {
             instance = new Wrist();
         return instance;
     }
+    
+    public static boolean isInRange(int forwardPos, int backwardPos, int pos) {
+        return pos >= forwardPos && pos <=backwardPos;
+    }
 }
