@@ -32,8 +32,9 @@ public class DriveWithPercentOutput extends IndefiniteCommand {
     @Override
     public void execute() {
         double speed = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
-        double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
-        
+        //double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
+        double turn = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.XBOX_JOYSTICK_DEADBAND) * SPEED_MULTIPLIER;
+
         //Drivetrain.getInstance().arcadeDrivePercentOutput(speed, turn);
         Drivetrain.getInstance().getLeftMaster().set(ControlMode.PercentOutput, speed - turn);
         Drivetrain.getInstance().getRightMaster().set(ControlMode.PercentOutput, speed + turn);

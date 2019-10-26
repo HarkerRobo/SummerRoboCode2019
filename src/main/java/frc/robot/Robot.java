@@ -63,6 +63,7 @@ public class Robot extends TimedRobot {
         HatchExtender.getInstance();
         HatchFlower.getInstance();
         WristRollers.getInstance();
+        
         if(OI.mode == DemoMode.SAFE) {
             Arm.getInstance().getSolenoid().set(Arm.OUT);
         }

@@ -31,9 +31,9 @@ public class DriveWithVelocity extends IndefiniteCommand {
     
     static {
         if(OI.mode == DemoMode.SAFE) {
-            SPEED_MULTIPLIER = 0.5;
+            SPEED_MULTIPLIER = 0.4;
         } else {
-            SPEED_MULTIPLIER = 1;
+            SPEED_MULTIPLIER = 0.7;
         }
     }
 
@@ -57,10 +57,12 @@ public class DriveWithVelocity extends IndefiniteCommand {
     @Override
     protected void execute() {
         double joystickY = OI.getInstance().getDriverGamepad().getLeftY();
-        double joystickX = OI.getInstance().getDriverGamepad().getLeftX();
+        //double joystickX = OI.getInstance().getDriverGamepad().getLeftX(); 
+        double joystickX = OI.getInstance().getDriverGamepad().getRightX(); 
         
         double speed = MathUtil.mapJoystickOutput(joystickY, OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_FORWARD_VELOCITY * SPEED_MULTIPLIER;
         double turn = MathUtil.mapJoystickOutput(joystickX, OI.XBOX_JOYSTICK_DEADBAND);
+
         turn = turn * turn * Math.signum(turn);
         turn *= Drivetrain.MAX_TURN_VELOCITY * SPEED_MULTIPLIER;
 
