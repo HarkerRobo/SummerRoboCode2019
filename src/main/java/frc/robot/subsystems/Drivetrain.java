@@ -54,7 +54,7 @@ public class Drivetrain extends HSDrivetrain {
     private static final double VELOCITY_RIGHT_kP = 0.75;
     private static final double VELOCITY_RIGHT_kI = 0;
     private static final double VELOCITY_RIGHT_kD = 8;
-    public static final double VELOCITY_RAMP_RATE = 0.2;
+    public static final double VELOCITY_RAMP_RATE;
 
     //Position PID Constants
     public static final int POSITION_SLOT = 1;
@@ -107,6 +107,7 @@ public class Drivetrain extends HSDrivetrain {
 
             VELOCITY_LEFT_kF = leftkF;
             VELOCITY_RIGHT_kF = rightkF;
+            VELOCITY_RAMP_RATE = 0.5;
 
             MOTION_PROF_SLOT = 2;
             MOTION_PROF_LEFT_kF = leftkF;
@@ -129,6 +130,7 @@ public class Drivetrain extends HSDrivetrain {
 
             VELOCITY_LEFT_kF = leftkF;
             VELOCITY_RIGHT_kF = rightkF;
+            VELOCITY_RAMP_RATE = 0.5;
 
             MOTION_PROF_SLOT = 2;
             MOTION_PROF_LEFT_kF = leftkF;
