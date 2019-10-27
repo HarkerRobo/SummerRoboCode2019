@@ -91,11 +91,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());    
         SmartDashboard.putBoolean("Is scoring on cargo ship?", OI.getInstance().getCargoShipMode());
         SmartDashboard.putBoolean("Has hatch?", HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN);
-        SmartDashboard.putString("Flower State", HatchFlower.getInstance().getSolenoid().get().toString());
         // SmartDashboard.putNumber("State", OI.state);
         SmartDashboard.putString("Current Wrist Command", Wrist.getInstance().getCurrentCommandName());
         // SmartDashboard.putNumber("Wrist Error", Wrist.getInstance().getMaster().getClosedLoopError());
-        SmartDashboard.putString("Extender State", HatchExtender.getInstance().getSolenoid().get().toString());
         // SmartDashboard.putNumber("Climber Position", Climber.getInstance().getMaster().getSelectedSensorPosition());
         SmartDashboard.putNumber("el Current", Elevator.getInstance().getMaster().getOutputCurrent());
         SmartDashboard.putNumber("Wrist Current", Wrist.getInstance().getMaster().getOutputCurrent());
@@ -164,7 +162,6 @@ public class Robot extends TimedRobot {
         Elevator.getInstance().getMaster().clearMotionProfileTrajectories();
         Wrist.getInstance().getMaster().clearMotionProfileTrajectories();
         
-        Drivetrain.getInstance().setNeutralMode(NeutralMode.Coast);
         Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
         Elevator.getInstance().getMaster().set(ControlMode.Disabled, 0);
         Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
@@ -180,5 +177,9 @@ public class Robot extends TimedRobot {
             new CancelCommand(Elevator.getInstance().getCurrentCommand()).start();
         if (Wrist.getInstance().getCurrentCommand() != null)
             new CancelCommand(Wrist.getInstance().getCurrentCommand()).start();
+
+        Drivetrain.getInstance().setBoth(ControlMode.Disabled, 0);
+        Elevator.getInstance().getMaster().set(ControlMode.Disabled, 0);
+        Wrist.getInstance().getMaster().set(ControlMode.Disabled, 0);
     }
 }
