@@ -36,8 +36,8 @@ public class MoveElevatorAndWrist extends Command {
             ELEVATOR_ALLOWABLE_ERROR = Elevator.ALLOWABLE_ERROR;
             WRIST_ALLOWABLE_ERROR = Wrist.ALLOWABLE_ERROR;
         } else {
-            ELEVATOR_ALLOWABLE_ERROR = 1000;
-            WRIST_ALLOWABLE_ERROR = 240;
+            ELEVATOR_ALLOWABLE_ERROR = Elevator.ALLOWABLE_ERROR;
+            WRIST_ALLOWABLE_ERROR = Wrist.ALLOWABLE_ERROR;
         }
     }
 
