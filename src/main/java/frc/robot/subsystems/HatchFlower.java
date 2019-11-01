@@ -14,15 +14,6 @@ import frc.robot.RobotMap;
  */
 public class HatchFlower extends Subsystem {
 
-    static {
-        if(RobotMap.PRACTICE_BOT) {
-            OPEN = Value.kReverse;
-            CLOSED = Value.kForward;
-        } else {
-            OPEN = Value.kReverse;
-            CLOSED = Value.kForward;
-        }
-    }
     private static HatchFlower instance;
 
     private DoubleSolenoid solenoid;
@@ -30,15 +21,16 @@ public class HatchFlower extends Subsystem {
     /**
      * DoubleSolenoid.Value for when the flower is not holding a hatch panel
      */
-    public static final DoubleSolenoid.Value CLOSED;
+    public static final DoubleSolenoid.Value CLOSED = Value.kReverse;
+
     /**
      * DoubleSolenoid.Value for when the flower is holding a hatch panel
      */
-    public static final DoubleSolenoid.Value OPEN;
+    public static final DoubleSolenoid.Value OPEN = Value.kForward;
 
     private HatchFlower() {
         solenoid = new DoubleSolenoid(RobotMap.CAN_IDS.FLOWER_FORWARD_CHANNEL, RobotMap.CAN_IDS.FLOWER_REVERSE_CHANNEL);
-        solenoid.set(CLOSED);
+        solenoid.set(OPEN);
     }
 
     @Override

@@ -15,21 +15,12 @@ import frc.robot.commands.wristrollers.SpinWristRollersManual;
  */
 public class WristRollers extends Subsystem {
     
-    private static final boolean INVERT;
-
-    static {
-        if(RobotMap.PRACTICE_BOT) {
-            INVERT = false;
-        } else {
-            INVERT = true;
-        }
-    }
+    private static final boolean INVERT = true;
+    public static final double CARGO_FF = -0.23;
 
     private static WristRollers instance;
     
     private TalonSRX rollers;
-
-    public static final double CARGO_FF = -0.23;
 
     private WristRollers() {
         rollers = new TalonSRX(RobotMap.CAN_IDS.ROLLERS_TALON);

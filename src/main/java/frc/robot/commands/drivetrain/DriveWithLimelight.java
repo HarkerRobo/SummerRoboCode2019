@@ -4,14 +4,10 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
 import frc.robot.RobotMap;
-import frc.robot.OI.DemoMode;
 import frc.robot.subsystems.Drivetrain;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.Wrist;
 import frc.robot.util.HSPIDController;
 import frc.robot.util.Limelight;
 import harkerrobolib.commands.IndefiniteCommand;
@@ -32,9 +28,9 @@ public class DriveWithLimelight extends IndefiniteCommand {
 
     public DriveWithLimelight() {
         requires(Drivetrain.getInstance());
-        controller =
-         new HSPIDController(Drivetrain.TX_kP, Drivetrain.TX_kI, Drivetrain.TX_kD, 
+        controller = new HSPIDController(Drivetrain.TX_kP, Drivetrain.TX_kI, Drivetrain.TX_kD, 
                 () -> Limelight.getTx(), PIDSourceType.kDisplacement);
+
         controller.setSetpoint(Drivetrain.TX_SETPOINT);
     }
 
@@ -55,10 +51,6 @@ public class DriveWithLimelight extends IndefiniteCommand {
         
         double speed = MathUtil.mapJoystickOutput(joystickY, OI.XBOX_JOYSTICK_DEADBAND) * Drivetrain.MAX_FORWARD_VELOCITY * SPEED_MULTIPLIER;
         double turn = controller.getOutput() * Drivetrain.MAX_TURN_VELOCITY;
-
-        // if(Wrist.getInstance().getMaster().getSelectedSensorPosition() > Wrist.MIDDLE_POSITION) {
-        //     turn = 0;   
-        // }
 
         speed = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, speed, SpeedUnit.ENCODER_UNITS);
         turn = Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, turn, SpeedUnit.ENCODER_UNITS);

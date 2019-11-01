@@ -59,9 +59,6 @@ public class MoveElevatorPercentOutput extends IndefiniteCommand {
                 lastSetpoint = 0;
             Elevator.getInstance().getMaster().set(ControlMode.MotionMagic, lastSetpoint, DemandType.ArbitraryFeedForward, Elevator.GRAVITY_FF + Elevator.kS);
         }
-
-        SmartDashboard.putNumber("Elevator Error", Elevator.getInstance().getMaster().getClosedLoopError());
-        // SmartDashboard.putString("Elevator Control Mode", Elevator.getInstance().getMaster().getControlMode().toString());
     }
 
     @Override

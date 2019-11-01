@@ -10,15 +10,10 @@ package frc.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.OI.DemoMode;
-import frc.robot.commands.drivetrain.AlignWithLimelight;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Drivetrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.HatchExtender;
@@ -26,8 +21,6 @@ import frc.robot.subsystems.HatchFlower;
 import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristRollers;
 import frc.robot.util.Limelight;
-import harkerrobolib.auto.ParallelCommandGroup;
-import harkerrobolib.commands.CallMethodCommand;
 import harkerrobolib.commands.CancelCommand;
 
 /**
@@ -56,25 +49,15 @@ public class Robot extends TimedRobot {
         OI.getInstance();
         
         //Initialize Subsystems
-        Drivetrain.getInstance();
-        Elevator.getInstance();
-        Wrist.getInstance();
         Arm.getInstance();
-        HatchExtender.getInstance();
+        Wrist.getInstance();
+        Elevator.getInstance();
+        Drivetrain.getInstance();
         HatchFlower.getInstance();
         WristRollers.getInstance();
+        HatchExtender.getInstance();
         
-        if(OI.mode == DemoMode.SAFE) {
-            Arm.getInstance().getSolenoid().set(Arm.OUT);
-        }
-        else {
-            Arm.getInstance().getSolenoid().set(Arm.IN);
-        }
-        //Limelight.setLEDS(true);
-
-        // OI.getInstance().getOperatorGamepad().getButtonY().whenPressed(new CallMethodCommand(() -> {
-        //     solenoid.set(!solenoid.get());
-        // }));
+        Limelight.setLEDS(false);
     }
 
     /**
@@ -91,17 +74,8 @@ public class Robot extends TimedRobot {
         SmartDashboard.putNumber("Wrist Position", Wrist.getInstance().getMaster().getSelectedSensorPosition());    
         SmartDashboard.putBoolean("Is scoring on cargo ship?", OI.getInstance().getCargoShipMode());
         SmartDashboard.putBoolean("Has hatch?", HatchFlower.getInstance().getSolenoid().get() == HatchFlower.OPEN);
-        // SmartDashboard.putNumber("State", OI.state);
+        
         SmartDashboard.putString("Current Wrist Command", Wrist.getInstance().getCurrentCommandName());
-        // SmartDashboard.putNumber("Wrist Error", Wrist.getInstance().getMaster().getClosedLoopError());
-        // SmartDashboard.putNumber("Climber Position", Climber.getInstance().getMaster().getSelectedSensorPosition());
-        SmartDashboard.putNumber("el Current", Elevator.getInstance().getMaster().getOutputCurrent());
-        SmartDashboard.putNumber("Wrist Current", Wrist.getInstance().getMaster().getOutputCurrent());
-        SmartDashboard.putNumber("Left DT Current", Drivetrain.getInstance().getLeftMaster().getOutputCurrent());
-        SmartDashboard.putNumber("Right DT Current", Drivetrain.getInstance().getRightMaster().getOutputCurrent());
-        // SmartDashboard.putNumber("Elevator Setpoint", Elevator.getInstance().getMaster().getClosedLoopTarget());
-        // SmartDashboard.putNumber("Wrist Setpoint", Wrist.getInstance().getMaster().getClosedLoopTarget());
-
     }
 
     /**

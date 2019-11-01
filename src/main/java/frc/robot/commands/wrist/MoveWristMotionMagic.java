@@ -33,10 +33,12 @@ public class MoveWristMotionMagic extends TimedCommand {
     public MoveWristMotionMagic(int setpoint, double allowableError) {
         super(TIMEOUT);
         requires(Wrist.getInstance());
+
         if (setpoint > Wrist.BACKMOST_POSITION || setpoint < Wrist.FRONTMOST_POSITION) {
             System.out.println("Wrist Motion Magic Setpoint is unsafe!");
             cancel();
         }
+
         this.setpoint = setpoint;
         this.allowableError = allowableError;
         prevVel = 0;
@@ -58,6 +60,7 @@ public class MoveWristMotionMagic extends TimedCommand {
         double vel = Wrist.getInstance().getMaster().getActiveTrajectoryVelocity();
         double accelSign = Math.signum(vel - prevVel);
         double totalErrorSign = Math.signum(setpoint - Wrist.getInstance().getMaster().getSelectedSensorPosition());
+        
         Wrist.getInstance().getMaster().set(ControlMode.MotionMagic, setpoint, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF() + Wrist.kS * totalErrorSign + Wrist.kA * accelSign * Wrist.MAX_ACCELERATION);
         prevVel = vel;
         SmartDashboard.putNumber("Wrist Trajectory Velocity", Wrist.getInstance().getMaster().getActiveTrajectoryVelocity());

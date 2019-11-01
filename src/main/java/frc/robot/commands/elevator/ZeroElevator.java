@@ -19,16 +19,15 @@ import frc.robot.subsystems.Elevator;
  */
 public class ZeroElevator extends TimedCommand {
     
-    private static final double TIMEOUT = 2.0;
+    private static final double TIMEOUT = 3.0;
     private static final double DOWN_PERCENT_OUTPUT = -0.2;
-    private static final double CURRENT_SPIKE_DIFF = 0.4;
     private static final double INVALID_TIME = 0.1;
     private static final double VELOCITY_SPIKE = -580;
     private boolean isSpike;
     private double startTime;
 
     public ZeroElevator() {
-        super(3.0);
+        super(TIMEOUT);
         requires(Elevator.getInstance());
     }
 

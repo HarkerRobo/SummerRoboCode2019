@@ -15,29 +15,18 @@ import frc.robot.subsystems.Wrist;
  */
 public class ZeroWrist extends TimedCommand {
 
-    static {
-        if (RobotMap.PRACTICE_BOT)
-        {
-            SPEED = -0.3;
-            VELOCITY_ERROR = 100;
-        }
-        else
-        {
-            SPEED = -0.2;
-            VELOCITY_ERROR= 73;
-        }
-    }
-
-    private static final double SPEED;
+    private static final double SPEED = -0.2;
     private static final double INVALID_TIME = 0.5;//0.2;
     private static final double TIMEOUT = 5;
-    private static final double VELOCITY_ERROR;
+    private static final double VELOCITY_ERROR = 73;
+    
     private boolean isSpike;
     private double startTime;
 
     public ZeroWrist() {
         super(TIMEOUT);
         requires(Wrist.getInstance());
+        
         isSpike = false;
     }
 

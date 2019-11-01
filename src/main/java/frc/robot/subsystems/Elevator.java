@@ -41,23 +41,21 @@ public class Elevator extends Subsystem {
     private static final boolean LEFT_VICTOR_INVERTED = true;
     private static final boolean RIGHT_VICTOR_INVERTED = true;
     private static final boolean FOLLOWER_TALON_INVERTED = true;
-    public static final double CLIMB_FF = -0.5;//-0.5; 
+
     public static final int MOTION_MAGIC_SLOT = 0;
     public static final double MOTION_MAGIC_KF = kF;
     public static final double MOTION_MAGIC_KP = 1;
     public static final double MOTION_MAGIC_KI = 0;
     public static final double MOTION_MAGIC_KD = 10;
     public static final int CRUISE_VELOCITY = 3000; //Encdoder Units per 100ms
-    public static final int MAX_ACCELERATION = 6000; //Encoer Units per 100ms per s
-    public static final int CLIMB_EL_POS = 6570;//3000 for lvl3://12743;
+    public static final int MAX_ACCELERATION = 6000; //Encoder Units per 100ms per s
+    
     public static final int VELOCITY_SLOT = 1;
     public static final double VELOCITY_KF = kF;
 
     public static final int CURRENT_PEAK = 20;
     public static final int CURRENT_CONTINUOUS = 15;
     public static final int CURRENT_DUR = 500;
-
-    public static final int CLIMBING_CURRENT_PEAK = 25;
 
     private HSTalon master;
     private HSTalon talonFollower;
@@ -69,6 +67,7 @@ public class Elevator extends Subsystem {
         talonFollower = new HSTalon(RobotMap.CAN_IDS.EL_TALON_FOLLOWER);
         victorLeft = new VictorSPX(RobotMap.CAN_IDS.EL_VICTOR_LEFT);
         victorRight = new VictorSPX(RobotMap.CAN_IDS.EL_VICTOR_RIGHT);
+
         talonInit(); 
     }
 
@@ -133,10 +132,6 @@ public class Elevator extends Subsystem {
         master.configMotionCruiseVelocity(CRUISE_VELOCITY);
         master.configMotionAcceleration(MAX_ACCELERATION);
         master.setStatusFramePeriod(StatusFrame.Status_10_Targets, 10);
-    }
-
-    private void setupVelocity() {
-        master.config_kF(VELOCITY_SLOT, VELOCITY_KF);
     }
 
     public HSTalon getMaster() {

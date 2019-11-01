@@ -18,14 +18,7 @@ import harkerrobolib.util.MathUtil;
  */
 public class MoveWristPercentOutput extends IndefiniteCommand {
 
-    static {
-        if (RobotMap.PRACTICE_BOT)
-            LAG_COMPENSATION = 0.7;
-        else
-            LAG_COMPENSATION = 1;
-    }
-
-    private static final double LAG_COMPENSATION;
+    private static final double LAG_COMPENSATION = 1;
     private static final double SPEED_MULTIPLIER = 0.4;
     private double lastSetpoint;
     private boolean shouldHold;
@@ -68,8 +61,8 @@ public class MoveWristPercentOutput extends IndefiniteCommand {
         {
             Wrist.getInstance().getMaster().set(ControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, Wrist.getInstance().calculateGravFF());
         }
+        
         SmartDashboard.putNumber("Wrist Percent Output", Wrist.getInstance().getMaster().getMotorOutputPercent());
-
    }
 
     @Override

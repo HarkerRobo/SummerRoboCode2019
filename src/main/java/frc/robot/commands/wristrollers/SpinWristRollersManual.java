@@ -5,13 +5,9 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.RobotMap;
 import frc.robot.OI.DemoMode;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Wrist;
 import frc.robot.subsystems.WristRollers;
 import harkerrobolib.commands.IndefiniteCommand;
-import harkerrobolib.util.MathUtil;
 
 /**
  * Spins the Wrist Rollers using input from the Driver Gamepad's Triggers
@@ -29,26 +25,21 @@ public class SpinWristRollersManual extends IndefiniteCommand {
             OUTTAKE_SPEED_MULTIPLIER = 0.3;
         }
     }
+
     private static final double INTAKE_SPEED_MULTIPLIER = 0.5;
     private static final double OUTTAKE_SPEED_MULTIPLIER;
 
     public SpinWristRollersManual() {
         requires(WristRollers.getInstance());
-        //requires(Arm.getInstance());
     }
 
-    @Override
-    protected void initialize() {
-        // if(RobotMap.PRACTICE_BOT){
-        //     Arm.getInstance().getSolenoid().set(Arm.OUT);
-        // }
-    }
     @Override
     protected void execute() {
         
         boolean a = OI.getInstance().getDriverGamepad().getButtonAState();
         boolean x = OI.getInstance().getDriverGamepad().getButtonXState();
         double output;
+        
         output = (a ? 1 : (x ? -1 : 0));
         output *= Math.signum(output) == -1 ? INTAKE_SPEED_MULTIPLIER : OUTTAKE_SPEED_MULTIPLIER;
         
